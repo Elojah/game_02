@@ -1,0 +1,39 @@
+version: "3"
+services:
+
+  # Redis
+  redis:
+    build: docker/redis
+    volumes:
+      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    expose:
+      - 6379
+    ports:
+      - 6379:6379
+
+  # Redis-LRU
+  redis-lru:
+    build: docker/redis
+    volumes:
+      - ./docker/redis/redis-lru.conf:/usr/local/etc/redis/redis.conf
+    expose:
+      - 6379
+    ports:
+      - 6380:6379
+
+  # Auth
+  auth:
+    build:
+      context: .
+      dockerfile: docker/auth/Dockerfile
+    volumes:
+      - ./config/auth.json:/app/auth.json
+      - ./config/server.crt:/app/server.crt
+      - ./config/server.key:/app/server.key
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
+    links:
+      - redis
+      - redis-lru
