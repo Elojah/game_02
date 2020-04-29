@@ -24,6 +24,9 @@ func (h *handler) Dial(c Config) error {
 	mux.HandleFunc("/signin", h.signin)
 	// mux.HandleFunc("/signout", h.signout)
 
+	// mux.HandleFunc("/room", h.room)
+	// mux.HandleFunc("/play", h.play)
+
 	// mux.HandleFunc("/pc/create", h.createPC)
 	// mux.HandleFunc("/pc/list", h.listPC)
 	// mux.HandleFunc("/pc/del", h.delPC)
