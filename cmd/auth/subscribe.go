@@ -6,11 +6,13 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/rs/zerolog/log"
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/elojah/game_02/pkg/account"
 	"github.com/elojah/game_02/pkg/account/dto"
 	gerrors "github.com/elojah/game_02/pkg/errors"
 	gulid "github.com/elojah/game_02/pkg/ulid"
-	"github.com/rs/zerolog/log"
 )
 
 func (h handler) subscribe(w http.ResponseWriter, r *http.Request) {
@@ -51,7 +53,15 @@ func (h handler) subscribe(w http.ResponseWriter, r *http.Request) {
 	} else {
 		// duplicate email account found
 		logger.Error().Err(err).Msg("email already registered")
-		http.Error(w, fmt.Sprintf("emails already registered: %v", err), http.StatusBadRequest)
+		http.Error(w, fmt.Sprintf("email already registered: %v", err), http.StatusBadRequest)
+		return
+	}
+
+	// #Encrypt password
+	hash, err := bcrypt.GenerateFromPassword([]byte(request.Password), bcrypt.MinCost)
+	if err != nil {
+		logger.Error().Err(err).Msg("failed to hash password")
+		http.Error(w, fmt.Sprintf("failed to hash password: %v", err), http.StatusInternalServerError)
 		return
 	}
 
@@ -60,7 +70,7 @@ func (h handler) subscribe(w http.ResponseWriter, r *http.Request) {
 		ID:       gulid.NewID(),
 		Alias:    request.Alias,
 		Email:    request.Email,
-		Password: []byte(request.Password),
+		Password: hash,
 	}); err != nil {
 		logger.Error().Err(err).Msg("failed to create account")
 		http.Error(w, fmt.Sprintf("failed to create account: %v", err), http.StatusBadRequest)
