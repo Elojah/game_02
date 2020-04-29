@@ -18,20 +18,17 @@ type handler struct {
 func (h *handler) Dial(c Config) error {
 	mux := http.NewServeMux()
 
-	// TODO
-	/*
-		mux.HandleFunc("/signin", h.signin)
-			mux.HandleFunc("/signout", h.signout)
+	mux.HandleFunc("/subscribe", h.subscribe)
+	// mux.HandleFunc("/unsubscribe", h.unsubscribe)
 
-			mux.HandleFunc("/subscribe", h.subscribe)
-			mux.HandleFunc("/unsubscribe", h.unsubscribe)
+	// mux.HandleFunc("/signin", h.signin)
+	// mux.HandleFunc("/signout", h.signout)
 
-			mux.HandleFunc("/pc/create", h.createPC)
-			mux.HandleFunc("/pc/list", h.listPC)
-			mux.HandleFunc("/pc/del", h.delPC)
-			mux.HandleFunc("/pc/connect", h.connectPC)
-			mux.HandleFunc("/pc/disconnect", h.disconnectPC)
-	*/
+	// mux.HandleFunc("/pc/create", h.createPC)
+	// mux.HandleFunc("/pc/list", h.listPC)
+	// mux.HandleFunc("/pc/del", h.delPC)
+	// mux.HandleFunc("/pc/connect", h.connectPC)
+	// mux.HandleFunc("/pc/disconnect", h.disconnectPC)
 
 	h.srv = &http.Server{
 		Addr:    c.Address,

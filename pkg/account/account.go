@@ -1,14 +1,16 @@
 package account
 
+import "context"
+
 type Filter struct {
-	Alias string
+	Email string
 }
 
 // Store layer for account domain.
 type Store interface {
-	Upsert(A) error
-	Fetch(Filter) (A, error)
-	Delete(Filter) error
+	Upsert(context.Context, A) error
+	Fetch(context.Context, Filter) (A, error)
+	Delete(context.Context, Filter) error
 }
 
 // Application layer for account domain.

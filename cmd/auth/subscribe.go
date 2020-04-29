@@ -1,0 +1,73 @@
+package main
+
+import (
+	"encoding/json"
+	"errors"
+	"fmt"
+	"net/http"
+
+	"github.com/elojah/game_02/pkg/account"
+	"github.com/elojah/game_02/pkg/account/dto"
+	gerrors "github.com/elojah/game_02/pkg/errors"
+	gulid "github.com/elojah/game_02/pkg/ulid"
+	"github.com/rs/zerolog/log"
+)
+
+func (h handler) subscribe(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case "POST":
+		// continue
+	default:
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	ctx := r.Context()
+	logger := log.With().Str("route", r.URL.EscapedPath()).Str("method", r.Method).Str("address", r.RemoteAddr).Logger()
+
+	// #Request processing
+	var request dto.SubscribeReq
+	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+		logger.Error().Err(err).Msg("invalid payload")
+		http.Error(w, fmt.Sprintf("invalid payload: %v", err), http.StatusBadRequest)
+		return
+	}
+	if err := request.Check(); err != nil {
+		logger.Error().Err(err).Msg("invalid payload")
+		http.Error(w, fmt.Sprintf("invalid payload: %v", err), http.StatusBadRequest)
+		return
+	}
+
+	// #Check if account already exist with email
+	if _, err := h.account.Fetch(ctx, account.Filter{Email: request.Email}); err != nil {
+		if errors.As(err, &gerrors.ErrNotFound{}) {
+			// no account found, no error, continue
+		} else {
+			// server error fetching account
+			logger.Error().Err(err).Msg("failed to check email duplicate")
+			http.Error(w, fmt.Sprintf("failed to check email duplicate: %v", err), http.StatusInternalServerError)
+			return
+		}
+	} else {
+		// duplicate email account found
+		logger.Error().Err(err).Msg("email already registered")
+		http.Error(w, fmt.Sprintf("emails already registered: %v", err), http.StatusBadRequest)
+		return
+	}
+
+	// #Create account
+	if err := h.account.Upsert(ctx, account.A{
+		ID:       gulid.NewID(),
+		Alias:    request.Alias,
+		Email:    request.Email,
+		Password: []byte(request.Password),
+	}); err != nil {
+		logger.Error().Err(err).Msg("failed to create account")
+		http.Error(w, fmt.Sprintf("failed to create account: %v", err), http.StatusBadRequest)
+		return
+	}
+
+	// #Write response
+	w.WriteHeader(http.StatusOK)
+	logger.Info().Msg("success")
+}
