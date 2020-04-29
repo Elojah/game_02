@@ -53,7 +53,7 @@ func (h handler) subscribe(w http.ResponseWriter, r *http.Request) {
 	} else {
 		// duplicate email account found
 		logger.Error().Err(err).Msg("email already registered")
-		http.Error(w, fmt.Sprintf("email already registered: %v", err), http.StatusBadRequest)
+		http.Error(w, "email already registered", http.StatusBadRequest)
 		return
 	}
 

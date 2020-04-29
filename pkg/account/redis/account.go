@@ -21,7 +21,7 @@ func (s *Store) Upsert(ctx context.Context, a account.A) error {
 		return err
 	}
 
-	if err := s.Set(accountKey+a.Alias, raw, 0).Err(); err != nil {
+	if err := s.Set(accountKey+a.Email, raw, 0).Err(); err != nil {
 		return fmt.Errorf("upsert account %s: %w", a.Alias, err)
 	}
 
