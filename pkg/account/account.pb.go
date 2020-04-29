@@ -30,9 +30,10 @@ const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
 
 type A struct {
 	ID                   github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,1,opt,name=ID,json=iD,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"ID"`
-	Alias                string                                `protobuf:"bytes,2,opt,name=Alias,json=alias,proto3" json:"Alias,omitempty"`
-	Email                string                                `protobuf:"bytes,3,opt,name=Email,json=email,proto3" json:"Email,omitempty"`
-	Password             []byte                                `protobuf:"bytes,4,opt,name=Password,json=password,proto3" json:"Password,omitempty"`
+	Email                string                                `protobuf:"bytes,2,opt,name=Email,json=email,proto3" json:"Email,omitempty"`
+	Password             []byte                                `protobuf:"bytes,3,opt,name=Password,json=password,proto3" json:"Password,omitempty"`
+	Alias                string                                `protobuf:"bytes,4,opt,name=Alias,json=alias,proto3" json:"Alias,omitempty"`
+	Token                github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,5,opt,name=Token,json=token,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"Token"`
 	XXX_NoUnkeyedLiteral struct{}                              `json:"-"`
 	XXX_sizecache        int32                                 `json:"-"`
 }
@@ -40,7 +41,7 @@ type A struct {
 func (m *A) Reset()      { *m = A{} }
 func (*A) ProtoMessage() {}
 func (*A) Descriptor() ([]byte, []int) {
-	return fileDescriptor_account_083b5bc92d6ef58a, []int{0}
+	return fileDescriptor_account_e15e89b1d0f07b80, []int{0}
 }
 func (m *A) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -69,13 +70,6 @@ func (m *A) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_A proto.InternalMessageInfo
 
-func (m *A) GetAlias() string {
-	if m != nil {
-		return m.Alias
-	}
-	return ""
-}
-
 func (m *A) GetEmail() string {
 	if m != nil {
 		return m.Email
@@ -88,6 +82,13 @@ func (m *A) GetPassword() []byte {
 		return m.Password
 	}
 	return nil
+}
+
+func (m *A) GetAlias() string {
+	if m != nil {
+		return m.Alias
+	}
+	return ""
 }
 
 func init() {
@@ -115,13 +116,16 @@ func (this *A) Equal(that interface{}) bool {
 	if !this.ID.Equal(that1.ID) {
 		return false
 	}
-	if this.Alias != that1.Alias {
-		return false
-	}
 	if this.Email != that1.Email {
 		return false
 	}
 	if !bytes.Equal(this.Password, that1.Password) {
+		return false
+	}
+	if this.Alias != that1.Alias {
+		return false
+	}
+	if !this.Token.Equal(that1.Token) {
 		return false
 	}
 	return true
@@ -130,12 +134,13 @@ func (this *A) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 8)
+	s := make([]string, 0, 9)
 	s = append(s, "&account.A{")
 	s = append(s, "ID: "+fmt.Sprintf("%#v", this.ID)+",\n")
-	s = append(s, "Alias: "+fmt.Sprintf("%#v", this.Alias)+",\n")
 	s = append(s, "Email: "+fmt.Sprintf("%#v", this.Email)+",\n")
 	s = append(s, "Password: "+fmt.Sprintf("%#v", this.Password)+",\n")
+	s = append(s, "Alias: "+fmt.Sprintf("%#v", this.Alias)+",\n")
+	s = append(s, "Token: "+fmt.Sprintf("%#v", this.Token)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -170,24 +175,32 @@ func (m *A) MarshalTo(dAtA []byte) (int, error) {
 		return 0, err
 	}
 	i += n1
-	if len(m.Alias) > 0 {
-		dAtA[i] = 0x12
-		i++
-		i = encodeVarintAccount(dAtA, i, uint64(len(m.Alias)))
-		i += copy(dAtA[i:], m.Alias)
-	}
 	if len(m.Email) > 0 {
-		dAtA[i] = 0x1a
+		dAtA[i] = 0x12
 		i++
 		i = encodeVarintAccount(dAtA, i, uint64(len(m.Email)))
 		i += copy(dAtA[i:], m.Email)
 	}
 	if len(m.Password) > 0 {
-		dAtA[i] = 0x22
+		dAtA[i] = 0x1a
 		i++
 		i = encodeVarintAccount(dAtA, i, uint64(len(m.Password)))
 		i += copy(dAtA[i:], m.Password)
 	}
+	if len(m.Alias) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintAccount(dAtA, i, uint64(len(m.Alias)))
+		i += copy(dAtA[i:], m.Alias)
+	}
+	dAtA[i] = 0x2a
+	i++
+	i = encodeVarintAccount(dAtA, i, uint64(m.Token.Size()))
+	n2, err := m.Token.MarshalTo(dAtA[i:])
+	if err != nil {
+		return 0, err
+	}
+	i += n2
 	return i, nil
 }
 
@@ -204,13 +217,15 @@ func NewPopulatedA(r randyAccount, easy bool) *A {
 	this := &A{}
 	v1 := github_com_elojah_game_02_pkg_ulid.NewPopulatedID(r)
 	this.ID = *v1
-	this.Alias = string(randStringAccount(r))
 	this.Email = string(randStringAccount(r))
 	v2 := r.Intn(100)
 	this.Password = make([]byte, v2)
 	for i := 0; i < v2; i++ {
 		this.Password[i] = byte(r.Intn(256))
 	}
+	this.Alias = string(randStringAccount(r))
+	v3 := github_com_elojah_game_02_pkg_ulid.NewPopulatedID(r)
+	this.Token = *v3
 	if !easy && r.Intn(10) != 0 {
 	}
 	return this
@@ -235,9 +250,9 @@ func randUTF8RuneAccount(r randyAccount) rune {
 	return rune(ru + 61)
 }
 func randStringAccount(r randyAccount) string {
-	v3 := r.Intn(100)
-	tmps := make([]rune, v3)
-	for i := 0; i < v3; i++ {
+	v4 := r.Intn(100)
+	tmps := make([]rune, v4)
+	for i := 0; i < v4; i++ {
 		tmps[i] = randUTF8RuneAccount(r)
 	}
 	return string(tmps)
@@ -259,11 +274,11 @@ func randFieldAccount(dAtA []byte, r randyAccount, fieldNumber int, wire int) []
 	switch wire {
 	case 0:
 		dAtA = encodeVarintPopulateAccount(dAtA, uint64(key))
-		v4 := r.Int63()
+		v5 := r.Int63()
 		if r.Intn(2) == 0 {
-			v4 *= -1
+			v5 *= -1
 		}
-		dAtA = encodeVarintPopulateAccount(dAtA, uint64(v4))
+		dAtA = encodeVarintPopulateAccount(dAtA, uint64(v5))
 	case 1:
 		dAtA = encodeVarintPopulateAccount(dAtA, uint64(key))
 		dAtA = append(dAtA, byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)))
@@ -293,10 +308,6 @@ func (m *A) Size() (n int) {
 	_ = l
 	l = m.ID.Size()
 	n += 1 + l + sovAccount(uint64(l))
-	l = len(m.Alias)
-	if l > 0 {
-		n += 1 + l + sovAccount(uint64(l))
-	}
 	l = len(m.Email)
 	if l > 0 {
 		n += 1 + l + sovAccount(uint64(l))
@@ -305,6 +316,12 @@ func (m *A) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovAccount(uint64(l))
 	}
+	l = len(m.Alias)
+	if l > 0 {
+		n += 1 + l + sovAccount(uint64(l))
+	}
+	l = m.Token.Size()
+	n += 1 + l + sovAccount(uint64(l))
 	return n
 }
 
@@ -327,9 +344,10 @@ func (this *A) String() string {
 	}
 	s := strings.Join([]string{`&A{`,
 		`ID:` + fmt.Sprintf("%v", this.ID) + `,`,
-		`Alias:` + fmt.Sprintf("%v", this.Alias) + `,`,
 		`Email:` + fmt.Sprintf("%v", this.Email) + `,`,
 		`Password:` + fmt.Sprintf("%v", this.Password) + `,`,
+		`Alias:` + fmt.Sprintf("%v", this.Alias) + `,`,
+		`Token:` + fmt.Sprintf("%v", this.Token) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -403,35 +421,6 @@ func (m *A) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Alias", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowAccount
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthAccount
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Alias = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Email", wireType)
 			}
 			var stringLen uint64
@@ -459,7 +448,7 @@ func (m *A) Unmarshal(dAtA []byte) error {
 			}
 			m.Email = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 4:
+		case 3:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Password", wireType)
 			}
@@ -488,6 +477,65 @@ func (m *A) Unmarshal(dAtA []byte) error {
 			m.Password = append(m.Password[:0], dAtA[iNdEx:postIndex]...)
 			if m.Password == nil {
 				m.Password = []byte{}
+			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Alias", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAccount
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthAccount
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Alias = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Token", wireType)
+			}
+			var byteLen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAccount
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				byteLen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if byteLen < 0 {
+				return ErrInvalidLengthAccount
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.Token.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		default:
@@ -616,24 +664,26 @@ var (
 	ErrIntOverflowAccount   = fmt.Errorf("proto: integer overflow")
 )
 
-func init() { proto.RegisterFile("account.proto", fileDescriptor_account_083b5bc92d6ef58a) }
+func init() { proto.RegisterFile("account.proto", fileDescriptor_account_e15e89b1d0f07b80) }
 
-var fileDescriptor_account_083b5bc92d6ef58a = []byte{
-	// 254 bytes of a gzipped FileDescriptorProto
+var fileDescriptor_account_e15e89b1d0f07b80 = []byte{
+	// 273 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x4d, 0x4c, 0x4e, 0xce,
 	0x2f, 0xcd, 0x2b, 0xd1, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x87, 0x72, 0xa5, 0x74, 0xd3,
 	0x33, 0x4b, 0x32, 0x4a, 0x93, 0xf4, 0x92, 0xf3, 0x73, 0xf5, 0xd3, 0xf3, 0xd3, 0xf3, 0xf5, 0xc1,
-	0xf2, 0x49, 0xa5, 0x69, 0x60, 0x1e, 0x98, 0x03, 0x66, 0x41, 0xf4, 0x29, 0x75, 0x31, 0x72, 0x31,
-	0x3a, 0x0a, 0xd9, 0x72, 0x31, 0x79, 0xba, 0x48, 0x30, 0x2a, 0x30, 0x6a, 0xf0, 0x38, 0xe9, 0x9e,
-	0xb8, 0x27, 0xcf, 0x70, 0xeb, 0x9e, 0xbc, 0x2a, 0x92, 0x41, 0xa9, 0x39, 0xf9, 0x59, 0x89, 0x19,
-	0xfa, 0xe9, 0x89, 0xb9, 0xa9, 0xf1, 0x06, 0x46, 0xfa, 0x05, 0xd9, 0xe9, 0xfa, 0xa5, 0x39, 0x99,
-	0x29, 0x7a, 0x9e, 0x2e, 0x41, 0x4c, 0x99, 0x2e, 0x42, 0x22, 0x5c, 0xac, 0x8e, 0x39, 0x99, 0x89,
-	0xc5, 0x12, 0x4c, 0x0a, 0x8c, 0x1a, 0x9c, 0x41, 0xac, 0x89, 0x20, 0x0e, 0x48, 0xd4, 0x35, 0x37,
-	0x31, 0x33, 0x47, 0x82, 0x19, 0x22, 0x9a, 0x0a, 0xe2, 0x08, 0x49, 0x71, 0x71, 0x04, 0x24, 0x16,
-	0x17, 0x97, 0xe7, 0x17, 0xa5, 0x48, 0xb0, 0x80, 0x2c, 0x0c, 0xe2, 0x28, 0x80, 0xf2, 0x9d, 0x2c,
-	0x2e, 0x3c, 0x94, 0x63, 0xb8, 0xf1, 0x50, 0x8e, 0xe1, 0xc3, 0x43, 0x39, 0xc6, 0x1f, 0x0f, 0xe5,
-	0x18, 0x1b, 0x1e, 0xc9, 0x31, 0xae, 0x78, 0x24, 0xc7, 0xb8, 0xe3, 0x91, 0x1c, 0xe3, 0x81, 0x47,
-	0x72, 0x8c, 0x27, 0x1e, 0xc9, 0x31, 0x5e, 0x78, 0x24, 0xc7, 0xf8, 0xe0, 0x91, 0x1c, 0xe3, 0x8b,
-	0x47, 0x72, 0x0c, 0x1f, 0x1e, 0xc9, 0x31, 0x4e, 0x78, 0x2c, 0xc7, 0x90, 0xc4, 0x06, 0xf6, 0x8d,
-	0x31, 0x20, 0x00, 0x00, 0xff, 0xff, 0xd2, 0x07, 0x05, 0xf9, 0x16, 0x01, 0x00, 0x00,
+	0xf2, 0x49, 0xa5, 0x69, 0x60, 0x1e, 0x98, 0x03, 0x66, 0x41, 0xf4, 0x29, 0x9d, 0x67, 0xe4, 0x62,
+	0x74, 0x14, 0xb2, 0xe5, 0x62, 0xf2, 0x74, 0x91, 0x60, 0x54, 0x60, 0xd4, 0xe0, 0x71, 0xd2, 0x3d,
+	0x71, 0x4f, 0x9e, 0xe1, 0xd6, 0x3d, 0x79, 0x55, 0x24, 0x83, 0x52, 0x73, 0xf2, 0xb3, 0x12, 0x33,
+	0xf4, 0xd3, 0x13, 0x73, 0x53, 0xe3, 0x0d, 0x8c, 0xf4, 0x0b, 0xb2, 0xd3, 0xf5, 0x4b, 0x73, 0x32,
+	0x53, 0xf4, 0x3c, 0x5d, 0x82, 0x98, 0x32, 0x5d, 0x84, 0x44, 0xb8, 0x58, 0x5d, 0x73, 0x13, 0x33,
+	0x73, 0x24, 0x98, 0x14, 0x18, 0x35, 0x38, 0x83, 0x58, 0x53, 0x41, 0x1c, 0x21, 0x29, 0x2e, 0x8e,
+	0x80, 0xc4, 0xe2, 0xe2, 0xf2, 0xfc, 0xa2, 0x14, 0x09, 0x66, 0x90, 0xd1, 0x41, 0x1c, 0x05, 0x50,
+	0x3e, 0x48, 0x87, 0x63, 0x4e, 0x66, 0x62, 0xb1, 0x04, 0x0b, 0x44, 0x47, 0x22, 0x88, 0x23, 0xe4,
+	0xcc, 0xc5, 0x1a, 0x92, 0x9f, 0x9d, 0x9a, 0x27, 0xc1, 0x4a, 0x8e, 0x4b, 0x58, 0x4b, 0x40, 0x7a,
+	0x9d, 0x2c, 0x2e, 0x3c, 0x94, 0x63, 0xb8, 0xf1, 0x50, 0x8e, 0xe1, 0xc3, 0x43, 0x39, 0xc6, 0x1f,
+	0x0f, 0xe5, 0x18, 0x1b, 0x1e, 0xc9, 0x31, 0xae, 0x78, 0x24, 0xc7, 0xb8, 0xe3, 0x91, 0x1c, 0xe3,
+	0x81, 0x47, 0x72, 0x8c, 0x27, 0x1e, 0xc9, 0x31, 0x5e, 0x78, 0x24, 0xc7, 0xf8, 0xe0, 0x91, 0x1c,
+	0xe3, 0x8b, 0x47, 0x72, 0x0c, 0x1f, 0x1e, 0xc9, 0x31, 0x4e, 0x78, 0x2c, 0xc7, 0x90, 0xc4, 0x06,
+	0x0e, 0x12, 0x63, 0x40, 0x00, 0x00, 0x00, 0xff, 0xff, 0xc5, 0x3f, 0xaa, 0xa4, 0x5b, 0x01, 0x00,
+	0x00,
 }

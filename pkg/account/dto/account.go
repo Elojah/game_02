@@ -61,7 +61,7 @@ func (r SubscribeReq) Check() error {
 	return nil
 }
 
-// SigninReq request type for Signin route.
+// SigninReq request type for signin route.
 type SigninReq struct {
 	Email    string
 	Password string
@@ -93,4 +93,9 @@ func (r SigninReq) Check() error {
 	}
 
 	return nil
+}
+
+// SigninResp response type for signin route.
+type SigninResp struct {
+	Token string
 }

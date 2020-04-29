@@ -10,8 +10,10 @@ import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 
 message A {
 	bytes ID                           = 1 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
-	string Alias                       = 2;
 
-	string Email                       = 3;
-	bytes Password                     = 4;
+	string Email                       = 2;
+	bytes Password                     = 3;
+	string Alias                       = 4;
+
+	bytes Token                        = 5 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
 }

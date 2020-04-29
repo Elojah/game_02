@@ -12,6 +12,7 @@ import (
 	"github.com/elojah/game_02/pkg/account"
 	"github.com/elojah/game_02/pkg/account/dto"
 	gerrors "github.com/elojah/game_02/pkg/errors"
+	gulid "github.com/elojah/game_02/pkg/ulid"
 )
 
 func (h handler) signin(w http.ResponseWriter, r *http.Request) {
@@ -53,7 +54,7 @@ func (h handler) signin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// #Decrypt password
+	// #Check password
 	if err := bcrypt.CompareHashAndPassword(ac.Password, []byte(request.Password)); err != nil {
 		logger.Error().Err(err).Msg("invalid password")
 		// [0] keep those http errors identical
@@ -61,7 +62,28 @@ func (h handler) signin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// #Generate token
+	ac.Token = gulid.NewID()
+
+	// #Update account with token
+	if err := h.account.Upsert(ctx, ac); err != nil {
+		logger.Error().Err(err).Msg("failed to update account")
+		http.Error(w, fmt.Sprintf("failed to update account: %v", err), http.StatusBadRequest)
+		return
+	}
+
 	// #Write response
+	raw, err := json.Marshal(dto.SigninResp{Token: ac.Token.String()})
+	if err != nil {
+		logger.Error().Err(err).Msg("failed to marshal response")
+		http.Error(w, "failed to marshal response", http.StatusInternalServerError)
+		return
+	}
+	if _, err := w.Write(raw); err != nil {
+		logger.Error().Err(err).Msg("failed to write response")
+		http.Error(w, "failed to write response", http.StatusInternalServerError)
+		return
+	}
 	w.WriteHeader(http.StatusOK)
 	logger.Info().Msg("success")
 }
