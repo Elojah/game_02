@@ -35,3 +35,11 @@ func (e ErrInvalidRequest) Error() string {
 	}
 	return b.String()
 }
+
+// ErrInvalidCredentials is raised when invalid credentials are provided.
+type ErrInvalidCredentials struct{}
+
+// Error implementation for ErrInvalidCredentials.
+func (e ErrInvalidCredentials) Error() string {
+	return "invalid credentials"
+}

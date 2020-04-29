@@ -7,9 +7,7 @@ import (
 	"net/http"
 
 	"github.com/rs/zerolog/log"
-	"golang.org/x/crypto/bcrypt"
 
-	"github.com/elojah/game_02/pkg/account"
 	"github.com/elojah/game_02/pkg/account/dto"
 	gerrors "github.com/elojah/game_02/pkg/errors"
 	gulid "github.com/elojah/game_02/pkg/ulid"
@@ -40,25 +38,16 @@ func (h handler) signin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// #Check if account already exist with email
-	ac, err := h.account.Fetch(ctx, account.Filter{Email: request.Email})
+	// #Check credentials
+	ac, err := h.account.Login(ctx, request.Email, request.Password)
 	if err != nil {
-		if errors.As(err, &gerrors.ErrNotFound{}) {
-			logger.Error().Err(err).Msg("account not found")
-			// [0] keep those http errors identical
+		if errors.As(err, &gerrors.ErrInvalidCredentials{}) {
+			logger.Error().Err(err).Msg("invalid credentials")
 			http.Error(w, "invalid credentials", http.StatusBadRequest)
 			return
 		}
-		logger.Error().Err(err).Msg("failed to fetch account")
-		http.Error(w, fmt.Sprintf("failed to fetch account: %v", err), http.StatusInternalServerError)
-		return
-	}
-
-	// #Check password
-	if err := bcrypt.CompareHashAndPassword(ac.Password, []byte(request.Password)); err != nil {
-		logger.Error().Err(err).Msg("invalid password")
-		// [0] keep those http errors identical
-		http.Error(w, "invalid credentials", http.StatusBadRequest)
+		logger.Error().Err(err).Msg("failed to login")
+		http.Error(w, fmt.Sprintf("failed to login: %v", err), http.StatusBadRequest)
 		return
 	}
 

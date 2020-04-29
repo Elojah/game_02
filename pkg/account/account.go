@@ -16,4 +16,5 @@ type Store interface {
 // Application layer for account domain.
 type App interface {
 	Store
+	Login(context.Context, string, string) (A, error)
 }
