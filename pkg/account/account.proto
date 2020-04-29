@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package user;
+package account;
 
 option (gogoproto.testgen_all)  = true;
 option (gogoproto.benchgen_all) = true;
@@ -8,7 +8,7 @@ option (gogoproto.populate_all) = true;
 
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 
-message U {
+message A {
 	bytes ID                           = 1 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
 	string Alias                       = 2;
 

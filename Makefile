@@ -35,7 +35,7 @@ auth:  ## Build auth binary
 	$(info $(M) building executable auth…) @
 	$Q cd cmd/$(AUTH) &&  $(GO) build \
 		-tags release \
-		-ldflags '-X $(PACKAGE)/cmd.Version=$(VERSION) -X $(PACKAGE)/cmd.BuildDate=$(DATE)' \
+		-ldflags '-X $(PACKAGE)/cmd.Version=$(VERSION)' \
 		-o ../../bin/$(PACKAGE)_$(AUTH)_$(VERSION)
 	$Q cp bin/$(PACKAGE)_$(AUTH)_$(VERSION) bin/$(PACKAGE)_$(AUTH)
 
@@ -43,7 +43,7 @@ auth:  ## Build auth binary
 .PHONY: proto
 proto: ## Generate .proto files
 	$(info $(M) running protobuf…) @
-		$Q cd pkg/user  && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. user.proto
+		$Q cd pkg/account  && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. account.proto
 
 # Vendoring
 .PHONY: vendor
