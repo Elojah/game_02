@@ -19,7 +19,7 @@ func (h *handler) Dial(c Config) error {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/subscribe", h.subscribe)
-	// mux.HandleFunc("/unsubscribe", h.unsubscribe)
+	mux.HandleFunc("/unsubscribe", h.unsubscribe)
 
 	mux.HandleFunc("/signin", h.signin)
 	mux.HandleFunc("/signout", h.signout)

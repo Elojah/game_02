@@ -133,3 +133,37 @@ func (r SignoutReq) Check() error {
 
 	return nil
 }
+
+// UnsubscribeReq request type for unsubscribe route.
+type UnsubscribeReq struct {
+	Email    string
+	Password string
+}
+
+// Check returns if unsubscription request is valid.
+func (r UnsubscribeReq) Check() error {
+
+	// Email check
+	if len(r.Email) == 0 || !emailValidation.MatchString(r.Email) {
+		return gerrors.ErrInvalidRequest{
+			Key:   "email",
+			Value: r.Email,
+			Rules: []string{
+				"is valid email format",
+			},
+		}
+	}
+
+	// Password check
+	if len(r.Password) == 0 {
+		return gerrors.ErrInvalidRequest{
+			Key:   "password",
+			Value: r.Password,
+			Rules: []string{
+				"contains at least 1 character",
+			},
+		}
+	}
+
+	return nil
+}
