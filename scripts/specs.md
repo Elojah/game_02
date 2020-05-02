@@ -3,10 +3,11 @@ _______________
 
 - [x] subscribe
 - [x] login
-- [ ] logout
-- [ ] unsubscribe
+- [x] logout
+- [x] unsubscribe
 
 - [ ] client UI login + room (gopherjs + vecty)
+- [x] room REST
 - [ ] client gameworld (webGL)
 - [ ] websocket server-side
 - [ ] websocket client-side

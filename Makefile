@@ -16,10 +16,13 @@ else
 	GOLINT = golangci-lint
 endif
 
+GOPHERJS    = gopherjs
+
 GODOC       = godoc
 GOFMT       = gofmt
 
 AUTH        = auth
+BROWSER     = browser
 
 V         = 0
 Q         = $(if $(filter 1,$V),,@)
@@ -29,7 +32,7 @@ CXXFLAGS=-w
 
 .PHONY: all
 
-all: auth
+all: auth browser
 
 auth:  ## Build auth binary
 	$(info $(M) building executable auth…) @
@@ -38,6 +41,14 @@ auth:  ## Build auth binary
 		-ldflags '-X $(PACKAGE)/cmd.Version=$(VERSION)' \
 		-o ../../bin/$(PACKAGE)_$(AUTH)_$(VERSION)
 	$Q cp bin/$(PACKAGE)_$(AUTH)_$(VERSION) bin/$(PACKAGE)_$(AUTH)
+
+
+browser:  ## Build browser binary
+	$(info $(M) building executable browser…) @
+	$Q cd cmd/$(BROWSER) &&  $(GOPHERJS) build \
+		-m \
+		-o ../../bin/$(PACKAGE)_$(BROWSER)_$(VERSION).min.js
+	$Q cp bin/$(PACKAGE)_$(BROWSER)_$(VERSION).min.js bin/$(PACKAGE)_$(BROWSER).min.js
 
 # Utils
 .PHONY: proto
