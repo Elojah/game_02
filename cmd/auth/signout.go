@@ -12,7 +12,7 @@ import (
 	gerrors "github.com/elojah/game_02/pkg/errors"
 )
 
-func (h handler) signin(w http.ResponseWriter, r *http.Request) {
+func (h handler) signout(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
 		// continue
@@ -25,7 +25,7 @@ func (h handler) signin(w http.ResponseWriter, r *http.Request) {
 	logger := log.With().Str("route", r.URL.EscapedPath()).Str("method", r.Method).Str("address", r.RemoteAddr).Logger()
 
 	// #Request processing
-	var request dto.SigninReq
+	var request dto.SignoutReq
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		logger.Error().Err(err).Msg("invalid payload")
 		http.Error(w, fmt.Sprintf("invalid payload: %v", err), http.StatusBadRequest)
@@ -37,31 +37,20 @@ func (h handler) signin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// #Check credentials
-	ac, err := h.account.Login(ctx, request.Email, request.Password)
+	// #Remove token
+	_, err := h.account.Logout(ctx, request.Email, request.Token)
 	if err != nil {
-		if errors.As(err, &gerrors.ErrInvalidCredentials{}) {
-			logger.Error().Err(err).Msg("invalid credentials")
-			http.Error(w, "invalid credentials", http.StatusBadRequest)
+		if errors.As(err, &gerrors.ErrNotFound{}) {
+			logger.Error().Err(err).Msg("account not found")
+			http.Error(w, "account not found", http.StatusBadRequest)
 			return
 		}
-		logger.Error().Err(err).Msg("failed to login")
-		http.Error(w, fmt.Sprintf("failed to login: %v", err), http.StatusInternalServerError)
+		logger.Error().Err(err).Msg("failed to logout")
+		http.Error(w, fmt.Sprintf("failed to logout: %v", err), http.StatusInternalServerError)
 		return
 	}
 
 	// #Write response
-	raw, err := json.Marshal(dto.SigninResp{Token: ac.Token.String()})
-	if err != nil {
-		logger.Error().Err(err).Msg("failed to marshal response")
-		http.Error(w, "failed to marshal response", http.StatusInternalServerError)
-		return
-	}
-	if _, err := w.Write(raw); err != nil {
-		logger.Error().Err(err).Msg("failed to write response")
-		http.Error(w, "failed to write response", http.StatusInternalServerError)
-		return
-	}
 	w.WriteHeader(http.StatusOK)
 	logger.Info().Msg("success")
 }

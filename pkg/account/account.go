@@ -17,4 +17,5 @@ type Store interface {
 type App interface {
 	Store
 	Login(context.Context, string, string) (A, error)
+	Logout(context.Context, string, string) (A, error)
 }

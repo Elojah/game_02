@@ -53,7 +53,7 @@ func (r SubscribeReq) Check() error {
 			Key:   "password",
 			Value: r.Password,
 			Rules: []string{
-				"contains more than 1 character",
+				"contains at least 1 character",
 			},
 		}
 	}
@@ -87,7 +87,7 @@ func (r SigninReq) Check() error {
 			Key:   "password",
 			Value: r.Password,
 			Rules: []string{
-				"contains more than 1 character",
+				"contains at least 1 character",
 			},
 		}
 	}
@@ -98,4 +98,38 @@ func (r SigninReq) Check() error {
 // SigninResp response type for signin route.
 type SigninResp struct {
 	Token string
+}
+
+// SignoutReq request type for signin route.
+type SignoutReq struct {
+	Email string
+	Token string
+}
+
+// Check returns if subscription request is valid.
+func (r SignoutReq) Check() error {
+
+	// Email check
+	if len(r.Email) == 0 || !emailValidation.MatchString(r.Email) {
+		return gerrors.ErrInvalidRequest{
+			Key:   "email",
+			Value: r.Email,
+			Rules: []string{
+				"is valid email format",
+			},
+		}
+	}
+
+	// Password check
+	if len(r.Token) == 0 {
+		return gerrors.ErrInvalidRequest{
+			Key:   "token",
+			Value: r.Token,
+			Rules: []string{
+				"contains at least 1 character",
+			},
+		}
+	}
+
+	return nil
 }

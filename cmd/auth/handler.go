@@ -22,7 +22,7 @@ func (h *handler) Dial(c Config) error {
 	// mux.HandleFunc("/unsubscribe", h.unsubscribe)
 
 	mux.HandleFunc("/signin", h.signin)
-	// mux.HandleFunc("/signout", h.signout)
+	mux.HandleFunc("/signout", h.signout)
 
 	// mux.HandleFunc("/room", h.room)
 	// mux.HandleFunc("/play", h.play)
