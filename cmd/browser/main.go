@@ -11,56 +11,61 @@ const (
 	frag = `
 precision mediump float;
 
-// this is the same variable we declared in the vertex shader
-// we need to declare it here too!
-varying vec2 vTexCoord;
+#define GLSLIFY 1
+// Common uniforms
+uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+uniform float u_time;
+uniform float u_frame;
 
+/*
+ * Random number generator with a vec2 seed
+ *
+ * Credits:
+ * http://byteblacksmith.com/improvements-to-the-canonical-one-liner-glsl-rand-for-opengl-es-2-0
+ * https://github.com/mattdesl/glsl-random
+ */
+highp float random2d(vec2 co) {
+    highp float a = 12.9898;
+    highp float b = 78.233;
+    highp float c = 43758.5453;
+    highp float dt = dot(co.xy, vec2(a, b));
+    highp float sn = mod(dt, 3.14);
+    return fract(sin(sn) * c);
+}
+
+/*
+ * The main program
+ */
 void main() {
+    // Create a grid of squares that depends on the mouse position
+    vec2 square = floor((gl_FragCoord.xy - u_mouse) / 30.0);
 
-  // copy the vTexCoord
-  // vTexCoord is a value that goes from 0.0 - 1.0 depending on the pixels location
-  // we can use it to access every pixel on the screen
-  vec2 coord = vTexCoord;
+    // Give a random color to each square
+    vec3 square_color = vec3(random2d(square), random2d(1.234 * square), 1.0);
 
-  // lets multiply the coordinates by a factor of 10
-  coord *= 10.0;
-
-  // use the fract function so that the values always fluctuate between 0 - 1
-  // fract will return whatever number is to the right of the decimal point
-  // it is built in to glsl
-  coord = fract(coord);
-  gl_FragColor = vec4(coord.x, coord.y, 0.5, 1.0 );
+    // Fragment shader output
+    gl_FragColor = vec4(square_color, 1.0);
 }`
 
 	vert = `
-// our vertex data
-attribute vec3 aPosition;
+	attribute vec4 a_position;
 
-// our texcoordinates
-attribute vec2 aTexCoord;
-
-// this is a variable that will be shared with the fragment shader
-// we will assign the attribute texcoords to the varying texcoords to move them from the vert shader to the frag shader
-// it can be called whatever you want but often people prefiv it with 'v' to indicate that it is a varying
-varying vec2 vTexCoord;
-
-void main() {
-
-  // copy the texture coordinates
-  vTexCoord = aTexCoord;
-
-  // copy the position data into a vec4, using 1.0 as the w component
-  vec4 positionVec4 = vec4(aPosition, 1.0);
-  positionVec4.xy = positionVec4.xy * 2.0 - 1.0;
-
-  // send the vertex information on to the fragment shader
-  gl_Position = positionVec4;
-}`
+	void main() {
+		gl_Position = a_position;
+	}`
 )
 
 func main() {
+
+	// #Create canvas full page size
 	document := js.Global.Get("document")
 	canvas := document.Call("createElement", "canvas")
+	w := document.Get("body").Get("clientWidth")
+	h := document.Get("body").Get("clientHeight")
+	canvas.Set("width", w)
+	canvas.Set("height", h)
+
 	document.Get("body").Call("appendChild", canvas)
 
 	attrs := webgl.DefaultAttributes()
@@ -70,6 +75,12 @@ func main() {
 	if err != nil {
 		js.Global.Call("alert", "Error: "+err.Error())
 	}
+	gl.ClearColor(0, 0, 0, 0)
+	gl.Clear(gl.COLOR_BUFFER_BIT)
+	gl.Clear(gl.DEPTH_BUFFER_BIT)
+	gl.Enable(gl.DEPTH_TEST)
+	gl.DepthFunc(gl.LEQUAL)
+	gl.Viewport(0, 0, w.Int(), h.Int())
 
 	program := gl.CreateProgram()
 
@@ -88,8 +99,19 @@ func main() {
 	fmt.Println(gl.GetShaderInfoLog(fragmentShader))
 
 	gl.LinkProgram(program)
-
 	fmt.Println(gl.GetProgramInfoLog(program))
-
 	gl.UseProgram(program)
+
+	attribLocation := gl.GetAttribLocation(program, "a_position")
+	buf := gl.CreateBuffer()
+	gl.BindBuffer(gl.ARRAY_BUFFER, buf)
+	gl.BufferData(gl.ARRAY_BUFFER, []float32{
+		0.27, 0.65,
+		0.74, 0.16,
+		0.56, 0.21,
+	}, gl.STATIC_DRAW)
+	gl.EnableVertexAttribArray(attribLocation)
+	gl.BindBuffer(gl.ARRAY_BUFFER, buf)
+	gl.VertexAttribPointer(attribLocation, 2, gl.FLOAT, false, 0, 0)
+	gl.DrawArrays(gl.TRIANGLES, 0, 3)
 }
