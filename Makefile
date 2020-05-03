@@ -43,12 +43,16 @@ auth:  ## Build auth binary
 	$Q cp bin/$(PACKAGE)_$(AUTH)_$(VERSION) bin/$(PACKAGE)_$(AUTH)
 
 
-browser:  ## Build browser binary
-	$(info $(M) building executable browser…) @
-	$Q cd cmd/$(BROWSER) &&  $(GOPHERJS) build \
+browser:  ## Build browser content
+	$(info $(M) building browser content…) @
+	$Q rm -rf bin/$(PACKAGE)_$(BROWSER)_$(VERSION)
+	$Q rm -rf bin/$(PACKAGE)_$(BROWSER)
+	$Q mkdir -p bin/$(PACKAGE)_$(BROWSER)_$(VERSION)
+	$Q cd cmd/$(BROWSER) && $(GOPHERJS) build \
 		-m \
-		-o ../../bin/$(PACKAGE)_$(BROWSER)_$(VERSION).min.js
-	$Q cp bin/$(PACKAGE)_$(BROWSER)_$(VERSION).min.js bin/$(PACKAGE)_$(BROWSER).min.js
+		-o ../../bin/$(PACKAGE)_$(BROWSER)_$(VERSION)/$(BROWSER).min.js
+	$Q cp cmd/$(BROWSER)/main.html bin/$(PACKAGE)_$(BROWSER)_$(VERSION)/main.html
+	$Q cp -R bin/$(PACKAGE)_$(BROWSER)_$(VERSION) bin/$(PACKAGE)_$(BROWSER)
 
 # Utils
 .PHONY: proto

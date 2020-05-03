@@ -17,59 +17,47 @@ _______________
 
 - [ ] client display (sprite/texture/shader)
 
+## Resources
+___________
+
+
 ## Classes
 ___________
 
-- [ ] All classes have a close range hit interrupt
+- [ ] All PCs have a close range hit interrupt
 
 ### [ ] `Trickster`
 
-- [ ] Style
+- `Shenanigans` Switch 2 entities non PC. Cost 3 MP. Gains MP = 10% * (HP_target_0 + HP_target_1).
 
-Clownish (colorful)
+- `Vanish` Quick TP to close position. TP Position 3m. Cost 5 MP.
 
-- [ ] *special ability*
+- `Scarecrow` Summon a scarecrow then switch your position with it. Distance 5m. TP cast 3s. Cost 8 MP. Gains MP = 3 when position switching.
 
-`Shenanigans` Switch entities positions
-
-- [ ] *escape*
-
-`Vanish` Quick TP to close position
+- `Shadow` Switch position with other PC. Cost 10 MP.
 
 ### [ ] `Mesmerist`
 
-- [ ] Style
+- `Wise mind` Take control of 1 non PC entity. Duration 2s. Cost 4 MP. Gains MP = HP_target_0 * 10%.
 
-Elfic (light and green)
+- `Justice shield` Return abilities to source entities. Shield buff self. Duration 5s. Cost 5 MP.
 
-- [ ] *special ability*
+- `Expanded mind` Take control of 2 non PC entity. Duration 6s. Cost 7 MP. Gains MP = 10% * (HP_target_0 + HP_target_1).
 
-`Wise mind` Take entities control
-
-- [ ] *escape*
-
-`Justice` Return abilities to source entity
+- `Ego fog` Summon 3 puppets of yourself then you switch position with one of them. TP cast 3s. Cost 10 MP.
 
 ### [ ] `Inquisitor`
 
-- [ ] Style
+- `Lifebound` Bind 2 non PC entities, all damages are transferred from one to eachother. Duration 5s. Cost 4 MP.
 
-Voldemort (dark hood)
+- `Lifetransfer` Absorb all HP of an owned non PC entity into a buff, then grant this buff to another entity. Buff 10% * absorbed HP each second 10 times. Cost 8 MP.
 
-- [ ] *special ability*
+- `Holy blood` Debuff an entity with a MP absorber. Target loses 10 HP each 3 seconds 3 times. Gains 1 MP at eacht tick successfully applied. Cost 3 MP.
 
-`Coalescence` Merge entities
-
-- [ ] *escape*
-
-`Metamorphosis` Split himself into relics merged into other entities. All those relics must die in order to die
+- `Metamorphosis` Split himself into relics merged into other entities. Grant invisibility while 2 other entities are alive. Duration 6s. Cost 10 MP.
 
 
 ### [ ] `Scavenger`
-
-- [ ] Style
-
-Scary mask
 
 - [ ] *special ability*
 
