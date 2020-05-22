@@ -1,6 +1,9 @@
-PACKAGE   = game
-DATE     ?= $(shell date +%FT%T%z)
-VERSION  ?= $(shell echo $(shell cat $(PWD)/.version)-$(shell git describe --tags --always))
+PACKAGE    = game
+DATE      ?= $(shell date +%FT%T%z)
+VERSION   ?= $(shell echo $(shell cat $(PWD)/.version)-$(shell git describe --tags --always))
+
+DIR        = $(strip $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))))
+GO_PACKAGE = github.com/elojah/game_02
 
 ifneq ($(wildcard /snap/go/current/bin/go),)
 	GO = /snap/go/current/bin/go
@@ -59,6 +62,8 @@ browser:  ## Build browser content
 proto: ## Generate .proto files
 	$(info $(M) running protobuf…) @
 		$Q cd pkg/account  && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. account.proto
+		$Q cd pkg/room     && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. room.proto
+		$Q cd pkg/lobby    && protoc -I=$(DIR)/pkg/room -I=. -I=$(GOPATH)/src --gogoslick_out=Mroom.proto=$(GO_PACKAGE)/pkg/room:. lobby.proto
 
 # Vendoring
 .PHONY: vendor

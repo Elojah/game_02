@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package room;
+
+option (gogoproto.testgen_all)  = true;
+option (gogoproto.benchgen_all) = true;
+option (gogoproto.populate_all) = true;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+message R {
+	bytes ID                           = 1 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+
+	string Name                        = 2;
+	bytes Password                     = 3 [(gogoproto.nullable) = true];
+
+	bytes Owner                        = 4 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+}

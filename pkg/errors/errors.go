@@ -43,3 +43,11 @@ type ErrInvalidCredentials struct{}
 func (e ErrInvalidCredentials) Error() string {
 	return "invalid credentials"
 }
+
+// ErrInvalidToken is raised when invalid token is provided.
+type ErrInvalidToken struct{}
+
+// Error implementation for ErrInvalidToken.
+func (e ErrInvalidToken) Error() string {
+	return "invalid token"
+}

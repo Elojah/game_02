@@ -9,44 +9,20 @@ import (
 
 const (
 	frag = `
-precision mediump float;
+	#ifdef GL_ES
+	precision mediump float;
+	#endif
 
-#define GLSLIFY 1
-// Common uniforms
-uniform vec2 u_resolution;
-uniform vec2 u_mouse;
-uniform float u_time;
-uniform float u_frame;
+	uniform float u_time;
+	uniform vec2 resolution;
 
-/*
- * Random number generator with a vec2 seed
- *
- * Credits:
- * http://byteblacksmith.com/improvements-to-the-canonical-one-liner-glsl-rand-for-opengl-es-2-0
- * https://github.com/mattdesl/glsl-random
- */
-highp float random2d(vec2 co) {
-    highp float a = 12.9898;
-    highp float b = 78.233;
-    highp float c = 43758.5453;
-    highp float dt = dot(co.xy, vec2(a, b));
-    highp float sn = mod(dt, 3.14);
-    return fract(sin(sn) * c);
-}
-
-/*
- * The main program
- */
-void main() {
-    // Create a grid of squares that depends on the mouse position
-    vec2 square = floor((gl_FragCoord.xy - u_mouse) / 30.0);
-
-    // Give a random color to each square
-    vec3 square_color = vec3(random2d(square), random2d(1.234 * square), 1.0);
-
-    // Fragment shader output
-    gl_FragColor = vec4(square_color, 1.0);
-}`
+	void main() {
+		vec2 xy = gl_FragCoord.xy;
+		xy.x = sin(xy.x/2.0);
+		xy.y = cos(xy.y/3.0);
+		gl_FragColor = vec4(xy.x, xy.y, 0.0, 1.0);
+	}
+`
 
 	vert = `
 	attribute vec4 a_position;
@@ -106,9 +82,9 @@ func main() {
 	buf := gl.CreateBuffer()
 	gl.BindBuffer(gl.ARRAY_BUFFER, buf)
 	gl.BufferData(gl.ARRAY_BUFFER, []float32{
-		0.27, 0.65,
-		0.74, 0.16,
-		0.56, 0.21,
+		0.00, 0.00,
+		1.00, 1.00,
+		0.0, -1.0,
 	}, gl.STATIC_DRAW)
 	gl.EnableVertexAttribArray(attribLocation)
 	gl.BindBuffer(gl.ARRAY_BUFFER, buf)

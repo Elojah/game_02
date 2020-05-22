@@ -2,6 +2,7 @@ package account
 
 import "context"
 
+// Filter object for account domain.
 type Filter struct {
 	Email string
 }
@@ -18,4 +19,5 @@ type App interface {
 	Store
 	Login(context.Context, string, string) (A, error)
 	Logout(context.Context, string, string) (A, error)
+	Authorize(context.Context, string, string) (A, error)
 }

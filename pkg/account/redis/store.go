@@ -1,8 +1,13 @@
 package redis
 
-import "github.com/elojah/redis"
+import (
+	"github.com/elojah/game_02/pkg/account"
+	"github.com/elojah/redis"
+)
 
-// Store for user in redis.
+var _ account.Store = (*Store)(nil)
+
+// Store for account in redis.
 type Store struct {
 	*redis.Service
 }

@@ -29,19 +29,20 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
 
 type A struct {
-	ID                   github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,1,opt,name=ID,json=iD,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"ID"`
-	Email                string                                `protobuf:"bytes,2,opt,name=Email,json=email,proto3" json:"Email,omitempty"`
-	Password             []byte                                `protobuf:"bytes,3,opt,name=Password,json=password,proto3" json:"Password,omitempty"`
-	Alias                string                                `protobuf:"bytes,4,opt,name=Alias,json=alias,proto3" json:"Alias,omitempty"`
-	Token                github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,5,opt,name=Token,json=token,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"Token"`
-	XXX_NoUnkeyedLiteral struct{}                              `json:"-"`
-	XXX_sizecache        int32                                 `json:"-"`
+	ID                   github_com_elojah_game_02_pkg_ulid.ID  `protobuf:"bytes,1,opt,name=ID,json=iD,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"ID"`
+	Email                string                                 `protobuf:"bytes,2,opt,name=Email,json=email,proto3" json:"Email,omitempty"`
+	Password             []byte                                 `protobuf:"bytes,3,opt,name=Password,json=password,proto3" json:"Password,omitempty"`
+	Alias                string                                 `protobuf:"bytes,4,opt,name=Alias,json=alias,proto3" json:"Alias,omitempty"`
+	Token                *github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,5,opt,name=Token,json=token,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"Token,omitempty"`
+	Room                 *github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,6,opt,name=Room,json=room,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"Room,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                               `json:"-"`
+	XXX_sizecache        int32                                  `json:"-"`
 }
 
 func (m *A) Reset()      { *m = A{} }
 func (*A) ProtoMessage() {}
 func (*A) Descriptor() ([]byte, []int) {
-	return fileDescriptor_account_e15e89b1d0f07b80, []int{0}
+	return fileDescriptor_account_9942fd62f9c7d545, []int{0}
 }
 func (m *A) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -125,7 +126,18 @@ func (this *A) Equal(that interface{}) bool {
 	if this.Alias != that1.Alias {
 		return false
 	}
-	if !this.Token.Equal(that1.Token) {
+	if that1.Token == nil {
+		if this.Token != nil {
+			return false
+		}
+	} else if !this.Token.Equal(*that1.Token) {
+		return false
+	}
+	if that1.Room == nil {
+		if this.Room != nil {
+			return false
+		}
+	} else if !this.Room.Equal(*that1.Room) {
 		return false
 	}
 	return true
@@ -134,13 +146,14 @@ func (this *A) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 9)
+	s := make([]string, 0, 10)
 	s = append(s, "&account.A{")
 	s = append(s, "ID: "+fmt.Sprintf("%#v", this.ID)+",\n")
 	s = append(s, "Email: "+fmt.Sprintf("%#v", this.Email)+",\n")
 	s = append(s, "Password: "+fmt.Sprintf("%#v", this.Password)+",\n")
 	s = append(s, "Alias: "+fmt.Sprintf("%#v", this.Alias)+",\n")
 	s = append(s, "Token: "+fmt.Sprintf("%#v", this.Token)+",\n")
+	s = append(s, "Room: "+fmt.Sprintf("%#v", this.Room)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -193,14 +206,26 @@ func (m *A) MarshalTo(dAtA []byte) (int, error) {
 		i = encodeVarintAccount(dAtA, i, uint64(len(m.Alias)))
 		i += copy(dAtA[i:], m.Alias)
 	}
-	dAtA[i] = 0x2a
-	i++
-	i = encodeVarintAccount(dAtA, i, uint64(m.Token.Size()))
-	n2, err := m.Token.MarshalTo(dAtA[i:])
-	if err != nil {
-		return 0, err
+	if m.Token != nil {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintAccount(dAtA, i, uint64(m.Token.Size()))
+		n2, err := m.Token.MarshalTo(dAtA[i:])
+		if err != nil {
+			return 0, err
+		}
+		i += n2
 	}
-	i += n2
+	if m.Room != nil {
+		dAtA[i] = 0x32
+		i++
+		i = encodeVarintAccount(dAtA, i, uint64(m.Room.Size()))
+		n3, err := m.Room.MarshalTo(dAtA[i:])
+		if err != nil {
+			return 0, err
+		}
+		i += n3
+	}
 	return i, nil
 }
 
@@ -224,8 +249,8 @@ func NewPopulatedA(r randyAccount, easy bool) *A {
 		this.Password[i] = byte(r.Intn(256))
 	}
 	this.Alias = string(randStringAccount(r))
-	v3 := github_com_elojah_game_02_pkg_ulid.NewPopulatedID(r)
-	this.Token = *v3
+	this.Token = github_com_elojah_game_02_pkg_ulid.NewPopulatedID(r)
+	this.Room = github_com_elojah_game_02_pkg_ulid.NewPopulatedID(r)
 	if !easy && r.Intn(10) != 0 {
 	}
 	return this
@@ -250,9 +275,9 @@ func randUTF8RuneAccount(r randyAccount) rune {
 	return rune(ru + 61)
 }
 func randStringAccount(r randyAccount) string {
-	v4 := r.Intn(100)
-	tmps := make([]rune, v4)
-	for i := 0; i < v4; i++ {
+	v3 := r.Intn(100)
+	tmps := make([]rune, v3)
+	for i := 0; i < v3; i++ {
 		tmps[i] = randUTF8RuneAccount(r)
 	}
 	return string(tmps)
@@ -274,11 +299,11 @@ func randFieldAccount(dAtA []byte, r randyAccount, fieldNumber int, wire int) []
 	switch wire {
 	case 0:
 		dAtA = encodeVarintPopulateAccount(dAtA, uint64(key))
-		v5 := r.Int63()
+		v4 := r.Int63()
 		if r.Intn(2) == 0 {
-			v5 *= -1
+			v4 *= -1
 		}
-		dAtA = encodeVarintPopulateAccount(dAtA, uint64(v5))
+		dAtA = encodeVarintPopulateAccount(dAtA, uint64(v4))
 	case 1:
 		dAtA = encodeVarintPopulateAccount(dAtA, uint64(key))
 		dAtA = append(dAtA, byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)))
@@ -320,8 +345,14 @@ func (m *A) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovAccount(uint64(l))
 	}
-	l = m.Token.Size()
-	n += 1 + l + sovAccount(uint64(l))
+	if m.Token != nil {
+		l = m.Token.Size()
+		n += 1 + l + sovAccount(uint64(l))
+	}
+	if m.Room != nil {
+		l = m.Room.Size()
+		n += 1 + l + sovAccount(uint64(l))
+	}
 	return n
 }
 
@@ -348,6 +379,7 @@ func (this *A) String() string {
 		`Password:` + fmt.Sprintf("%v", this.Password) + `,`,
 		`Alias:` + fmt.Sprintf("%v", this.Alias) + `,`,
 		`Token:` + fmt.Sprintf("%v", this.Token) + `,`,
+		`Room:` + fmt.Sprintf("%v", this.Room) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -534,7 +566,41 @@ func (m *A) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
+			var v github_com_elojah_game_02_pkg_ulid.ID
+			m.Token = &v
 			if err := m.Token.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Room", wireType)
+			}
+			var byteLen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAccount
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				byteLen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if byteLen < 0 {
+				return ErrInvalidLengthAccount
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			var v github_com_elojah_game_02_pkg_ulid.ID
+			m.Room = &v
+			if err := m.Room.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -664,14 +730,14 @@ var (
 	ErrIntOverflowAccount   = fmt.Errorf("proto: integer overflow")
 )
 
-func init() { proto.RegisterFile("account.proto", fileDescriptor_account_e15e89b1d0f07b80) }
+func init() { proto.RegisterFile("account.proto", fileDescriptor_account_9942fd62f9c7d545) }
 
-var fileDescriptor_account_e15e89b1d0f07b80 = []byte{
-	// 273 bytes of a gzipped FileDescriptorProto
+var fileDescriptor_account_9942fd62f9c7d545 = []byte{
+	// 293 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x4d, 0x4c, 0x4e, 0xce,
 	0x2f, 0xcd, 0x2b, 0xd1, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x87, 0x72, 0xa5, 0x74, 0xd3,
 	0x33, 0x4b, 0x32, 0x4a, 0x93, 0xf4, 0x92, 0xf3, 0x73, 0xf5, 0xd3, 0xf3, 0xd3, 0xf3, 0xf5, 0xc1,
-	0xf2, 0x49, 0xa5, 0x69, 0x60, 0x1e, 0x98, 0x03, 0x66, 0x41, 0xf4, 0x29, 0x9d, 0x67, 0xe4, 0x62,
+	0xf2, 0x49, 0xa5, 0x69, 0x60, 0x1e, 0x98, 0x03, 0x66, 0x41, 0xf4, 0x29, 0x4d, 0x62, 0xe2, 0x62,
 	0x74, 0x14, 0xb2, 0xe5, 0x62, 0xf2, 0x74, 0x91, 0x60, 0x54, 0x60, 0xd4, 0xe0, 0x71, 0xd2, 0x3d,
 	0x71, 0x4f, 0x9e, 0xe1, 0xd6, 0x3d, 0x79, 0x55, 0x24, 0x83, 0x52, 0x73, 0xf2, 0xb3, 0x12, 0x33,
 	0xf4, 0xd3, 0x13, 0x73, 0x53, 0xe3, 0x0d, 0x8c, 0xf4, 0x0b, 0xb2, 0xd3, 0xf5, 0x4b, 0x73, 0x32,
@@ -679,11 +745,12 @@ var fileDescriptor_account_e15e89b1d0f07b80 = []byte{
 	0x73, 0x24, 0x98, 0x14, 0x18, 0x35, 0x38, 0x83, 0x58, 0x53, 0x41, 0x1c, 0x21, 0x29, 0x2e, 0x8e,
 	0x80, 0xc4, 0xe2, 0xe2, 0xf2, 0xfc, 0xa2, 0x14, 0x09, 0x66, 0x90, 0xd1, 0x41, 0x1c, 0x05, 0x50,
 	0x3e, 0x48, 0x87, 0x63, 0x4e, 0x66, 0x62, 0xb1, 0x04, 0x0b, 0x44, 0x47, 0x22, 0x88, 0x23, 0xe4,
-	0xcc, 0xc5, 0x1a, 0x92, 0x9f, 0x9d, 0x9a, 0x27, 0xc1, 0x4a, 0x8e, 0x4b, 0x58, 0x4b, 0x40, 0x7a,
-	0x9d, 0x2c, 0x2e, 0x3c, 0x94, 0x63, 0xb8, 0xf1, 0x50, 0x8e, 0xe1, 0xc3, 0x43, 0x39, 0xc6, 0x1f,
-	0x0f, 0xe5, 0x18, 0x1b, 0x1e, 0xc9, 0x31, 0xae, 0x78, 0x24, 0xc7, 0xb8, 0xe3, 0x91, 0x1c, 0xe3,
-	0x81, 0x47, 0x72, 0x8c, 0x27, 0x1e, 0xc9, 0x31, 0x5e, 0x78, 0x24, 0xc7, 0xf8, 0xe0, 0x91, 0x1c,
-	0xe3, 0x8b, 0x47, 0x72, 0x0c, 0x1f, 0x1e, 0xc9, 0x31, 0x4e, 0x78, 0x2c, 0xc7, 0x90, 0xc4, 0x06,
-	0x0e, 0x12, 0x63, 0x40, 0x00, 0x00, 0x00, 0xff, 0xff, 0xc5, 0x3f, 0xaa, 0xa4, 0x5b, 0x01, 0x00,
-	0x00,
+	0xcc, 0xc5, 0x1a, 0x92, 0x9f, 0x9d, 0x9a, 0x27, 0xc1, 0x0a, 0x77, 0x09, 0x23, 0xf1, 0x2e, 0x61,
+	0x2d, 0x01, 0xe9, 0x15, 0x72, 0xe4, 0x62, 0x09, 0xca, 0xcf, 0xcf, 0x95, 0x60, 0x23, 0xc7, 0x0c,
+	0x96, 0xa2, 0xfc, 0xfc, 0x5c, 0x27, 0x8b, 0x0b, 0x0f, 0xe5, 0x18, 0x6e, 0x3c, 0x94, 0x63, 0xf8,
+	0xf0, 0x50, 0x8e, 0xf1, 0xc7, 0x43, 0x39, 0xc6, 0x86, 0x47, 0x72, 0x8c, 0x2b, 0x1e, 0xc9, 0x31,
+	0xee, 0x78, 0x24, 0xc7, 0x78, 0xe0, 0x91, 0x1c, 0xe3, 0x89, 0x47, 0x72, 0x8c, 0x17, 0x1e, 0xc9,
+	0x31, 0x3e, 0x78, 0x24, 0xc7, 0xf8, 0xe2, 0x91, 0x1c, 0xc3, 0x87, 0x47, 0x72, 0x8c, 0x13, 0x1e,
+	0xcb, 0x31, 0x24, 0xb1, 0x81, 0x43, 0xd5, 0x18, 0x10, 0x00, 0x00, 0xff, 0xff, 0xbb, 0x63, 0x5e,
+	0x04, 0x9e, 0x01, 0x00, 0x00,
 }

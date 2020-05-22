@@ -15,5 +15,6 @@ message A {
 	bytes Password                     = 3;
 	string Alias                       = 4;
 
-	bytes Token                        = 5 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+	bytes Token                        = 5 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = true];
+	bytes Room                         = 6 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = true];
 }

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package lobby;
+
+option (gogoproto.testgen_all)  = true;
+option (gogoproto.benchgen_all) = true;
+option (gogoproto.populate_all) = true;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "room.proto";
+
+message L {
+	bytes ID                           = 1 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+
+	string Name                        = 2;
+	map<string, room.R> Rooms          = 3 [(gogoproto.nullable)   = false];
+}

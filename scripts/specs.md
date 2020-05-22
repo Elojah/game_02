@@ -7,7 +7,7 @@ _______________
 - [x] unsubscribe
 
 - [ ] client UI login + room (gopherjs + vecty)
-- [x] room REST
+- [ ] room REST
 - [ ] client gameworld (webGL)
 - [ ] websocket server-side
 - [ ] websocket client-side
