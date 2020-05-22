@@ -6,15 +6,20 @@ import (
 	gulid "github.com/elojah/game_02/pkg/ulid"
 )
 
-// RoomReq request format for room route.
-type RoomReq struct {
+// RoomResp response format for room route.
+type RoomResp struct {
+	Room room.R `json:"room"`
+}
+
+// ConnectRoomReq request format for room route.
+type ConnectRoomReq struct {
 	dto.AuthReq
 
 	ID       string `json:"id"`
 	Password string `json:"password"`
 }
 
-func (r RoomReq) Check() error {
+func (r ConnectRoomReq) Check() error {
 	if err := r.AuthReq.Check(); err != nil {
 		return err
 	}
@@ -24,10 +29,20 @@ func (r RoomReq) Check() error {
 	}
 
 	return nil
-
 }
 
-// RoomReq response format for room route.
-type RoomResp struct {
-	Room room.R `json:"room"`
+// CreateRoomReq request format for room route.
+type CreateRoomReq struct {
+	dto.AuthReq
+
+	Name     string `json:"name"`
+	Password string `json:"password"`
+}
+
+func (r CreateRoomReq) Check() error {
+	if err := r.AuthReq.Check(); err != nil {
+		return err
+	}
+
+	return nil
 }

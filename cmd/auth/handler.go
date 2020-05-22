@@ -29,8 +29,9 @@ func (h *handler) Dial(c Config) error {
 	mux.HandleFunc("/signin", h.signin)
 	mux.HandleFunc("/signout", h.signout)
 
-	mux.HandleFunc("/lobbies", h.lobbies)
-	mux.HandleFunc("/room", h.connectRoom)
+	mux.HandleFunc("/lobby/all", h.lobbies)
+	mux.HandleFunc("/room/connect", h.connectRoom)
+	mux.HandleFunc("/room/create", h.createRoom)
 	// mux.HandleFunc("/play", h.play)
 
 	// mux.HandleFunc("/pc/create", h.createPC)
