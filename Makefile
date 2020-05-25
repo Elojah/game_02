@@ -19,13 +19,14 @@ else
 	GOLINT = golangci-lint
 endif
 
-GOPHERJS    = gopherjs
+GOROOT     ?= $(shell go env GOROOT)
 
 GODOC       = godoc
 GOFMT       = gofmt
 
 AUTH        = auth
 BROWSER     = browser
+WEB         = web
 
 V         = 0
 Q         = $(if $(filter 1,$V),,@)
@@ -39,23 +40,30 @@ all: auth browser
 
 auth:  ## Build auth binary
 	$(info $(M) building executable auth…) @
-	$Q cd cmd/$(AUTH) &&  $(GO) build \
+	$Q cd cmd/$(AUTH) && $(GO) build \
 		-tags release \
 		-ldflags '-X $(PACKAGE)/cmd.Version=$(VERSION)' \
 		-o ../../bin/$(PACKAGE)_$(AUTH)_$(VERSION)
 	$Q cp bin/$(PACKAGE)_$(AUTH)_$(VERSION) bin/$(PACKAGE)_$(AUTH)
 
-
 browser:  ## Build browser content
-	$(info $(M) building browser content…) @
-	$Q rm -rf bin/$(PACKAGE)_$(BROWSER)_$(VERSION)
-	$Q rm -rf bin/$(PACKAGE)_$(BROWSER)
-	$Q mkdir -p bin/$(PACKAGE)_$(BROWSER)_$(VERSION)
-	$Q cd cmd/$(BROWSER) && $(GOPHERJS) build \
-		-m \
-		-o ../../bin/$(PACKAGE)_$(BROWSER)_$(VERSION)/$(BROWSER).min.js
-	$Q cp cmd/$(BROWSER)/main.html bin/$(PACKAGE)_$(BROWSER)_$(VERSION)/main.html
-	$Q cp -R bin/$(PACKAGE)_$(BROWSER)_$(VERSION) bin/$(PACKAGE)_$(BROWSER)
+	$(info $(M) building executable browser…) @
+	$Q cd cmd/$(BROWSER) && GOOS=js GOARCH=wasm $(GO) build \
+		-tags release \
+		-ldflags '-X $(PACKAGE)/cmd.Version=$(VERSION)' \
+		-o ../../bin/$(PACKAGE)_$(BROWSER)_$(VERSION).wasm
+	$Q cp bin/$(PACKAGE)_$(BROWSER)_$(VERSION).wasm bin/$(PACKAGE)_$(BROWSER).wasm
+	$Q cp cmd/$(BROWSER)/index.html bin/
+	$Q cp $(GOROOT)/misc/wasm/wasm_exec.js bin/
+
+
+web:  ## Build web binary
+	$(info $(M) building executable web…) @
+	$Q cd cmd/$(WEB) && $(GO) build \
+		-tags release \
+		-ldflags '-X $(PACKAGE)/cmd.Version=$(VERSION)' \
+		-o ../../bin/$(PACKAGE)_$(WEB)_$(VERSION)
+	$Q cp bin/$(PACKAGE)_$(WEB)_$(VERSION) bin/$(PACKAGE)_$(WEB)
 
 # Utils
 .PHONY: proto
