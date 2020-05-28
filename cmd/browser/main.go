@@ -21,8 +21,6 @@ func run(prog string) {
 	if err := g.Dial(Config{}); err != nil {
 		log.Error().Err(err).Msg("failed to start game")
 	}
-
-	log.Info().Msg("browser up")
 }
 
 func main() {

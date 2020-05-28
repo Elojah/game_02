@@ -34,9 +34,9 @@ M         = $(shell printf "\033[0;35m▶\033[0m")
 
 CXXFLAGS=-w
 
-.PHONY: all
+.PHONY: all assets
 
-all: auth browser
+all: auth browser web assets
 
 auth:  ## Build auth binary
 	$(info $(M) building executable auth…) @
@@ -56,7 +56,6 @@ browser:  ## Build browser content
 	$Q cp cmd/$(BROWSER)/index.html bin/
 	$Q cp $(GOROOT)/misc/wasm/wasm_exec.js bin/
 
-
 web:  ## Build web binary
 	$(info $(M) building executable web…) @
 	$Q cd cmd/$(WEB) && $(GO) build \
@@ -64,6 +63,10 @@ web:  ## Build web binary
 		-ldflags '-X $(PACKAGE)/cmd.Version=$(VERSION)' \
 		-o ../../bin/$(PACKAGE)_$(WEB)_$(VERSION)
 	$Q cp bin/$(PACKAGE)_$(WEB)_$(VERSION) bin/$(PACKAGE)_$(WEB)
+
+assets:  ## Copy assets directory into bin directory for testing and vendoring
+	$(info $(M) copy assets directory…) @
+	$Q cp -R assets bin
 
 # Utils
 .PHONY: proto
