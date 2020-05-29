@@ -75,6 +75,8 @@ proto: ## Generate .proto files
 		$Q cd pkg/account  && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. account.proto
 		$Q cd pkg/room     && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. room.proto
 		$Q cd pkg/lobby    && protoc -I=$(DIR)/pkg/room -I=. -I=$(GOPATH)/src --gogoslick_out=Mroom.proto=$(GO_PACKAGE)/pkg/room:. lobby.proto
+		$Q cd pkg/geometry && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. position.proto
+		$Q cd pkg/entity   && protoc -I=$(DIR)/pkg/geometry -I=. -I=$(GOPATH)/src --gogoslick_out=Mposition.proto=$(GO_PACKAGE)/pkg/geometry:. entity.proto
 
 # Vendoring
 .PHONY: vendor
