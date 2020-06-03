@@ -15,6 +15,6 @@ message Vec3 {
 }
 
 message Position {
-	bytes SectorID = 1 [(gogoproto.customtype) = "github.com/elojah/game_01/pkg/ulid.ID", (gogoproto.nullable) = false];
+	bytes SectorID = 1 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
 	Vec3 Coord     = 2 [(gogoproto.nullable)   = false];
 }

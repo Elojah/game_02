@@ -32,8 +32,6 @@ V         = 0
 Q         = $(if $(filter 1,$V),,@)
 M         = $(shell printf "\033[0;35m▶\033[0m")
 
-CXXFLAGS=-w
-
 .PHONY: all assets
 
 all: auth browser web assets
@@ -106,8 +104,8 @@ test: ## Run unit tests only
 	$Q $(GO) test -cover -race -v ./...
 
 # Integration test
-.PHONY: testintegration
-testintegration: ## Run integration test
+.PHONY: integration
+integration: ## Run integration test
 	$(info $(M) running integration tests…) @
 	$Q make
 	$Q docker-compose up -d redis redis-lru
