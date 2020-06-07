@@ -39,6 +39,7 @@ func (h handler) createPlayer(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, fmt.Sprintf("invalid payload: %v", err), http.StatusBadRequest)
 		return
 	}
+	templateID := gulid.MustParse(request.TemplateID)
 
 	// #Check credentials
 	ac, err := h.account.Authorize(ctx, request.Email, request.Token)
@@ -52,13 +53,25 @@ func (h handler) createPlayer(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, fmt.Sprintf("failed to authenticate: %v", err), http.StatusInternalServerError)
 		return
 	}
-	_ = ac
+
+	if _, err := h.entity.FetchTemplate(ctx, entity.FilterTemplate{ID: templateID}); err != nil {
+		if errors.As(err, &gerrors.ErrNotFound{}) {
+			logger.Error().Err(err).Msg("invalid entity template")
+			http.Error(w, "invalid entity template", http.StatusBadRequest)
+			return
+		}
+		logger.Error().Err(err).Msg("failed to fetch entity template")
+		http.Error(w, fmt.Sprintf("failed to fetch entity template: %v", err), http.StatusInternalServerError)
+		return
+	}
 
 	// #Create player
 	p := player.P{
 		E: entity.E{
-			ID: gulid.NewID(),
+			ID:         gulid.NewID(),
+			TemplateID: templateID,
 		},
+		Account: ac.ID,
 	}
 	if err := h.player.Upsert(ctx, p); err != nil {
 		logger.Error().Err(err).Msg("failed to create player")

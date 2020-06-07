@@ -2,6 +2,7 @@ package dto
 
 import (
 	"github.com/elojah/game_02/pkg/account/dto"
+	gerrors "github.com/elojah/game_02/pkg/errors"
 	"github.com/elojah/game_02/pkg/room"
 	gulid "github.com/elojah/game_02/pkg/ulid"
 )
@@ -42,6 +43,14 @@ type CreateRoomReq struct {
 func (r CreateRoomReq) Check() error {
 	if err := r.AuthReq.Check(); err != nil {
 		return err
+	}
+
+	if len(r.Name) == 0 {
+		return gerrors.ErrInvalidRequest{
+			Key:   "name",
+			Value: r.Name,
+			Rules: []string{"must not be empty"},
+		}
 	}
 
 	return nil
