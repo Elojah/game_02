@@ -4,7 +4,7 @@ jobs:
 
   build:
     docker:
-      - image: circleci/golang:1.11
+      - image: circleci/golang:1.14.4
         environment:
           GO111MODULE: "on"
     working_directory: /go/src/github.com/elojah/game_02
@@ -16,7 +16,7 @@ jobs:
 
   test:
     docker:
-      - image: circleci/golang:1.11
+      - image: circleci/golang:1.14.4
     working_directory: /go/src/github.com/elojah/game_02
     steps:
       - checkout
@@ -31,7 +31,7 @@ jobs:
 
   deploy:
     docker:
-      - image: circleci/golang:1.11
+      - image: circleci/golang:1.14.4
     steps:
       - checkout
 
