@@ -14,6 +14,14 @@ import (
 
 	accountapp "github.com/elojah/game_02/pkg/account/app"
 	accountredis "github.com/elojah/game_02/pkg/account/redis"
+	entityapp "github.com/elojah/game_02/pkg/entity/app"
+	entityredis "github.com/elojah/game_02/pkg/entity/redis"
+	lobbyapp "github.com/elojah/game_02/pkg/lobby/app"
+	lobbyredis "github.com/elojah/game_02/pkg/lobby/redis"
+	playerapp "github.com/elojah/game_02/pkg/player/app"
+	playerredis "github.com/elojah/game_02/pkg/player/redis"
+	roomapp "github.com/elojah/game_02/pkg/room/app"
+	roomredis "github.com/elojah/game_02/pkg/room/redis"
 )
 
 var (
@@ -43,13 +51,24 @@ func run(prog string, filename string) {
 	launchers.Add(rdlrul)
 
 	// Stores and applicatives
-
 	accountStore := accountredis.Store{Service: rd}
 	accountApp := accountapp.A{Store: &accountStore}
+	entityStore := entityredis.Store{Service: rd}
+	entityApp := entityapp.A{Store: &entityStore, StoreTemplate: &entityStore}
+	lobbyStore := lobbyredis.Store{Service: rd}
+	lobbyApp := lobbyapp.A{Store: &lobbyStore}
+	playerStore := playerredis.Store{Service: rd}
+	playerApp := playerapp.A{Store: &playerStore}
+	roomStore := roomredis.Store{Service: rd}
+	roomApp := roomapp.A{Store: &roomStore}
 
 	// handler (https server)
 	h := &handler{
 		account: &accountApp,
+		entity:  &entityApp,
+		lobby:   &lobbyApp,
+		player:  &playerApp,
+		room:    &roomApp,
 	}
 
 	hl := h.NewLauncher(Namespaces{

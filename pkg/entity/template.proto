@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package entity;
+
+option (gogoproto.testgen_all)  = true;
+option (gogoproto.benchgen_all) = true;
+option (gogoproto.populate_all) = true;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+message Template {
+
+	// #Identifiers
+	bytes ID                   = 1 [(gogoproto.customtype)  = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+	string Name                = 2;
+
+	// #Stats
+	uint64 MaxHP               = 3;
+	uint64 MaxMP               = 4;
+
+	// #Spatial & graphic parameters
+	bytes AssetID              = 5 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+
+	// #In game external ids
+	bytes SpawnID              = 6 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+}

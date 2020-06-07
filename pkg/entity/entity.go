@@ -17,3 +17,9 @@ type Store interface {
 	Fetch(context.Context, Filter) (E, error)
 	Delete(context.Context, Filter) error
 }
+
+// Applicative layer for entity domain.
+type App interface {
+	Store
+	StoreTemplate
+}

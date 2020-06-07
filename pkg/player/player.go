@@ -26,3 +26,8 @@ type Store interface {
 	FetchMany(context.Context, Filter) ([]P, error)
 	Delete(context.Context, Filter) error
 }
+
+// App applicative layer for P.
+type App interface {
+	Store
+}

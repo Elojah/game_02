@@ -18,7 +18,7 @@ message E {
 
 	// #Identifiers
 	bytes ID                   = 1 [(gogoproto.customtype)  = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
-	bytes Type                 = 2 [(gogoproto.customtype)  = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+	bytes TemplateID           = 2 [(gogoproto.customtype)  = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
 	string Name                = 3;
 	// owner is nil if entity is controlled by player, else it will be pc entity id.
 	bytes OwnerID              = 4 [(gogoproto.customtype)  = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];

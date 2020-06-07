@@ -5,13 +5,7 @@ VERSION   ?= $(shell echo $(shell cat $(PWD)/.version)-$(shell git describe --ta
 DIR        = $(strip $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))))
 GO_PACKAGE = github.com/elojah/game_02
 
-ifneq ($(wildcard /snap/go/current/bin/go),)
-	GO = /snap/go/current/bin/go
-else ifneq ($(shell which go1.11),)
-	GO = go1.11
-else
-	GO = go
-endif
+GO = go
 
 ifneq ($(wildcard ./bin/golangci-lint),)
 	GOLINT = ./bin/golangci-lint
@@ -75,6 +69,7 @@ proto: ## Generate .proto files
 		$Q cd pkg/lobby    && protoc -I=$(DIR)/pkg/room -I=. -I=$(GOPATH)/src --gogoslick_out=Mroom.proto=$(GO_PACKAGE)/pkg/room:. lobby.proto
 		$Q cd pkg/geometry && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. position.proto
 		$Q cd pkg/entity   && protoc -I=$(DIR)/pkg/geometry -I=. -I=$(GOPATH)/src --gogoslick_out=Mposition.proto=$(GO_PACKAGE)/pkg/geometry:. entity.proto
+		$Q cd pkg/entity   && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. template.proto
 
 # Vendoring
 .PHONY: vendor

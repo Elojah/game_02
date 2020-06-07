@@ -5,7 +5,9 @@ import (
 	"net/http"
 
 	"github.com/elojah/game_02/pkg/account"
+	"github.com/elojah/game_02/pkg/entity"
 	"github.com/elojah/game_02/pkg/lobby"
+	"github.com/elojah/game_02/pkg/player"
 	"github.com/elojah/game_02/pkg/room"
 	"github.com/gorilla/mux"
 	"github.com/rs/zerolog/log"
@@ -17,6 +19,8 @@ type handler struct {
 	account account.App
 	lobby   lobby.App
 	room    room.App
+	entity  entity.App
+	player  player.App
 }
 
 // Dial starts the auth server.
@@ -33,7 +37,7 @@ func (h *handler) Dial(c Config) error {
 	mux.HandleFunc("/room/connect", h.connectRoom)
 	mux.HandleFunc("/room/create", h.createRoom)
 
-	// mux.HandleFunc("/pc/create", h.createPC)
+	mux.HandleFunc("/player/create", h.createPlayer)
 	// mux.HandleFunc("/pc/list", h.listPC)
 	// mux.HandleFunc("/pc/del", h.delPC)
 	// mux.HandleFunc("/pc/connect", h.connectPC)
