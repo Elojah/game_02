@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package entity;
+
+option (gogoproto.testgen_all)  = true;
+option (gogoproto.benchgen_all) = true;
+option (gogoproto.populate_all) = true;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "github.com/elojah/game_02/pkg/geometry/position.proto";
+
+message Cast {
+	bytes AbilityID            = 1 [(gogoproto.customtype)  = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+	uint64 TS                  = 2;
+}
+
+message E {
+
+	// #Identifiers
+	bytes ID                   = 1 [(gogoproto.customtype)  = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+	bytes TemplateID           = 2 [(gogoproto.customtype)  = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+	string Name                = 3;
+	// owner is nil if entity is controlled by player, else it will be pc entity id.
+	bytes OwnerID              = 4 [(gogoproto.customtype)  = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+
+	// #Stats
+	bool Dead                  = 5;
+	uint64 HP                  = 6;
+	uint64 MaxHP               = 7;
+	uint64 MP                  = 8;
+	uint64 MaxMP               = 9;
+
+	// #Spatial & graphic parameters
+	geometry.Vec3 Direction    = 10 [(gogoproto.nullable)   = false];
+	geometry.Position Position = 11 [(gogoproto.nullable)   = false];
+	Cast Cast                  = 12 [(gogoproto.nullable)   = true];
+	bytes AssetID              = 13 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+
+	// #In game external ids
+	bytes InventoryID          = 14 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+	bytes SpawnID              = 15 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+
+	// State is a technical requirement for redis set, each "state" of entity must be unique.
+	bytes State                = 16 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+}

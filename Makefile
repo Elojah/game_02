@@ -1,14 +1,11 @@
-PACKAGE   = game
-DATE     ?= $(shell date +%FT%T%z)
-VERSION  ?= $(shell echo $(shell cat $(PWD)/.version)-$(shell git describe --tags --always))
+PACKAGE    = game
+DATE      ?= $(shell date +%FT%T%z)
+VERSION   ?= $(shell echo $(shell cat $(PWD)/.version)-$(shell git describe --tags --always))
 
-ifneq ($(wildcard /snap/go/current/bin/go),)
-	GO = /snap/go/current/bin/go
-else ifneq ($(shell which go1.11),)
-	GO = go1.11
-else
-	GO = go
-endif
+DIR        = $(strip $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))))
+GO_PACKAGE = github.com/elojah/game_02
+
+GO = go
 
 ifneq ($(wildcard ./bin/golangci-lint),)
 	GOLINT = ./bin/golangci-lint
@@ -16,58 +13,64 @@ else
 	GOLINT = golangci-lint
 endif
 
+GOROOT     ?= $(shell go env GOROOT)
+
 GODOC       = godoc
 GOFMT       = gofmt
 
 AUTH        = auth
+BROWSER     = browser
+WEB         = web
 
 V         = 0
 Q         = $(if $(filter 1,$V),,@)
 M         = $(shell printf "\033[0;35m▶\033[0m")
 
-CXXFLAGS=-w
+.PHONY: all assets
 
-.PHONY: all
-
-all: auth
+all: auth browser web assets
 
 auth:  ## Build auth binary
 	$(info $(M) building executable auth…) @
-	$Q cd cmd/$(AUTH) &&  $(GO) build \
+	$Q cd cmd/$(AUTH) && $(GO) build \
 		-tags release \
-		-ldflags '-X $(PACKAGE)/cmd.Version=$(VERSION) -X $(PACKAGE)/cmd.BuildDate=$(DATE)' \
+		-ldflags '-X $(PACKAGE)/cmd.Version=$(VERSION)' \
 		-o ../../bin/$(PACKAGE)_$(AUTH)_$(VERSION)
 	$Q cp bin/$(PACKAGE)_$(AUTH)_$(VERSION) bin/$(PACKAGE)_$(AUTH)
+
+browser:  ## Build browser content
+	$(info $(M) building executable browser…) @
+	$Q cd cmd/$(BROWSER) && GOOS=js GOARCH=wasm $(GO) build \
+		-tags release \
+		-ldflags '-X $(PACKAGE)/cmd.Version=$(VERSION)' \
+		-o ../../bin/$(PACKAGE)_$(BROWSER)_$(VERSION).wasm
+	$Q cp bin/$(PACKAGE)_$(BROWSER)_$(VERSION).wasm bin/$(PACKAGE)_$(BROWSER).wasm
+	$Q cp cmd/$(BROWSER)/index.html bin/
+	$Q cp $(GOROOT)/misc/wasm/wasm_exec.js bin/
+
+web:  ## Build web binary
+	$(info $(M) building executable web…) @
+	$Q cd cmd/$(WEB) && $(GO) build \
+		-tags release \
+		-ldflags '-X $(PACKAGE)/cmd.Version=$(VERSION)' \
+		-o ../../bin/$(PACKAGE)_$(WEB)_$(VERSION)
+	$Q cp bin/$(PACKAGE)_$(WEB)_$(VERSION) bin/$(PACKAGE)_$(WEB)
+
+assets:  ## Copy assets directory into bin directory for testing and vendoring
+	$(info $(M) copy assets directory…) @
+	$Q cp -R assets bin
 
 # Utils
 .PHONY: proto
 proto: ## Generate .proto files
 	$(info $(M) running protobuf…) @
-	# 	$Q cd pkg/ability  && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. component.proto
-	# 	$Q cd pkg/ability  && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. ability.proto
-	# 	$Q cd pkg/ability  && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. effect_feedback.proto
-	# 	$Q cd pkg/ability  && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. feedback.proto
-	# 	$Q cd pkg/ability  && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. targets.proto
-	# 	$Q cd pkg/ability  && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. starter.proto
-	# 	$Q cd pkg/account  && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. account.proto
-	# 	$Q cd pkg/account  && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. token.proto
-	# 	$Q cd pkg/geometry && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. position.proto
-	# 	$Q cd pkg/item     && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. item.proto
-	# 	$Q cd pkg/entity   && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. dto.proto
-	# 	$Q cd pkg/entity   && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. entity.proto
-	# 	$Q cd pkg/entity   && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. inventory.proto
-	# 	$Q cd pkg/entity   && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. spawn.proto
-	# 	$Q cd pkg/event    && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. action.proto
-	# 	$Q cd pkg/event    && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. dto.proto
-	# 	$Q cd pkg/event    && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. event.proto
-	# 	$Q cd pkg/event    && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. trigger.proto
-	# 	$Q cd pkg/infra    && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. ack.proto
-	# 	$Q cd pkg/infra    && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. q_action.proto
-	# 	$Q cd pkg/infra    && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. sequencer.proto
-	# 	$Q cd pkg/infra    && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. recurrer.proto
-	# 	$Q cd pkg/sector   && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. entities.proto
-	# 	$Q cd pkg/sector   && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. items.proto
-	# 	$Q cd pkg/sector   && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. sector.proto
+		$Q cd pkg/account  && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. account.proto
+		$Q cd pkg/room     && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. room.proto
+		$Q cd pkg/lobby    && protoc -I=$(DIR)/pkg/room -I=. -I=$(GOPATH)/src --gogoslick_out=Mroom.proto=$(GO_PACKAGE)/pkg/room:. lobby.proto
+		$Q cd pkg/geometry && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. position.proto
+		$Q cd pkg/entity   && protoc -I=$(DIR)/pkg/geometry -I=. -I=$(GOPATH)/src --gogoslick_out=Mposition.proto=$(GO_PACKAGE)/pkg/geometry:. entity.proto
+		$Q cd pkg/entity   && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. template.proto
+		$Q cd pkg/player   && protoc -I=$(DIR)/pkg/geometry -I=. -I=$(GOPATH)/src --gogoslick_out=Mposition.proto=$(GO_PACKAGE)/pkg/geometry:. spawn.proto
 
 # Vendoring
 .PHONY: vendor
@@ -97,8 +100,8 @@ test: ## Run unit tests only
 	$Q $(GO) test -cover -race -v ./...
 
 # Integration test
-.PHONY: testintegration
-testintegration: ## Run integration test
+.PHONY: integration
+integration: ## Run integration test
 	$(info $(M) running integration tests…) @
 	$Q make
 	$Q docker-compose up -d redis redis-lru
