@@ -2,6 +2,7 @@ package dto
 
 import (
 	"github.com/elojah/game_02/pkg/account/dto"
+	gerrors "github.com/elojah/game_02/pkg/errors"
 	gulid "github.com/elojah/game_02/pkg/ulid"
 )
 
@@ -10,6 +11,7 @@ type CreatePlayerReq struct {
 	dto.AuthReq
 
 	TemplateID string
+	Name       string
 }
 
 // Check returns if subscription request is valid.
@@ -20,6 +22,14 @@ func (r CreatePlayerReq) Check() error {
 
 	if _, err := gulid.Parse(r.TemplateID); err != nil {
 		return err
+	}
+
+	if len(r.Name) == 0 {
+		return gerrors.ErrInvalidRequest{
+			Key:   "name",
+			Value: r.Name,
+			Rules: []string{"must not be empty"},
+		}
 	}
 
 	return nil

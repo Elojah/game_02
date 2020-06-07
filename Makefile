@@ -70,6 +70,7 @@ proto: ## Generate .proto files
 		$Q cd pkg/geometry && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. position.proto
 		$Q cd pkg/entity   && protoc -I=$(DIR)/pkg/geometry -I=. -I=$(GOPATH)/src --gogoslick_out=Mposition.proto=$(GO_PACKAGE)/pkg/geometry:. entity.proto
 		$Q cd pkg/entity   && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. template.proto
+		$Q cd pkg/player   && protoc -I=$(DIR)/pkg/geometry -I=. -I=$(GOPATH)/src --gogoslick_out=Mposition.proto=$(GO_PACKAGE)/pkg/geometry:. spawn.proto
 
 # Vendoring
 .PHONY: vendor

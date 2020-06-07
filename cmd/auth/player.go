@@ -54,7 +54,9 @@ func (h handler) createPlayer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if _, err := h.entity.FetchTemplate(ctx, entity.FilterTemplate{ID: templateID}); err != nil {
+	// #Fetch template
+	t, err := h.entity.FetchTemplate(ctx, entity.FilterTemplate{ID: templateID})
+	if err != nil {
 		if errors.As(err, &gerrors.ErrNotFound{}) {
 			logger.Error().Err(err).Msg("invalid entity template")
 			http.Error(w, "invalid entity template", http.StatusBadRequest)
@@ -65,11 +67,37 @@ func (h handler) createPlayer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// #Fetch spawn
+	sp, err := h.player.FetchSpawn(ctx, player.FilterSpawn{ID: t.SpawnID})
+	if err != nil {
+		logger.Error().Err(err).Msg("failed to fetch player spawn")
+		http.Error(w, fmt.Sprintf("failed to fetch player spawn: %v", err), http.StatusInternalServerError)
+		return
+	}
+
 	// #Create player
 	p := player.P{
 		E: entity.E{
 			ID:         gulid.NewID(),
 			TemplateID: templateID,
+			Name:       request.Name,
+			OwnerID:    ac.ID,
+
+			Dead:  false,
+			HP:    t.MaxHP,
+			MaxHP: t.MaxHP,
+			MP:    t.MaxMP,
+			MaxMP: t.MaxMP,
+
+			Direction: sp.Direction,
+			Position:  sp.Position,
+			Cast:      nil,
+			AssetID:   t.AssetID,
+
+			InventoryID: gulid.NewID(), // #TODO !!!
+			SpawnID:     sp.ID,
+
+			State: gulid.NewID(),
 		},
 		Account: ac.ID,
 	}

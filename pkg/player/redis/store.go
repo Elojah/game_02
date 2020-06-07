@@ -6,6 +6,7 @@ import (
 )
 
 var _ player.Store = (*Store)(nil)
+var _ player.StoreSpawn = (*Store)(nil)
 
 // Store for entity in redis.
 type Store struct {

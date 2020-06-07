@@ -58,7 +58,7 @@ func run(prog string, filename string) {
 	lobbyStore := lobbyredis.Store{Service: rd}
 	lobbyApp := lobbyapp.A{Store: &lobbyStore}
 	playerStore := playerredis.Store{Service: rd}
-	playerApp := playerapp.A{Store: &playerStore}
+	playerApp := playerapp.A{Store: &playerStore, StoreSpawn: &playerStore}
 	roomStore := roomredis.Store{Service: rd}
 	roomApp := roomapp.A{Store: &roomStore}
 

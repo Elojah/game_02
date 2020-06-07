@@ -30,4 +30,5 @@ type Store interface {
 // App applicative layer for P.
 type App interface {
 	Store
+	StoreSpawn
 }
