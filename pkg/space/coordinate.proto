@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package space;
+
+option (gogoproto.testgen_all)  = true;
+option (gogoproto.benchgen_all) = true;
+option (gogoproto.populate_all) = true;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+message Coordinate {
+	// Technical requirment for redis space indexing.
+	uint64 X                            = 1;
+	uint64 Y                            = 2;
+
+	bytes EntityID                      = 3 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = true];
+}

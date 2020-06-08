@@ -73,6 +73,7 @@ proto: ## Generate .proto files
 		$Q cd pkg/lobby    && protoc -I=$(DIR)/pkg/room -I=. -I=$(GOPATH)/src --gogoslick_out=Mroom.proto=$(GO_PACKAGE)/pkg/room:. lobby.proto
 		$Q cd pkg/player   && protoc -I=$(DIR)/pkg/geometry -I=. -I=$(GOPATH)/src --gogoslick_out=Mposition.proto=$(GO_PACKAGE)/pkg/geometry:. spawn.proto
 		$Q cd pkg/player   && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. inventory.proto
+		$Q cd pkg/space    && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. coordinate.proto
 
 # Vendoring
 .PHONY: vendor
