@@ -23,7 +23,7 @@ type Filter struct {
 type Store interface {
 	Upsert(context.Context, P) error
 	Fetch(context.Context, Filter) (P, error)
-	FetchMany(context.Context, Filter) ([]P, error)
+	FetchMany(context.Context, Filter) (map[string]P, error)
 	Delete(context.Context, Filter) error
 }
 
@@ -31,4 +31,5 @@ type Store interface {
 type App interface {
 	Store
 	StoreSpawn
+	StoreInventory
 }

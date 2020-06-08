@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package item;
+
+option (gogoproto.testgen_all)  = true;
+option (gogoproto.benchgen_all) = true;
+option (gogoproto.populate_all) = true;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+// Orb represents a skill learner object. Consumer learns skill at item consumption.
+message Orb {
+	bytes AbilityID              = 1 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+}
+
+// Component represents a common object used for craft only.
+message Component {
+	bytes Type                   = 1 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+}
+
+message Type {
+	option (gogoproto.onlyone)   = true;
+	Orb Orb                      = 1;
+	Component Component          = 2;
+}
+
+message I {
+	bytes ID                     = 1 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+	string Name                  = 2;
+	string Details               = 3;
+
+	bytes Icon                   = 4 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+
+	Type Type                    = 5 [(gogoproto.nullable)   = false];
+}

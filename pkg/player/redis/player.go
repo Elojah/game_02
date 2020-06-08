@@ -51,7 +51,7 @@ func (s *Store) Fetch(ctx context.Context, filter player.Filter) (player.P, erro
 }
 
 // FetchMany implementation for player in redis.
-func (s *Store) FetchMany(ctx context.Context, filter player.Filter) ([]player.P, error) {
+func (s *Store) FetchMany(ctx context.Context, filter player.Filter) (map[string]player.P, error) {
 
 	keys, err := s.Keys(playerKey + filter.Account.String() + ":*").Result()
 	if err != nil {
@@ -65,15 +65,17 @@ func (s *Store) FetchMany(ctx context.Context, filter player.Filter) ([]player.P
 		)
 	}
 
-	ps := make([]player.P, len(keys))
-	for i, key := range keys {
+	ps := make(map[string]player.P, len(keys))
+	for _, key := range keys {
 		val, err := s.Get(key).Result()
 		if err != nil {
 			return nil, fmt.Errorf("fetch player %s: %w", key, err)
 		}
-		if err := ps[i].Unmarshal([]byte(val)); err != nil {
-			return nil, fmt.Errorf("fetch players %s: %w", filter.ID.String(), err)
+		var tmp player.P
+		if err := tmp.Unmarshal([]byte(val)); err != nil {
+			return nil, fmt.Errorf("fetch player %s: %w", key, err)
 		}
+		ps[tmp.ID.String()] = tmp
 	}
 	return ps, nil
 }

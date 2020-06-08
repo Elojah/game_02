@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package player;
+
+option (gogoproto.testgen_all)  = true;
+option (gogoproto.benchgen_all) = true;
+option (gogoproto.populate_all) = true;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+message Inventory {
+	bytes ID                        = 1 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+	uint64 Size                     = 2;
+	map<string, uint64> Items       = 3 [(gogoproto.nullable)   = false];
+}

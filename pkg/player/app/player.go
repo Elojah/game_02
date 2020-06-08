@@ -6,4 +6,5 @@ import "github.com/elojah/game_02/pkg/player"
 type A struct {
 	player.Store
 	player.StoreSpawn
+	player.StoreInventory
 }

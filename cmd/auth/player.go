@@ -75,6 +75,16 @@ func (h handler) createPlayer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// #Create new inventory
+	inventoryID := gulid.NewID()
+	if err := h.player.UpsertInventory(ctx, player.Inventory{
+		ID: inventoryID,
+	}); err != nil {
+		logger.Error().Err(err).Msg("failed to create inventory")
+		http.Error(w, fmt.Sprintf("failed to create inventory: %v", err), http.StatusInternalServerError)
+		return
+	}
+
 	// #Create player
 	p := player.P{
 		E: entity.E{
@@ -94,7 +104,7 @@ func (h handler) createPlayer(w http.ResponseWriter, r *http.Request) {
 			Cast:      nil,
 			AssetID:   t.AssetID,
 
-			InventoryID: gulid.NewID(), // #TODO !!!
+			InventoryID: inventoryID,
 			SpawnID:     sp.ID,
 
 			State: gulid.NewID(),
