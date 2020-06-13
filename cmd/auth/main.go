@@ -9,6 +9,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
+	"github.com/elojah/buntdb"
 	"github.com/elojah/redis"
 	"github.com/elojah/services"
 
@@ -49,6 +50,13 @@ func run(prog string, filename string) {
 		Redis: "redis-lru",
 	}, "redis-lru")
 	launchers.Add(rdlrul)
+
+	// buntdb
+	buntlru := &buntdb.Service{}
+	buntlrul := buntlru.NewLauncher(buntdb.Namespaces{
+		Buntdb: "buntdb",
+	}, "buntdb")
+	launchers.Add(buntlrul)
 
 	// Stores and applicatives
 	accountStore := accountredis.Store{Service: rd}

@@ -7,11 +7,11 @@ option (gogoproto.benchgen_all) = true;
 option (gogoproto.populate_all) = true;
 
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
-import "github.com/elojah/game_02/pkg/geometry/position.proto";
+import "github.com/elojah/game_02/pkg/geometry/geometry.proto";
 
 message Spawn {
 	bytes ID                   = 1 [(gogoproto.customtype)  = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
-	geometry.Position Position = 2 [(gogoproto.nullable)   = false];
+	geometry.Vec3 Position     = 2 [(gogoproto.nullable)   = false];
 	geometry.Vec3 Direction    = 3 [(gogoproto.nullable)   = false];
 	uint64 Duration            = 4;
 }

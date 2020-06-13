@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/rs/zerolog/log"
 
@@ -107,6 +108,7 @@ func (h handler) createPlayer(w http.ResponseWriter, r *http.Request) {
 			InventoryID: inventoryID,
 			SpawnID:     sp.ID,
 
+			TS:    uint64(time.Now().Unix()),
 			State: gulid.NewID(),
 		},
 		Account: ac.ID,

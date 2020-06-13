@@ -9,6 +9,11 @@
 		"password": "secret",
 		"db": 0
 	},
+	"buntdb": {
+		"path": ":memory:",
+		"index_name": "coordinate",
+		"index_pattern": "coordinate:*"
+	},
 	"auth": {
 		"address": "0.0.0.0:8080",
 		"cert": "server.crt",

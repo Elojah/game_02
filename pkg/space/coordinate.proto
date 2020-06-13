@@ -7,11 +7,12 @@ option (gogoproto.benchgen_all) = true;
 option (gogoproto.populate_all) = true;
 
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "github.com/elojah/game_02/pkg/geometry/geometry.proto";
 
 message Coordinate {
-	// Technical requirment for redis space indexing.
-	uint64 X                            = 1;
-	uint64 Y                            = 2;
+	geometry.Vec3 Position              = 1 [(gogoproto.nullable) = false];
+	geometry.Vec3 Direction             = 2 [(gogoproto.nullable) = false];
 
-	bytes EntityID                      = 3 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = true];
+	uint64 TS                           = 3;
+	bytes EntityID                      = 4 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
 }

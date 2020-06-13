@@ -7,7 +7,7 @@ option (gogoproto.benchgen_all) = true;
 option (gogoproto.populate_all) = true;
 
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
-import "github.com/elojah/game_02/pkg/geometry/position.proto";
+import "github.com/elojah/game_02/pkg/geometry/geometry.proto";
 
 message Cast {
 	bytes AbilityID            = 1 [(gogoproto.customtype)  = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
@@ -32,7 +32,7 @@ message E {
 
 	// #Spatial & graphic parameters
 	geometry.Vec3 Direction    = 10 [(gogoproto.nullable)   = false];
-	geometry.Position Position = 11 [(gogoproto.nullable)   = false];
+	geometry.Vec3 Position     = 11 [(gogoproto.nullable)   = false];
 	Cast Cast                  = 12 [(gogoproto.nullable)   = true];
 	bytes AssetID              = 13 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
 
@@ -40,6 +40,8 @@ message E {
 	bytes InventoryID          = 14 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
 	bytes SpawnID              = 15 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
 
+	// Timestamp of entity state.
+	uint64 TS                  = 16;
 	// State is a technical requirement for redis set, each "state" of entity must be unique.
-	bytes State                = 16 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+	bytes State                = 17 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
 }

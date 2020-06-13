@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package geometry;
+
+option (gogoproto.testgen_all)  = true;
+option (gogoproto.benchgen_all) = true;
+option (gogoproto.populate_all) = true;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+message Vec3 {
+	uint64 X                            = 1;
+	uint64 Y                            = 2;
+	// Z is a floor and no a cartesian coordinate
+	uint64 Z                            = 3;
+}
+
+message Rectangle {
+	Vec3 PointA                         = 1;
+	Vec3 PointB                         = 2;
+}
