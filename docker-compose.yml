@@ -21,6 +21,20 @@ services:
     ports:
       - 6380:6379
 
+  # Web
+  web:
+    build:
+      context: .
+      dockerfile: docker/web/Dockerfile
+    volumes:
+      - ./config/web.json:/app/web.json
+      - ./config/server.crt:/app/server.crt
+      - ./config/server.key:/app/server.key
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
+
   # Auth
   auth:
     build:
@@ -31,9 +45,9 @@ services:
       - ./config/server.crt:/app/server.crt
       - ./config/server.key:/app/server.key
     expose:
-      - 8080
+      - 8081
     ports:
-      - 8080:8080
+      - 8081:8081
     links:
       - redis
       - redis-lru

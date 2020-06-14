@@ -15,7 +15,7 @@
 		"index_pattern": "coordinate:*"
 	},
 	"auth": {
-		"address": "0.0.0.0:8080",
+		"address": "0.0.0.0:8081",
 		"cert": "server.crt",
 		"key": "server.key"
 	}

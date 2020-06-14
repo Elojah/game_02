@@ -1,22 +1,76 @@
-// A basic HTTP server.
-// By default, it serves the current working directory on port 8080.
 package main
 
 import (
-	"flag"
-	"log"
-	"net/http"
+	"fmt"
+	"os"
+	"os/signal"
+	"syscall"
+
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
+
+	"github.com/elojah/services"
 )
 
 var (
 	version string
-	listen  = flag.String("listen", ":8080", "listen address")
-	dir     = flag.String("dir", ".", "directory to serve")
 )
 
+// run services.
+func run(prog string, filename string) {
+
+	zerolog.TimeFieldFormat = ""
+	log.Logger = zerolog.New(os.Stdout).With().Timestamp().Str("version", version).Str("exe", prog).Logger()
+
+	launchers := services.Launchers{}
+
+	// handler (https server)
+	h := &handler{}
+
+	hl := h.NewLauncher(Namespaces{
+		Web: "web",
+	}, "web")
+	launchers.Add(hl)
+
+	if err := launchers.Up(filename); err != nil {
+		log.Error().Err(err).Str("filename", filename).Msg("failed to start")
+		return
+	}
+
+	log.Info().Msg("web up")
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, syscall.SIGHUP, syscall.SIGINT, syscall.SIGKILL)
+	for sig := range c {
+		switch sig {
+		case syscall.SIGHUP:
+			if err := launchers.Down(); err != nil {
+				log.Error().Err(err).Msg("failed to stop services")
+				continue
+			}
+			if err := launchers.Up(filename); err != nil {
+				log.Error().Err(err).Str("filename", filename).Msg("failed to start services")
+			}
+		case syscall.SIGINT:
+			if err := launchers.Down(); err != nil {
+				log.Error().Err(err).Msg("failed to stop services")
+				continue
+			}
+			return
+		case syscall.SIGKILL:
+			if err := launchers.Down(); err != nil {
+				log.Error().Err(err).Msg("failed to stop services")
+				continue
+			}
+			return
+		}
+	}
+}
+
 func main() {
-	flag.Parse()
-	log.Printf("listening on %q...", *listen)
-	err := http.ListenAndServe(*listen, http.FileServer(http.Dir(*dir)))
-	log.Fatalln(err)
+	args := os.Args
+	if len(args) != 2 {
+		fmt.Printf("Usage: ./%s configfile\n", args[0])
+		return
+	}
+	run(args[0], args[1])
 }

@@ -15,7 +15,7 @@
 		"index_pattern": "coordinate:*"
 	},
 	"auth": {
-		"address": "localhost:8080",
+		"address": "localhost:8081",
 		"cert": "config/server.crt",
 		"key": "config/server.key"
 	}
