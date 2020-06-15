@@ -1,12 +1,13 @@
 package main
 
 import (
-	"fmt"
+	"context"
 	"os"
+	"time"
 
-	"github.com/gopherjs/websocket"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"nhooyr.io/websocket"
 )
 
 var (
@@ -19,35 +20,29 @@ func run(prog string) {
 	zerolog.TimeFieldFormat = ""
 	log.Logger = zerolog.New(os.Stdout).With().Timestamp().Str("version", version).Str("exe", prog).Logger()
 
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+
+	c, _, err := websocket.Dial(ctx, "https://localhost:8080/player/connect", nil)
+	if err != nil {
+		log.Error().Err(err).Msg("failed to start websocket")
+		return
+	}
+	defer c.Close(websocket.StatusInternalError, "failed to close websocket")
+	log.Info().Msg("websocket connection established")
+
+	err = c.Write(ctx, websocket.MessageText, []byte("hi"))
+	if err != nil {
+		log.Error().Err(err).Msg("failed to write message")
+	}
+
 	g := game{}
 	if err := g.Dial(Config{}); err != nil {
 		log.Error().Err(err).Msg("failed to start game")
-	}
-	log.Info().Msg("game up")
-
-	conn, err := websocket.Dial("ws://localhost/player/connect") // Blocks until connection is established.
-	if err != nil {
-		log.Error().Err(err).Msg("failed to establish ws connection")
 		return
 	}
 
-	_, err = conn.Write([]byte("Hello!"))
-	if err != nil {
-		log.Error().Err(err).Msg("failed to say hello")
-	}
-
-	buf := make([]byte, 1024)
-	var n int
-	n, err = conn.Read(buf) // Blocks until a WebSocket frame is received.
-	if err != nil {
-		log.Error().Err(err).Msg("failed to read")
-	}
-	fmt.Println(string(buf[:n]))
-
-	err = conn.Close()
-	if err != nil {
-		log.Error().Err(err).Msg("failed to close")
-	}
+	c.Close(websocket.StatusNormalClosure, "")
 }
 
 func main() {

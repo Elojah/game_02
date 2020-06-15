@@ -44,7 +44,7 @@ browser:  ## Build browser content
 		-tags release \
 		-ldflags '-X $(PACKAGE)/cmd.Version=$(VERSION)' \
 		-o ../../bin/$(PACKAGE)_$(BROWSER)_$(VERSION).wasm
-	$Q cp bin/$(PACKAGE)_$(BROWSER)_$(VERSION).wasm bin/$(PACKAGE)_$(BROWSER).wasm
+	$Q yes | cp -rf bin/$(PACKAGE)_$(BROWSER)_$(VERSION).wasm bin/$(PACKAGE)_$(BROWSER).wasm
 
 web: ## Build web binary
 	$(info $(M) building executable web…) @
@@ -52,13 +52,13 @@ web: ## Build web binary
 		-tags release \
 		-ldflags '-X $(PACKAGE)/cmd.Version=$(VERSION)' \
 		-o ../../bin/$(PACKAGE)_$(WEB)_$(VERSION)
-	$Q cp bin/$(PACKAGE)_$(WEB)_$(VERSION) bin/$(PACKAGE)_$(WEB)
+	$Q yes | cp -rf bin/$(PACKAGE)_$(WEB)_$(VERSION) bin/$(PACKAGE)_$(WEB)
 	$Q yes | cp -Rrf cmd/$(WEB)/static bin/ # static files
 	$Q yes | cp -rf bin/$(PACKAGE)_$(BROWSER)_$(VERSION).wasm bin/static/$(PACKAGE)_$(BROWSER).wasm
 
 assets:  ## Copy assets directory into bin directory for testing and vendoring
 	$(info $(M) copy assets directory…) @
-	$Q cp -R assets bin/static/
+	$Q yes | cp -Rrf assets bin/static/
 
 # Utils
 .PHONY: proto
