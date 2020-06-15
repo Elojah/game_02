@@ -2,6 +2,7 @@ package redis
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/go-redis/redis"
@@ -30,12 +31,12 @@ func (s *Store) Upsert(ctx context.Context, a account.A) error {
 
 // Fetch implementation for account in redis.
 func (s *Store) Fetch(ctx context.Context, filter account.Filter) (account.A, error) {
-
 	val, err := s.Get(accountKey + filter.Email).Result()
 	if err != nil {
-		if err != redis.Nil {
+		if !errors.Is(err, redis.Nil) {
 			return account.A{}, fmt.Errorf("fetch account %s: %w", filter.Email, err)
 		}
+
 		return account.A{}, fmt.Errorf(
 			"fetch account %s: %w",
 			filter.Email,
@@ -47,6 +48,7 @@ func (s *Store) Fetch(ctx context.Context, filter account.Filter) (account.A, er
 	if err := a.Unmarshal([]byte(val)); err != nil {
 		return account.A{}, fmt.Errorf("fetch account %s: %w", filter.Email, err)
 	}
+
 	return a, nil
 }
 
@@ -55,5 +57,6 @@ func (s *Store) Delete(ctx context.Context, filter account.Filter) error {
 	if err := s.Del(accountKey + filter.Email).Err(); err != nil {
 		return fmt.Errorf("remove account %s: %w", filter.Email, err)
 	}
+
 	return nil
 }

@@ -38,6 +38,7 @@ func (l *Launcher) Up(configs services.Configs) error {
 	if err := sconfig.Dial(configs[l.ns.Web]); err != nil {
 		return err
 	}
+
 	return l.h.Dial(sconfig)
 }
 

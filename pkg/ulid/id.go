@@ -20,9 +20,11 @@ func NewID() ID {
 func NewIDs(n int) []ID {
 	t := ulid.Timestamp(time.Now())
 	ids := make([]ID, n)
+
 	for i := range ids {
 		ids[i] = ID(ulid.MustNew(t, rand.Reader))
 	}
+
 	return ids
 }
 
@@ -75,23 +77,25 @@ func (id ID) Marshal() ([]byte, error) {
 // MarshalTo never returns any error.
 func (id ID) MarshalTo(data []byte) (n int, err error) {
 	copy(data[0:16], id[:])
-	return 16, nil
+	return 16, nil //nolint: gomnd
 }
 
 // Unmarshal never returns any error.
 func (id *ID) Unmarshal(data []byte) error {
-	if len(data) != 16 {
+	if len(data) != 16 { //nolint: gomnd
 		return ulid.ErrBufferSize
 	}
+
 	for i := 0; i < 16; i++ {
 		id[i] = data[i]
 	}
+
 	return nil
 }
 
 // Size always returns 16.
 func (id *ID) Size() int {
-	return 16
+	return 16 //nolint: gomnd
 }
 
 // MarshalJSON returns id in human readable string format.
@@ -105,25 +109,27 @@ func (id *ID) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &s); err != nil {
 		return err
 	}
+
 	u, err := ulid.Parse(s)
 	if err != nil {
 		return err
 	}
-	*id = ID(u)
+	*id = ID(u) //nolint: wsl
+
 	return nil
 }
 
-// Compare only required if the compare option is set
+// Compare only required if the compare option is set.
 func (id ID) Compare(other ID) int {
 	return ulid.ULID(id).Compare(ulid.ULID(other))
 }
 
-// Equal only required if the equal option is set
+// Equal only required if the equal option is set.
 func (id ID) Equal(other ID) bool {
 	return id.Compare(other) == 0
 }
 
-// NewPopulatedID only required if populate option is set
+// NewPopulatedID only required if populate option is set.
 func NewPopulatedID(r randyID) *ID {
 	id := ID(ulid.MustNew(uint64(r.Uint32()), rand.Reader))
 	return &id

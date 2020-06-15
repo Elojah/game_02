@@ -16,7 +16,6 @@ var (
 
 // run services.
 func run(prog string) {
-
 	zerolog.TimeFieldFormat = ""
 	log.Logger = zerolog.New(os.Stdout).With().Timestamp().Str("version", version).Str("exe", prog).Logger()
 

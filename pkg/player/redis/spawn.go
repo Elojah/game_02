@@ -2,6 +2,7 @@ package redis
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/go-redis/redis"
@@ -30,12 +31,12 @@ func (s *Store) UpsertSpawn(ctx context.Context, sp player.Spawn) error {
 
 // FetchSpawn implementation for player spawn in redis.
 func (s *Store) FetchSpawn(ctx context.Context, filter player.FilterSpawn) (player.Spawn, error) {
-
 	val, err := s.Get(spawnKey + filter.ID.String()).Result()
 	if err != nil {
-		if err != redis.Nil {
+		if !errors.Is(err, redis.Nil) {
 			return player.Spawn{}, fmt.Errorf("fetch spawn %s: %w", filter.ID.String(), err)
 		}
+
 		return player.Spawn{}, fmt.Errorf(
 			"fetch spawn %s: %w",
 			filter.ID.String(),
@@ -47,6 +48,7 @@ func (s *Store) FetchSpawn(ctx context.Context, filter player.FilterSpawn) (play
 	if err := sp.Unmarshal([]byte(val)); err != nil {
 		return player.Spawn{}, fmt.Errorf("fetch spawn %s: %w", filter.ID.String(), err)
 	}
+
 	return sp, nil
 }
 
@@ -55,5 +57,6 @@ func (s *Store) DeleteSpawn(ctx context.Context, filter player.FilterSpawn) erro
 	if err := s.Del(spawnKey + filter.ID.String()).Err(); err != nil {
 		return fmt.Errorf("remove spawn %s: %w", filter.ID.String(), err)
 	}
+
 	return nil
 }

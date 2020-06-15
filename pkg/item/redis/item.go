@@ -2,6 +2,7 @@ package redis
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/go-redis/redis"
@@ -30,12 +31,12 @@ func (s *Store) Upsert(ctx context.Context, i item.I) error {
 
 // Fetch implementation for item in redis.
 func (s *Store) Fetch(ctx context.Context, filter item.Filter) (item.I, error) {
-
 	val, err := s.Get(itemKey + filter.ID.String()).Result()
 	if err != nil {
-		if err != redis.Nil {
+		if !errors.Is(err, redis.Nil) {
 			return item.I{}, fmt.Errorf("fetch item %s: %w", filter.ID.String(), err)
 		}
+
 		return item.I{}, fmt.Errorf(
 			"fetch item %s: %w",
 			filter.ID.String(),
@@ -47,24 +48,28 @@ func (s *Store) Fetch(ctx context.Context, filter item.Filter) (item.I, error) {
 	if err := i.Unmarshal([]byte(val)); err != nil {
 		return item.I{}, fmt.Errorf("fetch item %s: %w", filter.ID.String(), err)
 	}
+
 	return i, nil
 }
 
 // FetchMany implementation for item in redis.
 func (s *Store) FetchMany(ctx context.Context, filter item.Filter) (map[string]item.I, error) {
-
 	is := make(map[string]item.I, len(filter.IDs))
+
 	for _, id := range filter.IDs {
 		val, err := s.Get(itemKey + id.String()).Result()
 		if err != nil {
 			return nil, fmt.Errorf("fetch item %s: %w", id.String(), err)
 		}
+
 		var tmp item.I
 		if err := tmp.Unmarshal([]byte(val)); err != nil {
 			return nil, fmt.Errorf("fetch items %s: %w", filter.ID.String(), err)
 		}
+
 		is[tmp.ID.String()] = tmp
 	}
+
 	return is, nil
 }
 
@@ -73,5 +78,6 @@ func (s *Store) Delete(ctx context.Context, filter item.Filter) error {
 	if err := s.Del(itemKey + filter.ID.String()).Err(); err != nil {
 		return fmt.Errorf("remove item %s: %w", filter.ID.String(), err)
 	}
+
 	return nil
 }

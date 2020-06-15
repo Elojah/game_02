@@ -29,11 +29,13 @@ func (h *handler) Dial(c Config) error {
 		Addr:    c.Address,
 		Handler: mux,
 	}
+
 	go func() {
 		if err := h.srv.ListenAndServeTLS(c.Cert, c.Key); err != nil {
 			log.Error().Err(err).Msg("failed to start server")
 		}
 	}()
+
 	return nil
 }
 

@@ -33,13 +33,17 @@ func (h handler) createPlayer(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		logger.Error().Err(err).Msg("invalid payload")
 		http.Error(w, fmt.Sprintf("invalid payload: %v", err), http.StatusBadRequest)
+
 		return
 	}
+
 	if err := request.Check(); err != nil {
 		logger.Error().Err(err).Msg("invalid payload")
 		http.Error(w, fmt.Sprintf("invalid payload: %v", err), http.StatusBadRequest)
+
 		return
 	}
+
 	templateID := gulid.MustParse(request.TemplateID)
 
 	// #Check credentials
@@ -48,10 +52,13 @@ func (h handler) createPlayer(w http.ResponseWriter, r *http.Request) {
 		if errors.As(err, &gerrors.ErrInvalidCredentials{}) {
 			logger.Error().Err(err).Msg("invalid credentials")
 			http.Error(w, "invalid credentials", http.StatusBadRequest)
+
 			return
 		}
+
 		logger.Error().Err(err).Msg("failed to authenticate")
 		http.Error(w, fmt.Sprintf("failed to authenticate: %v", err), http.StatusInternalServerError)
+
 		return
 	}
 
@@ -61,10 +68,13 @@ func (h handler) createPlayer(w http.ResponseWriter, r *http.Request) {
 		if errors.As(err, &gerrors.ErrNotFound{}) {
 			logger.Error().Err(err).Msg("invalid entity template")
 			http.Error(w, "invalid entity template", http.StatusBadRequest)
+
 			return
 		}
+
 		logger.Error().Err(err).Msg("failed to fetch entity template")
 		http.Error(w, fmt.Sprintf("failed to fetch entity template: %v", err), http.StatusInternalServerError)
+
 		return
 	}
 
@@ -73,16 +83,19 @@ func (h handler) createPlayer(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logger.Error().Err(err).Msg("failed to fetch player spawn")
 		http.Error(w, fmt.Sprintf("failed to fetch player spawn: %v", err), http.StatusInternalServerError)
+
 		return
 	}
 
 	// #Create new inventory
 	inventoryID := gulid.NewID()
+
 	if err := h.player.UpsertInventory(ctx, player.Inventory{
 		ID: inventoryID,
 	}); err != nil {
 		logger.Error().Err(err).Msg("failed to create inventory")
 		http.Error(w, fmt.Sprintf("failed to create inventory: %v", err), http.StatusInternalServerError)
+
 		return
 	}
 
@@ -116,6 +129,7 @@ func (h handler) createPlayer(w http.ResponseWriter, r *http.Request) {
 	if err := h.player.Upsert(ctx, p); err != nil {
 		logger.Error().Err(err).Msg("failed to create player")
 		http.Error(w, fmt.Sprintf("failed to create player: %v", err), http.StatusInternalServerError)
+
 		return
 	}
 
@@ -124,13 +138,17 @@ func (h handler) createPlayer(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logger.Error().Err(err).Msg("failed to marshal response")
 		http.Error(w, "failed to marshal response", http.StatusInternalServerError)
+
 		return
 	}
+
 	if _, err := w.Write(raw); err != nil {
 		logger.Error().Err(err).Msg("failed to write response")
 		http.Error(w, "failed to write response", http.StatusInternalServerError)
+
 		return
 	}
+
 	w.WriteHeader(http.StatusOK)
 	logger.Info().Msg("success")
 }

@@ -29,10 +29,12 @@ func (e ErrInvalidRequest) Error() string {
 	var b strings.Builder
 
 	b.WriteString(fmt.Sprintf("invalid %s (%s):", e.Key, e.Value))
+
 	for _, r := range e.Rules {
 		b.WriteRune('\n')
 		b.WriteString(r)
 	}
+
 	return b.String()
 }
 

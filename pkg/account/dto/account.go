@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	emailValidation = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+	emailValidation = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$") // nolint: lll
 )
 
 // AuthReq request type commonly embed in other dto to authorize a route.
@@ -36,7 +36,6 @@ type SubscribeReq struct {
 
 // Check returns if subscription request is valid.
 func (r SubscribeReq) Check() error {
-
 	// Alias check
 	if len(r.Alias) < 3 || len(r.Alias) > 20 ||
 		strings.IndexFunc(r.Alias, func(r rune) bool {
@@ -85,7 +84,6 @@ type SigninReq struct {
 
 // Check returns if subscription request is valid.
 func (r SigninReq) Check() error {
-
 	// Email check
 	if len(r.Email) == 0 || !emailValidation.MatchString(r.Email) {
 		return gerrors.ErrInvalidRequest{
@@ -124,7 +122,6 @@ type SignoutReq struct {
 
 // Check returns if subscription request is valid.
 func (r SignoutReq) Check() error {
-
 	// Email check
 	if len(r.Email) == 0 || !emailValidation.MatchString(r.Email) {
 		return gerrors.ErrInvalidRequest{
@@ -158,7 +155,6 @@ type UnsubscribeReq struct {
 
 // Check returns if unsubscription request is valid.
 func (r UnsubscribeReq) Check() error {
-
 	// Email check
 	if len(r.Email) == 0 || !emailValidation.MatchString(r.Email) {
 		return gerrors.ErrInvalidRequest{

@@ -31,11 +31,14 @@ func (h handler) unsubscribe(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		logger.Error().Err(err).Msg("invalid payload")
 		http.Error(w, fmt.Sprintf("invalid payload: %v", err), http.StatusBadRequest)
+
 		return
 	}
+
 	if err := request.Check(); err != nil {
 		logger.Error().Err(err).Msg("invalid payload")
 		http.Error(w, fmt.Sprintf("invalid payload: %v", err), http.StatusBadRequest)
+
 		return
 	}
 
@@ -45,10 +48,13 @@ func (h handler) unsubscribe(w http.ResponseWriter, r *http.Request) {
 		if errors.As(err, &gerrors.ErrNotFound{}) {
 			logger.Error().Err(err).Msg("account not found")
 			http.Error(w, "account not found", http.StatusBadRequest)
+
 			return
 		}
+
 		logger.Error().Err(err).Msg("failed to fetch account")
 		http.Error(w, fmt.Sprintf("failed to fetch account: %v", err), http.StatusInternalServerError)
+
 		return
 	}
 
@@ -56,6 +62,7 @@ func (h handler) unsubscribe(w http.ResponseWriter, r *http.Request) {
 	if err := bcrypt.CompareHashAndPassword(ac.Password, []byte(request.Password)); err != nil {
 		logger.Error().Err(err).Msg("invalid credentials")
 		http.Error(w, "invalid credentials", http.StatusBadRequest)
+
 		return
 	}
 
@@ -63,6 +70,7 @@ func (h handler) unsubscribe(w http.ResponseWriter, r *http.Request) {
 	if err := h.account.Delete(ctx, account.Filter{Email: request.Email}); err != nil {
 		logger.Error().Err(err).Msg("failed to delete account")
 		http.Error(w, fmt.Sprintf("failed to delete account: %v", err), http.StatusInternalServerError)
+
 		return
 	}
 

@@ -29,11 +29,14 @@ func (h handler) signin(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		logger.Error().Err(err).Msg("invalid payload")
 		http.Error(w, fmt.Sprintf("invalid payload: %v", err), http.StatusBadRequest)
+
 		return
 	}
+
 	if err := request.Check(); err != nil {
 		logger.Error().Err(err).Msg("invalid payload")
 		http.Error(w, fmt.Sprintf("invalid payload: %v", err), http.StatusBadRequest)
+
 		return
 	}
 
@@ -43,10 +46,13 @@ func (h handler) signin(w http.ResponseWriter, r *http.Request) {
 		if errors.As(err, &gerrors.ErrInvalidCredentials{}) {
 			logger.Error().Err(err).Msg("invalid credentials")
 			http.Error(w, "invalid credentials", http.StatusBadRequest)
+
 			return
 		}
+
 		logger.Error().Err(err).Msg("failed to login")
 		http.Error(w, fmt.Sprintf("failed to login: %v", err), http.StatusInternalServerError)
+
 		return
 	}
 
@@ -55,13 +61,17 @@ func (h handler) signin(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logger.Error().Err(err).Msg("failed to marshal response")
 		http.Error(w, "failed to marshal response", http.StatusInternalServerError)
+
 		return
 	}
+
 	if _, err := w.Write(raw); err != nil {
 		logger.Error().Err(err).Msg("failed to write response")
 		http.Error(w, "failed to write response", http.StatusInternalServerError)
+
 		return
 	}
+
 	w.WriteHeader(http.StatusOK)
 	logger.Info().Msg("success")
 }

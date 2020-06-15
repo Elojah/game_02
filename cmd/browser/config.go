@@ -1,6 +1,8 @@
 package main
 
-import "errors"
+import (
+	"github.com/elojah/game_02/pkg/errors"
+)
 
 // Config for game object.
 type Config struct{}
@@ -9,7 +11,7 @@ type Config struct{}
 func (c *Config) Dial(fileconf interface{}) error {
 	fconf, ok := fileconf.(map[string]interface{})
 	if !ok {
-		return errors.New("namespace empty")
+		return errors.ErrEmptyNamespace{}
 	}
 
 	_ = fconf

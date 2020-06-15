@@ -19,13 +19,13 @@ type A struct {
 }
 
 func (a *A) Login(ctx context.Context, email string, password string) (account.A, error) {
-
 	// #Check if account exist
 	ac, err := a.Fetch(ctx, account.Filter{Email: email})
 	if err != nil {
 		if errors.As(err, &gerrors.ErrNotFound{}) {
 			return account.A{}, &gerrors.ErrInvalidCredentials{}
 		}
+
 		return account.A{}, err
 	}
 
@@ -33,8 +33,6 @@ func (a *A) Login(ctx context.Context, email string, password string) (account.A
 	if err := bcrypt.CompareHashAndPassword(ac.Password, []byte(password)); err != nil {
 		return account.A{}, &gerrors.ErrInvalidCredentials{}
 	}
-
-	return ac, nil
 
 	// #Generate token
 	id := gulid.NewID()
@@ -52,7 +50,6 @@ func (a *A) Login(ctx context.Context, email string, password string) (account.A
 }
 
 func (a *A) Logout(ctx context.Context, email string, token string) (account.A, error) {
-
 	// #Check if account exist
 	ac, err := a.Fetch(ctx, account.Filter{Email: email})
 	if err != nil {
@@ -62,6 +59,7 @@ func (a *A) Logout(ctx context.Context, email string, token string) (account.A, 
 				Index:    email,
 			}
 		}
+
 		return account.A{}, err
 	}
 
@@ -78,13 +76,13 @@ func (a *A) Logout(ctx context.Context, email string, token string) (account.A, 
 }
 
 func (a *A) Authorize(ctx context.Context, email string, token string) (account.A, error) {
-
 	// #Check if account exist
 	ac, err := a.Fetch(ctx, account.Filter{Email: email})
 	if err != nil {
 		if errors.As(err, &gerrors.ErrNotFound{}) {
 			return account.A{}, &gerrors.ErrInvalidCredentials{}
 		}
+
 		return account.A{}, err
 	}
 

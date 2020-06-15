@@ -2,6 +2,7 @@ package redis
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/go-redis/redis"
@@ -30,12 +31,12 @@ func (s *Store) Upsert(ctx context.Context, r room.R) error {
 
 // Fetch implementation for room in redis.
 func (s *Store) Fetch(ctx context.Context, filter room.Filter) (room.R, error) {
-
 	val, err := s.Get(roomKey + filter.ID.String()).Result()
 	if err != nil {
-		if err != redis.Nil {
+		if !errors.Is(err, redis.Nil) {
 			return room.R{}, fmt.Errorf("fetch room %s: %w", filter.ID.String(), err)
 		}
+
 		return room.R{}, fmt.Errorf(
 			"fetch room %s: %w",
 			filter.ID.String(),
@@ -47,6 +48,7 @@ func (s *Store) Fetch(ctx context.Context, filter room.Filter) (room.R, error) {
 	if err := r.Unmarshal([]byte(val)); err != nil {
 		return room.R{}, fmt.Errorf("fetch room %s: %w", filter.ID.String(), err)
 	}
+
 	return r, nil
 }
 
@@ -55,5 +57,6 @@ func (s *Store) Delete(ctx context.Context, filter room.Filter) error {
 	if err := s.Del(roomKey + filter.ID.String()).Err(); err != nil {
 		return fmt.Errorf("remove room %s: %w", filter.ID, err)
 	}
+
 	return nil
 }

@@ -6,7 +6,7 @@ import (
 	gulid "github.com/elojah/game_02/pkg/ulid"
 )
 
-// CreatePlayerReq request for /player/create route,
+// CreatePlayerReq request for /player/create route.
 type CreatePlayerReq struct {
 	dto.AuthReq
 
@@ -35,7 +35,7 @@ func (r CreatePlayerReq) Check() error {
 	return nil
 }
 
-// ConnectPlayerReq request for /player/connect route,
+// ConnectPlayerReq request for /player/connect route.
 type ConnectPlayerReq struct {
 	dto.AuthReq
 

@@ -27,6 +27,7 @@ func (h handler) lobbies(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logger.Error().Err(err).Msg("failed to fetch lobbies")
 		http.Error(w, fmt.Sprintf("failed to fetch lobbies: %v", err), http.StatusInternalServerError)
+
 		return
 	}
 
@@ -35,13 +36,17 @@ func (h handler) lobbies(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logger.Error().Err(err).Msg("failed to marshal response")
 		http.Error(w, "failed to marshal response", http.StatusInternalServerError)
+
 		return
 	}
+
 	if _, err := w.Write(raw); err != nil {
 		logger.Error().Err(err).Msg("failed to write response")
 		http.Error(w, "failed to write response", http.StatusInternalServerError)
+
 		return
 	}
+
 	w.WriteHeader(http.StatusOK)
 	logger.Info().Msg("success")
 }

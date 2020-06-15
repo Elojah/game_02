@@ -2,6 +2,7 @@ package redis
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/go-redis/redis"
@@ -30,12 +31,12 @@ func (s *Store) UpsertInventory(ctx context.Context, inv player.Inventory) error
 
 // Fetch implementation for player in redis.
 func (s *Store) FetchInventory(ctx context.Context, filter player.FilterInventory) (player.Inventory, error) {
-
 	val, err := s.Get(inventoryKey + filter.ID.String()).Result()
 	if err != nil {
-		if err != redis.Nil {
+		if !errors.Is(err, redis.Nil) {
 			return player.Inventory{}, fmt.Errorf("fetch inventory %s: %w", filter.ID.String(), err)
 		}
+
 		return player.Inventory{}, fmt.Errorf(
 			"fetch inventory %s: %w",
 			filter.ID.String(),
@@ -47,6 +48,7 @@ func (s *Store) FetchInventory(ctx context.Context, filter player.FilterInventor
 	if err := inv.Unmarshal([]byte(val)); err != nil {
 		return player.Inventory{}, fmt.Errorf("fetch inventory %s: %w", filter.ID.String(), err)
 	}
+
 	return inv, nil
 }
 
@@ -55,5 +57,6 @@ func (s *Store) DeleteInventory(ctx context.Context, filter player.FilterInvento
 	if err := s.Del(inventoryKey + filter.ID.String()).Err(); err != nil {
 		return fmt.Errorf("remove inventory %s: %w", filter.ID.String(), err)
 	}
+
 	return nil
 }

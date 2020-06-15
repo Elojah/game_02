@@ -32,11 +32,14 @@ func (h handler) subscribe(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		logger.Error().Err(err).Msg("invalid payload")
 		http.Error(w, fmt.Sprintf("invalid payload: %v", err), http.StatusBadRequest)
+
 		return
 	}
+
 	if err := request.Check(); err != nil {
 		logger.Error().Err(err).Msg("invalid payload")
 		http.Error(w, fmt.Sprintf("invalid payload: %v", err), http.StatusBadRequest)
+
 		return
 	}
 
@@ -62,6 +65,7 @@ func (h handler) subscribe(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logger.Error().Err(err).Msg("failed to hash password")
 		http.Error(w, fmt.Sprintf("failed to hash password: %v", err), http.StatusInternalServerError)
+
 		return
 	}
 
@@ -74,6 +78,7 @@ func (h handler) subscribe(w http.ResponseWriter, r *http.Request) {
 	}); err != nil {
 		logger.Error().Err(err).Msg("failed to create account")
 		http.Error(w, fmt.Sprintf("failed to create account: %v", err), http.StatusBadRequest)
+
 		return
 	}
 

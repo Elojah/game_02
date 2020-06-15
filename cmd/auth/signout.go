@@ -29,11 +29,14 @@ func (h handler) signout(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		logger.Error().Err(err).Msg("invalid payload")
 		http.Error(w, fmt.Sprintf("invalid payload: %v", err), http.StatusBadRequest)
+
 		return
 	}
+
 	if err := request.Check(); err != nil {
 		logger.Error().Err(err).Msg("invalid payload")
 		http.Error(w, fmt.Sprintf("invalid payload: %v", err), http.StatusBadRequest)
+
 		return
 	}
 
@@ -43,10 +46,13 @@ func (h handler) signout(w http.ResponseWriter, r *http.Request) {
 		if errors.As(err, &gerrors.ErrNotFound{}) {
 			logger.Error().Err(err).Msg("account not found")
 			http.Error(w, "account not found", http.StatusBadRequest)
+
 			return
 		}
+
 		logger.Error().Err(err).Msg("failed to logout")
 		http.Error(w, fmt.Sprintf("failed to logout: %v", err), http.StatusInternalServerError)
+
 		return
 	}
 

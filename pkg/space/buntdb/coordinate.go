@@ -17,7 +17,6 @@ func fetchEntityID(key string) string {
 
 // Upsert implementation for space in redis.
 func (s *Store) Upsert(ctx context.Context, coo space.Coordinate) error {
-
 	return s.Update(func(tx *buntdb.Tx) error {
 		var key, value strings.Builder
 		key.WriteString(s.IndexName)
@@ -36,6 +35,7 @@ func (s *Store) Upsert(ctx context.Context, coo space.Coordinate) error {
 // FetchMany implementation for space in redis.
 func (s *Store) FetchMany(ctx context.Context, filter space.Filter) (map[string]space.Coordinate, error) {
 	var result map[string]space.Coordinate
+
 	err := s.Update(func(tx *buntdb.Tx) error {
 		var rect strings.Builder
 		rect.WriteByte('[')
@@ -47,7 +47,7 @@ func (s *Store) FetchMany(ctx context.Context, filter space.Filter) (map[string]
 		rect.WriteByte(' ')
 		rect.WriteString(strconv.FormatUint(filter.Rectangle.PointB.Y, 10))
 		rect.WriteByte(']')
-		tx.Intersects(s.IndexName, rect.String(), func(key, val string) bool {
+		return tx.Intersects(s.IndexName, rect.String(), func(key, val string) bool {
 			min, max := buntdb.IndexRect(val)
 			entityID := fetchEntityID(key)
 			fmt.Println("intersects min, max:", min, max)
@@ -59,14 +59,15 @@ func (s *Store) FetchMany(ctx context.Context, filter space.Filter) (map[string]
 			}
 			return true
 		})
-		return nil
 	})
+
 	return nil, err
 }
 
 // Delete implementation for space in redis.
 func (s *Store) Delete(ctx context.Context, filter space.Filter) (space.Coordinate, error) {
 	var result space.Coordinate
+
 	err := s.Update(func(tx *buntdb.Tx) error {
 		var key strings.Builder
 		key.WriteString(s.IndexName)
@@ -86,5 +87,6 @@ func (s *Store) Delete(ctx context.Context, filter space.Filter) (space.Coordina
 		}
 		return nil
 	})
+
 	return result, err
 }

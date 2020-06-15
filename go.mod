@@ -11,7 +11,7 @@ require (
 	github.com/go-redis/redis v6.14.1+incompatible
 	github.com/gogo/protobuf v1.3.1
 	github.com/gorilla/mux v1.7.4
-	github.com/gorilla/websocket v1.4.2
+	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/hajimehoshi/ebiten v1.11.1
 	github.com/kr/pretty v0.2.0 // indirect
 	github.com/oklog/ulid v1.3.1
