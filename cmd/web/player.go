@@ -67,7 +67,8 @@ func (h handler) connectPlayer(w http.ResponseWriter, r *http.Request) {
 				logger.Error().Err(err).Msg("failed to read message")
 				break
 			}
-			log.Printf("recv: %s", message)
+			fmt.Println(string(message))
+
 			err = conn.WriteMessage(mt, message)
 			if err != nil {
 				logger.Error().Err(err).Msg("failed to write message")
