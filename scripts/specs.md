@@ -6,11 +6,11 @@ _______________
 - [x] logout
 - [x] unsubscribe
 
-- [ ] client UI login + room (gopherjs + vecty)
-- [ ] room REST
-- [ ] client gameworld (webGL)
-- [ ] websocket server-side
-- [ ] websocket client-side
+- [~] client UI login + room (gopherjs + vecty) -> UI
+- [x] room REST
+- [ ] client gameworld (webGL) -> Tiles API
+- [x] websocket server-side
+- [x] websocket client-side
 
 - [ ] websocket client -> server
 - [ ] websocket server -> client
