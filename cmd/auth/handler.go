@@ -38,10 +38,8 @@ func (h *handler) Dial(c Config) error {
 	mux.HandleFunc("/room/create", h.createRoom)
 
 	mux.HandleFunc("/player/create", h.createPlayer)
-	// mux.HandleFunc("/pc/list", h.listPC)
-	// mux.HandleFunc("/pc/del", h.delPC)
-	// mux.HandleFunc("/pc/connect", h.connectPC)
-	// mux.HandleFunc("/pc/disconnect", h.disconnectPC)
+	// mux.HandleFunc("/player/list", h.listPlayer)
+	// mux.HandleFunc("/player/del", h.delPlayer)
 
 	h.srv = &http.Server{
 		Addr:    c.Address,

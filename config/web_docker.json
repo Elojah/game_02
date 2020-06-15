@@ -1,4 +1,9 @@
 {
+	"redis": {
+		"addr": "localhost:6379",
+		"password": "secret",
+		"db": 0
+	},
 	"web": {
 		"address": "0.0.0.0:8080",
 		"cert": "server.crt",

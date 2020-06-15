@@ -34,3 +34,23 @@ func (r CreatePlayerReq) Check() error {
 
 	return nil
 }
+
+// ConnectPlayerReq request for /player/connect route,
+type ConnectPlayerReq struct {
+	dto.AuthReq
+
+	PlayerID string
+}
+
+// Check returns if subscription request is valid.
+func (r ConnectPlayerReq) Check() error {
+	if err := r.AuthReq.Check(); err != nil {
+		return err
+	}
+
+	if _, err := gulid.Parse(r.PlayerID); err != nil {
+		return err
+	}
+
+	return nil
+}

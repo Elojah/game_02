@@ -9,6 +9,9 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
+	accountapp "github.com/elojah/game_02/pkg/account/app"
+	accountredis "github.com/elojah/game_02/pkg/account/redis"
+	"github.com/elojah/redis"
 	"github.com/elojah/services"
 )
 
@@ -24,8 +27,21 @@ func run(prog string, filename string) {
 
 	launchers := services.Launchers{}
 
+	// redis
+	rd := &redis.Service{}
+	rdl := rd.NewLauncher(redis.Namespaces{
+		Redis: "redis",
+	}, "redis")
+	launchers.Add(rdl)
+
+	// Stores and applicatives
+	accountStore := accountredis.Store{Service: rd}
+	accountApp := accountapp.A{Store: &accountStore}
+
 	// handler (https server)
-	h := &handler{}
+	h := &handler{
+		account: &accountApp,
+	}
 
 	hl := h.NewLauncher(Namespaces{
 		Web: "web",

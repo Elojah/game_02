@@ -6,15 +6,22 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/rs/zerolog/log"
+
+	"github.com/elojah/game_02/pkg/account"
 )
 
 type handler struct {
 	srv *http.Server
+
+	account account.App
 }
 
 // Dial starts the auth server.
 func (h *handler) Dial(c Config) error {
 	mux := mux.NewRouter()
+
+	mux.HandleFunc("/player/connect", h.connectPlayer)
+	// mux.HandleFunc("/player/disconnect", h.disconnectPC)
 
 	mux.PathPrefix("/").Handler(http.FileServer(http.Dir(c.StaticDir)))
 
