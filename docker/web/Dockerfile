@@ -9,6 +9,7 @@ RUN env GOARCH=386 GOOS=linux CGO_ENABLED=0 make web
 FROM alpine
 WORKDIR /app
 COPY --from=builder /web/bin/game_web .
+COPY --from=builder /web/bin/game_web/static .
 COPY --from=builder /web/config/web_docker.json .
 COPY --from=builder /web/config/server.crt .
 COPY --from=builder /web/config/server.key .

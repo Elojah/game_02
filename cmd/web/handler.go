@@ -15,7 +15,8 @@ type handler struct {
 // Dial starts the auth server.
 func (h *handler) Dial(c Config) error {
 	mux := mux.NewRouter()
-	// mux.HandleFunc("/pc/disconnect", h.disconnectPC)
+
+	mux.PathPrefix("/").Handler(http.FileServer(http.Dir(c.StaticDir)))
 
 	h.srv = &http.Server{
 		Addr:    c.Address,

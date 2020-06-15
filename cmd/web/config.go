@@ -6,9 +6,10 @@ import (
 
 // Config is web quic server structure config.
 type Config struct {
-	Address string `json:"address"`
-	Cert    string `json:"cert"`
-	Key     string `json:"key"`
+	Address   string `json:"address"`
+	Cert      string `json:"cert"`
+	Key       string `json:"key"`
+	StaticDir string `json:"static_dir"`
 }
 
 // Equal returns is both configs are equal.
@@ -47,6 +48,14 @@ func (c *Config) Dial(fileconf interface{}) error {
 	}
 	if c.Key, ok = cKey.(string); !ok {
 		return errors.New("key key invalid. must be string")
+	}
+
+	cStaticDir, ok := fconf["static_dir"]
+	if !ok {
+		return errors.New("missing key static_dir")
+	}
+	if c.StaticDir, ok = cStaticDir.(string); !ok {
+		return errors.New("key static_dir invalid. must be string")
 	}
 
 	return nil

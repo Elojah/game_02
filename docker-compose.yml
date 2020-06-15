@@ -27,7 +27,6 @@ services:
       context: .
       dockerfile: docker/web/Dockerfile
     volumes:
-      - ./config/web.json:/app/web.json
       - ./config/server.crt:/app/server.crt
       - ./config/server.key:/app/server.key
     expose:
@@ -41,7 +40,6 @@ services:
       context: .
       dockerfile: docker/auth/Dockerfile
     volumes:
-      - ./config/auth.json:/app/auth.json
       - ./config/server.crt:/app/server.crt
       - ./config/server.key:/app/server.key
     expose:

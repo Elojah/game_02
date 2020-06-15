@@ -2,6 +2,7 @@
 	"web": {
 		"address": "0.0.0.0:8080",
 		"cert": "server.crt",
-		"key": "server.key"
+		"key": "server.key",
+		"static_dir": "static"
 	}
 }
