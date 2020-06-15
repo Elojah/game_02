@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"image"
 	_ "image/png"
 
@@ -15,8 +16,10 @@ const (
 
 // game world main object.
 type game struct {
-	count int
-	eimg  *ebiten.Image
+	count    int
+	skeleton *ebiten.Image
+	tiles    *ebiten.Image
+	layers   [][]int
 }
 
 func (g *game) Update(screen *ebiten.Image) error {
@@ -26,14 +29,32 @@ func (g *game) Update(screen *ebiten.Image) error {
 
 func (g *game) Draw(screen *ebiten.Image) {
 
+	// show layers
+	tileSize := 32
+	tileXNum := 16
+	xNum := width / tileSize
+	for _, l := range g.layers {
+		for i, t := range l {
+			op := &ebiten.DrawImageOptions{}
+			op.GeoM.Translate(float64((i%xNum)*tileSize), float64((i/xNum)*tileSize))
+
+			sx := (t % tileXNum) * tileSize
+			sy := (t / tileXNum) * tileSize
+			screen.DrawImage(g.tiles.SubImage(image.Rect(sx, sy, sx+tileSize, sy+tileSize)).(*ebiten.Image), op)
+		}
+	}
+
+	// show skeleton
 	n := 18
 	i := (g.count / 10) % n
-	w, h := g.eimg.Size()
+	w, h := g.skeleton.Size()
 	x := i * (w / n)
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(width/2, height/2)
+	screen.DrawImage(g.skeleton.SubImage(image.Rect(x, 0, x+w/n, h)).(*ebiten.Image), op)
 
-	opt := &ebiten.DrawImageOptions{}
-	opt.GeoM.Translate(width/2, height/2)
-	screen.DrawImage(g.eimg.SubImage(image.Rect(x, 0, x+w/n, h)).(*ebiten.Image), opt)
+	ebitenutil.DebugPrint(screen, fmt.Sprintf("TPS: %0.2f", ebiten.CurrentTPS()))
+
 }
 
 func (g *game) Layout(outsideWidth, outsideHeight int) (int, int) {
@@ -45,12 +66,42 @@ func (g *game) Dial(c Config) error {
 	ebiten.SetWindowTitle("GAME_02")
 
 	// #assets creation
-	img, _, err := ebitenutil.NewImageFromFile("assets/Skeleton/Skeleton Attack.png", ebiten.FilterDefault)
+	skeleton, _, err := ebitenutil.NewImageFromFile("assets/Skeleton/Skeleton Attack.png", ebiten.FilterDefault)
 	if err != nil {
 		return err
 	}
 
-	g.eimg = img
+	tiles, _, err := ebitenutil.NewImageFromFile("assets/Arena Tileset.png", ebiten.FilterDefault)
+	if err != nil {
+		return err
+	}
+
+	g.skeleton = skeleton
+	g.tiles = tiles
+	g.layers = [][]int{
+		{
+			130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130,
+			130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130,
+			130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130,
+			130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130,
+			130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130,
+			130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130,
+			130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130,
+			130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130,
+			130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130,
+			130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130,
+			130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130,
+			130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130,
+			130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130,
+			130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130,
+			130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130,
+			130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130,
+			130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130,
+			130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130,
+			130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130,
+			130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130,
+		},
+	}
 	// #!assets creation
 
 	return ebiten.RunGame(g)
