@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package space;
+
+option (gogoproto.testgen_all)  = true;
+option (gogoproto.benchgen_all) = true;
+option (gogoproto.populate_all) = true;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "github.com/elojah/game_02/pkg/geometry/geometry.proto";
+
+message Sector {
+	bytes ID                              = 1 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+
+	geometry.Vec3 Dim                     = 2 [(gogoproto.nullable)   = false];
+	map<string, geometry.Vec3> Adjacents  = 3 [(gogoproto.nullable)   = false];
+
+	bytes TileMap                         = 4 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+	repeated uint64 GraphicMap            = 5;
+	repeated uint64 CollisionMap          = 6;
+}

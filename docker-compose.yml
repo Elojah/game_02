@@ -49,3 +49,19 @@ services:
     links:
       - redis
       - redis-lru
+
+  # Assets
+  assets:
+    build:
+      context: .
+      dockerfile: docker/assets/Dockerfile
+    volumes:
+      - ./config/server.crt:/app/server.crt
+      - ./config/server.key:/app/server.key
+    expose:
+      - 8082
+    ports:
+      - 8082:8082
+    links:
+      - redis
+      - redis-lru

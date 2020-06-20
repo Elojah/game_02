@@ -8,7 +8,12 @@ _______________
 
 - [~] client UI login + room (gopherjs + vecty) -> UI
 - [x] room REST
-- [ ] client gameworld (webGL) -> Tiles API
+- [ ] client gameworld (webGL) -> Tiles API ->
+
+- GetTileFromPosition()
+-> {position: X/Y}
+<- [{id: "", tile: "", tileSize: N, tileXNum: N}]
+
 - [x] websocket server-side
 - [x] websocket client-side
 

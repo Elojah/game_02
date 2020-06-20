@@ -19,6 +19,7 @@ GODOC       = godoc
 GOFMT       = gofmt
 
 AUTH        = auth
+ASSETS      = assets
 BROWSER     = browser
 WEB         = web
 
@@ -26,10 +27,11 @@ V         = 0
 Q         = $(if $(filter 1,$V),,@)
 M         = $(shell printf "\033[0;35m▶\033[0m")
 
-.PHONY: all assets
+.PHONY: all
 
-all: auth browser web assets
+all: auth assets browser web
 
+.PHONY: auth
 auth:  ## Build auth binary
 	$(info $(M) building executable auth…) @
 	$Q cd cmd/$(AUTH) && $(GO) build \
@@ -38,6 +40,16 @@ auth:  ## Build auth binary
 		-o ../../bin/$(PACKAGE)_$(AUTH)_$(VERSION)
 	$Q cp bin/$(PACKAGE)_$(AUTH)_$(VERSION) bin/$(PACKAGE)_$(AUTH)
 
+.PHONY: assets
+assets:  ## Build assets binary
+	$(info $(M) building executable assets…) @
+	$Q cd cmd/$(ASSETS) && $(GO) build \
+		-tags release \
+		-ldflags '-X $(PACKAGE)/cmd.Version=$(VERSION)' \
+		-o ../../bin/$(PACKAGE)_$(ASSETS)_$(VERSION)
+	$Q cp bin/$(PACKAGE)_$(ASSETS)_$(VERSION) bin/$(PACKAGE)_$(ASSETS)
+
+.PHONY: browser
 browser:  ## Build browser content
 	$(info $(M) building executable browser…) @
 	$Q cd cmd/$(BROWSER) && GOOS=js GOARCH=wasm $(GO) build \
@@ -46,6 +58,7 @@ browser:  ## Build browser content
 		-o ../../bin/$(PACKAGE)_$(BROWSER)_$(VERSION).wasm
 	$Q yes | cp -rf bin/$(PACKAGE)_$(BROWSER)_$(VERSION).wasm bin/$(PACKAGE)_$(BROWSER).wasm
 
+.PHONY: web
 web: ## Build web binary
 	$(info $(M) building executable web…) @
 	$Q cd cmd/$(WEB) && $(GO) build \
@@ -56,7 +69,7 @@ web: ## Build web binary
 	$Q yes | cp -Rrf cmd/$(WEB)/static bin/ # static files
 	$Q yes | cp -rf bin/$(PACKAGE)_$(BROWSER)_$(VERSION).wasm bin/static/$(PACKAGE)_$(BROWSER).wasm
 
-assets:  ## Copy assets directory into bin directory for testing and vendoring
+file-assets:  ## Copy assets directory into bin directory for testing and vendoring
 	$(info $(M) copy assets directory…) @
 	$Q yes | cp -Rrf assets bin/static/
 
@@ -74,6 +87,7 @@ proto: ## Generate .proto files
 		$Q cd pkg/player   && protoc -I=$(DIR)/pkg/geometry -I=. -I=$(GOPATH)/src --gogoslick_out=Mgeometry.proto=$(GO_PACKAGE)/pkg/geometry:. spawn.proto
 		$Q cd pkg/player   && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. inventory.proto
 		$Q cd pkg/space    && protoc -I=$(DIR)/pkg/geometry -I=. -I=$(GOPATH)/src --gogoslick_out=Mgeometry.proto=$(GO_PACKAGE)/pkg/geometry:. coordinate.proto
+		$Q cd pkg/space    && protoc -I=$(DIR)/pkg/geometry -I=. -I=$(GOPATH)/src --gogoslick_out=Mgeometry.proto=$(GO_PACKAGE)/pkg/geometry:. sector.proto
 
 # Vendoring
 .PHONY: vendor
