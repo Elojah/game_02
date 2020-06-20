@@ -23,8 +23,7 @@ type handler struct {
 func (h *handler) Dial(c Config) error {
 	mux := mux.NewRouter()
 
-	// mux.HandleFunc("/subscribe", h.subscribe)
-	// mux.HandleFunc("/unsubscribe", h.unsubscribe)
+	mux.HandleFunc("/sector", h.subscribe)
 
 	h.srv = &http.Server{
 		Addr:    c.Address,

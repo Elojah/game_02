@@ -16,7 +16,7 @@ import (
 	gulid "github.com/elojah/game_02/pkg/ulid"
 )
 
-func (h handler) fetchSector(w http.ResponseWriter, r *http.Request) {
+func (h handler) getSector(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
 		// continue
@@ -29,7 +29,7 @@ func (h handler) fetchSector(w http.ResponseWriter, r *http.Request) {
 	logger := log.With().Str("route", r.URL.EscapedPath()).Str("method", r.Method).Str("address", r.RemoteAddr).Logger()
 
 	// #Request processing
-	var request dto.CreatePlayerReq
+	var request dto.GetSectorReq
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		logger.Error().Err(err).Msg("invalid payload")
 		http.Error(w, fmt.Sprintf("invalid payload: %v", err), http.StatusBadRequest)
@@ -44,23 +44,7 @@ func (h handler) fetchSector(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	templateID := gulid.MustParse(request.TemplateID)
-
-	// #Check credentials
-	ac, err := h.account.Authorize(ctx, request.Email, request.Token)
-	if err != nil {
-		if errors.As(err, &gerrors.ErrInvalidCredentials{}) {
-			logger.Error().Err(err).Msg("invalid credentials")
-			http.Error(w, "invalid credentials", http.StatusBadRequest)
-
-			return
-		}
-
-		logger.Error().Err(err).Msg("failed to authenticate")
-		http.Error(w, fmt.Sprintf("failed to authenticate: %v", err), http.StatusInternalServerError)
-
-		return
-	}
+	sectorID := gulid.MustParse(request.SectorID)
 
 	// #Fetch template
 	t, err := h.entity.FetchTemplate(ctx, entity.FilterTemplate{ID: templateID})
