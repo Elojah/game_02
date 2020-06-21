@@ -30,6 +30,12 @@ func run(prog string) {
 	defer c.Close(websocket.StatusInternalError, "failed to close websocket")
 	log.Info().Msg("websocket connection established")
 
+	// client := http.Client{}
+	// r := bytes.NewReader([]byte(`{}`))
+	// req, err := http.NewRequest("POST", "http://localhost:8080/sector", r)
+	// fmt.Println(err)
+	// fmt.Println(client.Do(req))
+
 	err = c.Write(ctx, websocket.MessageText, []byte("hi"))
 	if err != nil {
 		log.Error().Err(err).Msg("failed to write message")

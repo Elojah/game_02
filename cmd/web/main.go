@@ -41,7 +41,6 @@ func run(prog string, filename string) {
 	h := &handler{
 		account: &accountApp,
 	}
-
 	hl := h.NewLauncher(Namespaces{
 		Web: "web",
 	}, "web")
