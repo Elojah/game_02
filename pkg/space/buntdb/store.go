@@ -5,7 +5,7 @@ import (
 	"github.com/elojah/game_02/pkg/space"
 )
 
-var _ space.Store = (*Store)(nil)
+var _ space.StoreCoordinate = (*Store)(nil)
 
 // Store for item in buntdb.
 type Store struct {

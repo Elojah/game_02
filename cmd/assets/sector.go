@@ -5,14 +5,12 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/rs/zerolog/log"
 
-	"github.com/elojah/game_02/pkg/entity"
 	gerrors "github.com/elojah/game_02/pkg/errors"
-	"github.com/elojah/game_02/pkg/player"
-	"github.com/elojah/game_02/pkg/player/dto"
+	"github.com/elojah/game_02/pkg/space"
+	"github.com/elojah/game_02/pkg/space/dto"
 	gulid "github.com/elojah/game_02/pkg/ulid"
 )
 
@@ -44,81 +42,26 @@ func (h handler) getSector(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	sectorID := gulid.MustParse(request.SectorID)
+	sectorID := gulid.MustParse(request.ID)
 
 	// #Fetch template
-	t, err := h.entity.FetchTemplate(ctx, entity.FilterTemplate{ID: templateID})
+	s, err := h.space.FetchSector(ctx, space.FilterSector{ID: sectorID})
 	if err != nil {
 		if errors.As(err, &gerrors.ErrNotFound{}) {
-			logger.Error().Err(err).Msg("invalid entity template")
-			http.Error(w, "invalid entity template", http.StatusBadRequest)
+			logger.Error().Err(err).Msg("invalid space sector")
+			http.Error(w, "invalid space sector", http.StatusBadRequest)
 
 			return
 		}
 
-		logger.Error().Err(err).Msg("failed to fetch entity template")
-		http.Error(w, fmt.Sprintf("failed to fetch entity template: %v", err), http.StatusInternalServerError)
-
-		return
-	}
-
-	// #Fetch spawn
-	sp, err := h.player.FetchSpawn(ctx, player.FilterSpawn{ID: t.SpawnID})
-	if err != nil {
-		logger.Error().Err(err).Msg("failed to fetch player spawn")
-		http.Error(w, fmt.Sprintf("failed to fetch player spawn: %v", err), http.StatusInternalServerError)
-
-		return
-	}
-
-	// #Create new inventory
-	inventoryID := gulid.NewID()
-
-	if err := h.player.UpsertInventory(ctx, player.Inventory{
-		ID: inventoryID,
-	}); err != nil {
-		logger.Error().Err(err).Msg("failed to create inventory")
-		http.Error(w, fmt.Sprintf("failed to create inventory: %v", err), http.StatusInternalServerError)
-
-		return
-	}
-
-	// #Create player
-	p := player.P{
-		E: entity.E{
-			ID:         gulid.NewID(),
-			TemplateID: templateID,
-			Name:       request.Name,
-			OwnerID:    ac.ID,
-
-			Dead:  false,
-			HP:    t.MaxHP,
-			MaxHP: t.MaxHP,
-			MP:    t.MaxMP,
-			MaxMP: t.MaxMP,
-
-			Direction: sp.Direction,
-			Position:  sp.Position,
-			Cast:      nil,
-			AssetID:   t.AssetID,
-
-			InventoryID: inventoryID,
-			SpawnID:     sp.ID,
-
-			TS:    uint64(time.Now().Unix()),
-			State: gulid.NewID(),
-		},
-		Account: ac.ID,
-	}
-	if err := h.player.Upsert(ctx, p); err != nil {
-		logger.Error().Err(err).Msg("failed to create player")
-		http.Error(w, fmt.Sprintf("failed to create player: %v", err), http.StatusInternalServerError)
+		logger.Error().Err(err).Msg("failed to fetch space sector")
+		http.Error(w, fmt.Sprintf("failed to fetch space sector: %v", err), http.StatusInternalServerError)
 
 		return
 	}
 
 	// #Write response
-	raw, err := json.Marshal(nil)
+	raw, err := json.Marshal(s)
 	if err != nil {
 		logger.Error().Err(err).Msg("failed to marshal response")
 		http.Error(w, "failed to marshal response", http.StatusInternalServerError)

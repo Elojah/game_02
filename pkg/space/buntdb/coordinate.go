@@ -15,8 +15,8 @@ func fetchEntityID(key string) string {
 	return strings.Split(key, ":")[1]
 }
 
-// Upsert implementation for space in redis.
-func (s *Store) Upsert(ctx context.Context, coo space.Coordinate) error {
+// UpsertCoordinate implementation for space in redis.
+func (s *Store) UpsertCoordinate(ctx context.Context, coo space.Coordinate) error {
 	return s.Update(func(tx *buntdb.Tx) error {
 		var key, value strings.Builder
 		key.WriteString(s.IndexName)
@@ -32,8 +32,11 @@ func (s *Store) Upsert(ctx context.Context, coo space.Coordinate) error {
 	})
 }
 
-// FetchMany implementation for space in redis.
-func (s *Store) FetchMany(ctx context.Context, filter space.Filter) (map[string]space.Coordinate, error) {
+// FetchManyCoordinate implementation for space in redis.
+func (s *Store) FetchManyCoordinate(
+	ctx context.Context,
+	filter space.FilterCoordinate,
+) (map[string]space.Coordinate, error) {
 	var result map[string]space.Coordinate
 
 	err := s.Update(func(tx *buntdb.Tx) error {
@@ -64,8 +67,8 @@ func (s *Store) FetchMany(ctx context.Context, filter space.Filter) (map[string]
 	return nil, err
 }
 
-// Delete implementation for space in redis.
-func (s *Store) Delete(ctx context.Context, filter space.Filter) (space.Coordinate, error) {
+// DeleteCoordinate implementation for space in redis.
+func (s *Store) DeleteCoordinate(ctx context.Context, filter space.FilterCoordinate) (space.Coordinate, error) {
 	var result space.Coordinate
 
 	err := s.Update(func(tx *buntdb.Tx) error {

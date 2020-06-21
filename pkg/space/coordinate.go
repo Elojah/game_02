@@ -7,20 +7,15 @@ import (
 	gulid "github.com/elojah/game_02/pkg/ulid"
 )
 
-// Filter object for entity domain.
-type Filter struct {
+// FilterCoordinate object for entity domain.
+type FilterCoordinate struct {
 	EntityID  gulid.ID
 	Rectangle geometry.Rectangle
 }
 
-// Store object for entity domain.
-type Store interface {
-	Upsert(context.Context, Coordinate) error
-	FetchMany(context.Context, Filter) (map[string]Coordinate, error)
-	Delete(context.Context, Filter) (Coordinate, error)
-}
-
-// App object for entity domain.
-type App interface {
-	Store
+// StoreCoordinate object for entity domain.
+type StoreCoordinate interface {
+	UpsertCoordinate(context.Context, Coordinate) error
+	FetchManyCoordinate(context.Context, FilterCoordinate) (map[string]Coordinate, error)
+	DeleteCoordinate(context.Context, FilterCoordinate) (Coordinate, error)
 }
