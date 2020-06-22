@@ -1,4 +1,4 @@
-package main
+package game
 
 import (
 	"sync"
@@ -8,7 +8,7 @@ import (
 
 // Namespaces maps configs used for auth server.
 type Namespaces struct {
-	Browser services.Namespace
+	Game services.Namespace
 }
 
 // Launcher represents a auth server launcher.
@@ -16,12 +16,12 @@ type Launcher struct {
 	*services.Configs
 	ns Namespaces
 
-	g *game
+	g *Game
 	m sync.Mutex
 }
 
 // NewLauncher returns a new auth server Launcher.
-func (g *game) NewLauncher(ns Namespaces, nsRead ...services.Namespace) *Launcher {
+func (g *Game) NewLauncher(ns Namespaces, nsRead ...services.Namespace) *Launcher {
 	return &Launcher{
 		Configs: services.NewConfigs(nsRead...),
 		g:       g,
@@ -35,7 +35,7 @@ func (l *Launcher) Up(configs services.Configs) error {
 	defer l.m.Unlock()
 
 	sconfig := Config{}
-	if err := sconfig.Dial(configs[l.ns.Browser]); err != nil {
+	if err := sconfig.Dial(configs[l.ns.Game]); err != nil {
 		return err
 	}
 

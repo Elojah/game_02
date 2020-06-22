@@ -1,13 +1,14 @@
 package main
 
 import (
-	"context"
 	"os"
-	"time"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"nhooyr.io/websocket"
+
+	"github.com/elojah/game_02/cmd/browser/game"
+	"github.com/elojah/game_02/cmd/browser/ws"
+	"github.com/elojah/services"
 )
 
 var (
@@ -19,35 +20,32 @@ func run(prog string) {
 	zerolog.TimeFieldFormat = ""
 	log.Logger = zerolog.New(os.Stdout).With().Timestamp().Str("version", version).Str("exe", prog).Logger()
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
-	defer cancel()
+	filename := "browser_config.json"
 
-	c, _, err := websocket.Dial(ctx, "https://localhost:8080/player/connect", nil)
-	if err != nil {
-		log.Error().Err(err).Msg("failed to start websocket")
-		return
-	}
-	defer c.Close(websocket.StatusInternalError, "failed to close websocket")
-	log.Info().Msg("websocket connection established")
+	launchers := services.Launchers{}
 
-	// client := http.Client{}
-	// r := bytes.NewReader([]byte(`{}`))
-	// req, err := http.NewRequest("POST", "http://localhost:8080/sector", r)
-	// fmt.Println(err)
-	// fmt.Println(client.Do(req))
+	socket := &ws.Socket{}
+	socketl := socket.NewLauncher(ws.Namespaces{
+		Websocket: "websocket",
+	}, "websocket")
+	launchers.Add(socketl)
 
-	err = c.Write(ctx, websocket.MessageText, []byte("hi"))
-	if err != nil {
-		log.Error().Err(err).Msg("failed to write message")
-	}
+	g := &game.Game{}
+	gl := g.NewLauncher(game.Namespaces{
+		Game: "game",
+	}, "game")
+	launchers.Add(gl)
 
-	g := game{}
-	if err := g.Dial(Config{}); err != nil {
-		log.Error().Err(err).Msg("failed to start game")
+	if err := launchers.Up(filename); err != nil {
+		log.Error().Err(err).Str("filename", filename).Msg("failed to start")
 		return
 	}
 
-	c.Close(websocket.StatusNormalClosure, "")
+	log.Info().Msg("browser up")
+
+	if err := g.Run(); err != nil {
+		log.Error().Err(err).Msg("failed to run game")
+	}
 }
 
 func main() {

@@ -1,9 +1,9 @@
-package main
+package game
 
 import (
 	"fmt"
 	"image"
-	_ "image/png"
+	_ "image/png" // required for ebiten
 
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
@@ -14,20 +14,20 @@ const (
 	height = 600
 )
 
-// game world main object.
-type game struct {
+// Game world main object.
+type Game struct {
 	count    int
 	skeleton *ebiten.Image
 	tiles    *ebiten.Image
 	layers   [][]int
 }
 
-func (g *game) Update(screen *ebiten.Image) error {
+func (g *Game) Update(screen *ebiten.Image) error {
 	g.count++
 	return nil
 }
 
-func (g *game) Draw(screen *ebiten.Image) {
+func (g *Game) Draw(screen *ebiten.Image) {
 	// show layers
 	tileSize := 32
 	tileXNum := 16
@@ -56,14 +56,18 @@ func (g *game) Draw(screen *ebiten.Image) {
 	ebitenutil.DebugPrint(screen, fmt.Sprintf("TPS: %0.2f", ebiten.CurrentTPS()))
 }
 
-func (g *game) Layout(outsideWidth, outsideHeight int) (int, int) {
+func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return width, height
 }
 
-func (g *game) Dial(c Config) error {
+func (g *Game) Dial(c Config) error {
 	ebiten.SetWindowSize(width, height)
 	ebiten.SetWindowTitle("GAME_02")
 
+	return nil
+}
+
+func (g *Game) Run() error {
 	// #assets creation
 	skeleton, _, err := ebitenutil.NewImageFromFile("assets/Skeleton/Skeleton Attack.png", ebiten.FilterDefault)
 	if err != nil {
@@ -106,6 +110,6 @@ func (g *game) Dial(c Config) error {
 	return ebiten.RunGame(g)
 }
 
-func (g *game) Close() error {
+func (g *Game) Close() error {
 	return nil
 }
