@@ -12,14 +12,8 @@ var (
 	emailValidation = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$") // nolint: lll
 )
 
-// AuthReq request type commonly embed in other dto to authorize a route.
-type AuthReq struct {
-	Email string `json:"email"`
-	Token string `json:"token"`
-}
-
 // Check returns if subscription request is valid.
-func (r AuthReq) Check() error {
+func (r Auth) Check() error {
 	if _, err := gulid.Parse(r.Token); err != nil {
 		return err
 	}
@@ -27,15 +21,15 @@ func (r AuthReq) Check() error {
 	return nil
 }
 
-// SubscribeReq request type for subscribe route.
-type SubscribeReq struct {
+// Subscribe request type for subscribe route.
+type Subscribe struct {
 	Alias    string `json:"alias"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
 // Check returns if subscription request is valid.
-func (r SubscribeReq) Check() error {
+func (r Subscribe) Check() error {
 	// Alias check
 	if len(r.Alias) < 3 || len(r.Alias) > 20 ||
 		strings.IndexFunc(r.Alias, func(r rune) bool {
@@ -76,14 +70,14 @@ func (r SubscribeReq) Check() error {
 	return nil
 }
 
-// SigninReq request type for signin route.
-type SigninReq struct {
+// Signin request type for signin route.
+type Signin struct {
 	Email    string
 	Password string
 }
 
 // Check returns if subscription request is valid.
-func (r SigninReq) Check() error {
+func (r Signin) Check() error {
 	// Email check
 	if len(r.Email) == 0 || !emailValidation.MatchString(r.Email) {
 		return gerrors.ErrInvalidRequest{
@@ -114,14 +108,14 @@ type SigninResp struct {
 	Token string `json:"token"`
 }
 
-// SignoutReq request type for signin route.
-type SignoutReq struct {
+// Signout request type for signin route.
+type Signout struct {
 	Email string `json:"email"`
 	Token string `json:"token"`
 }
 
 // Check returns if subscription request is valid.
-func (r SignoutReq) Check() error {
+func (r Signout) Check() error {
 	// Email check
 	if len(r.Email) == 0 || !emailValidation.MatchString(r.Email) {
 		return gerrors.ErrInvalidRequest{
@@ -147,14 +141,14 @@ func (r SignoutReq) Check() error {
 	return nil
 }
 
-// UnsubscribeReq request type for unsubscribe route.
-type UnsubscribeReq struct {
+// Unsubscribe request type for unsubscribe route.
+type Unsubscribe struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
 // Check returns if unsubscription request is valid.
-func (r UnsubscribeReq) Check() error {
+func (r Unsubscribe) Check() error {
 	// Email check
 	if len(r.Email) == 0 || !emailValidation.MatchString(r.Email) {
 		return gerrors.ErrInvalidRequest{

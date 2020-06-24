@@ -5,15 +5,15 @@ import (
 	gulid "github.com/elojah/game_02/pkg/ulid"
 )
 
-// GetSectorReq request format for room route.
-type GetSectorReq struct {
-	dto.AuthReq
+// GetSector request format for room route.
+type GetSector struct {
+	dto.Auth
 
 	ID string `json:"id"`
 }
 
-func (r GetSectorReq) Check() error {
-	if err := r.AuthReq.Check(); err != nil {
+func (r GetSector) Check() error {
+	if err := r.Auth.Check(); err != nil {
 		return err
 	}
 

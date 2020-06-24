@@ -6,17 +6,17 @@ import (
 	gulid "github.com/elojah/game_02/pkg/ulid"
 )
 
-// CreatePlayerReq request for /player/create route.
-type CreatePlayerReq struct {
-	dto.AuthReq
+// CreatePlayer request for /player/create route.
+type CreatePlayer struct {
+	dto.Auth
 
 	TemplateID string
 	Name       string
 }
 
 // Check returns if subscription request is valid.
-func (r CreatePlayerReq) Check() error {
-	if err := r.AuthReq.Check(); err != nil {
+func (r CreatePlayer) Check() error {
+	if err := r.Auth.Check(); err != nil {
 		return err
 	}
 
@@ -35,16 +35,16 @@ func (r CreatePlayerReq) Check() error {
 	return nil
 }
 
-// ConnectPlayerReq request for /player/connect route.
-type ConnectPlayerReq struct {
-	dto.AuthReq
+// ConnectPlayer request for /player/connect route.
+type ConnectPlayer struct {
+	dto.Auth
 
 	PlayerID string
 }
 
 // Check returns if subscription request is valid.
-func (r ConnectPlayerReq) Check() error {
-	if err := r.AuthReq.Check(); err != nil {
+func (r ConnectPlayer) Check() error {
+	if err := r.Auth.Check(); err != nil {
 		return err
 	}
 

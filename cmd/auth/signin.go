@@ -25,7 +25,7 @@ func (h handler) signin(w http.ResponseWriter, r *http.Request) {
 	logger := log.With().Str("route", r.URL.EscapedPath()).Str("method", r.Method).Str("address", r.RemoteAddr).Logger()
 
 	// #Request processing
-	var request dto.SigninReq
+	var request dto.Signin
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		logger.Error().Err(err).Msg("invalid payload")
 		http.Error(w, fmt.Sprintf("invalid payload: %v", err), http.StatusBadRequest)

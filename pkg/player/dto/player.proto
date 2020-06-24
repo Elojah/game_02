@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package dto;
+
+option (gogoproto.testgen_all)  = true;
+option (gogoproto.benchgen_all) = true;
+option (gogoproto.populate_all) = true;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "account.proto";
+
+message Connect {
+	bytes PlayerID                           = 1 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+
+	account.Auth Auth                        = 2 [(gogoproto.nullable) = false];
+}

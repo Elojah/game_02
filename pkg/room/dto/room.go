@@ -12,16 +12,16 @@ type RoomResp struct {
 	Room room.R `json:"room"`
 }
 
-// ConnectRoomReq request format for room route.
-type ConnectRoomReq struct {
-	dto.AuthReq
+// ConnectRoom request format for room route.
+type ConnectRoom struct {
+	dto.Auth
 
 	ID       string `json:"id"`
 	Password string `json:"password"`
 }
 
-func (r ConnectRoomReq) Check() error {
-	if err := r.AuthReq.Check(); err != nil {
+func (r ConnectRoom) Check() error {
+	if err := r.Auth.Check(); err != nil {
 		return err
 	}
 
@@ -32,16 +32,16 @@ func (r ConnectRoomReq) Check() error {
 	return nil
 }
 
-// CreateRoomReq request format for room route.
-type CreateRoomReq struct {
-	dto.AuthReq
+// CreateRoom request format for room route.
+type CreateRoom struct {
+	dto.Auth
 
 	Name     string `json:"name"`
 	Password string `json:"password"`
 }
 
-func (r CreateRoomReq) Check() error {
-	if err := r.AuthReq.Check(); err != nil {
+func (r CreateRoom) Check() error {
+	if err := r.Auth.Check(); err != nil {
 		return err
 	}
 

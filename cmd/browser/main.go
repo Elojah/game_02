@@ -8,7 +8,6 @@ import (
 
 	"github.com/elojah/game_02/cmd/browser/game"
 	"github.com/elojah/game_02/cmd/browser/ws"
-	"github.com/elojah/services"
 )
 
 var (
@@ -20,31 +19,38 @@ func run(prog string) {
 	zerolog.TimeFieldFormat = ""
 	log.Logger = zerolog.New(os.Stdout).With().Timestamp().Str("version", version).Str("exe", prog).Logger()
 
-	filename := "browser_config.json"
-
-	launchers := services.Launchers{}
-
+	// Init websocket
 	socket := &ws.Socket{}
-	socketl := socket.NewLauncher(ws.Namespaces{
-		Websocket: "websocket",
-	}, "websocket")
-	launchers.Add(socketl)
+	if err := socket.Dial(ws.Config{
+		URL: "https://localhost:8080/player/connect",
+	}); err != nil {
+		log.Error().Err(err).Msg("failed to start websocket")
+		return
+	}
 
+	// Init game
 	g := &game.Game{}
-	gl := g.NewLauncher(game.Namespaces{
-		Game: "game",
-	}, "game")
-	launchers.Add(gl)
-
-	if err := launchers.Up(filename); err != nil {
-		log.Error().Err(err).Str("filename", filename).Msg("failed to start")
+	if err := g.Dial(game.Config{}); err != nil {
+		log.Error().Err(err).Msg("failed to start game")
 		return
 	}
 
 	log.Info().Msg("browser up")
 
+	defer func() {
+		if err := socket.Close(); err != nil {
+			log.Error().Err(err).Msg("failed to close socket")
+		}
+
+		if err := g.Close(); err != nil {
+			log.Error().Err(err).Msg("failed to close game")
+		}
+	}()
+
 	if err := g.Run(); err != nil {
 		log.Error().Err(err).Msg("failed to run game")
+
+		return
 	}
 }
 
