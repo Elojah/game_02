@@ -3,7 +3,6 @@ package ws
 import (
 	"context"
 
-	"github.com/rs/zerolog/log"
 	"nhooyr.io/websocket"
 
 	accountdto "github.com/elojah/game_02/pkg/account/dto"
@@ -26,15 +25,20 @@ func (s Socket) Close() error { // nolint
 	return s.Conn.Close(websocket.StatusNormalClosure, "")
 }
 
-func (s Socket) Login(playerID string, token string) error {
+func (s Socket) Login(ctx context.Context, playerID string, token string) error {
 
 	req := dto.ConnectPlayer{
 		PlayerID: playerID,
 		Auth:     accountdto.Auth{},
 	}
-	_ = req
-	err = ws.Write(ctx, websocket.MessageText, []byte("hi"))
+
+	raw, err := req.Marshal()
 	if err != nil {
-		log.Error().Err(err).Msg("failed to write message")
+		return err
 	}
+	if err := s.Write(ctx, websocket.MessageText, raw); err != nil {
+		return err
+	}
+
+	return nil
 }
