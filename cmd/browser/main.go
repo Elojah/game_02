@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"os"
 
 	"github.com/rs/zerolog"
@@ -18,6 +19,7 @@ var (
 func run(prog string) {
 	zerolog.TimeFieldFormat = ""
 	log.Logger = zerolog.New(os.Stdout).With().Timestamp().Str("version", version).Str("exe", prog).Logger()
+	ctx := context.Background()
 
 	// Init websocket
 	socket := &ws.Socket{}
@@ -46,6 +48,12 @@ func run(prog string) {
 			log.Error().Err(err).Msg("failed to close game")
 		}
 	}()
+
+	if err := socket.Login(ctx, "testPlayerID", "testToken"); err != nil {
+		log.Error().Err(err).Msg("failed to run game")
+
+		return
+	}
 
 	if err := g.Run(); err != nil {
 		log.Error().Err(err).Msg("failed to run game")

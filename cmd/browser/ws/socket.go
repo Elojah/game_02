@@ -14,19 +14,22 @@ type Socket struct {
 	*websocket.Conn
 }
 
-func (s Socket) Dial(c Config) error {
+func (s *Socket) Dial(c Config) error {
 	var err error
 	s.Conn, _, err = websocket.Dial(context.Background(), c.URL, nil)
 
 	return err
 }
 
-func (s Socket) Close() error { // nolint
+func (s *Socket) Close() error {
+	if s.Conn == nil {
+		return nil
+	}
+
 	return s.Conn.Close(websocket.StatusNormalClosure, "")
 }
 
-func (s Socket) Login(ctx context.Context, playerID string, token string) error {
-
+func (s *Socket) Login(ctx context.Context, playerID string, token string) error {
 	req := dto.ConnectPlayer{
 		PlayerID: playerID,
 		Auth:     accountdto.Auth{},

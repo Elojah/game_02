@@ -1,10 +1,8 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/rs/zerolog/log"
 	"nhooyr.io/websocket"
@@ -23,9 +21,6 @@ func (h handler) connectPlayer(w http.ResponseWriter, r *http.Request) {
 	}
 	defer c.Close(websocket.StatusInternalError, "failed to close websocket")
 
-	ctx, cancel := context.WithTimeout(ctx, time.Second*10) // nolint: gomnd
-	defer cancel()
-
 	for {
 		var buf []byte
 		_, buf, err = c.Read(ctx)
@@ -37,7 +32,6 @@ func (h handler) connectPlayer(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// c.Close(websocket.StatusNormalClosure, "")
 		log.Info().Msg(fmt.Sprintf("received: %v", string(buf)))
 	}
 }
