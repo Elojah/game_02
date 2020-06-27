@@ -39,6 +39,7 @@ func (s *Socket) Login(ctx context.Context, playerID string, token string) error
 	if err != nil {
 		return err
 	}
+
 	if err := s.Write(ctx, websocket.MessageText, raw); err != nil {
 		return err
 	}
