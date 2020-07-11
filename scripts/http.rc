@@ -1,10 +1,18 @@
 curl -k -X POST 'https://0.0.0.0:8080/subscribe' -d '{
 	"email": "test@email.co",
-	"password": "encryptmeplz",
+	"password": "testotest",
 	"alias": "Gerard"
 }'
 
 curl -k -X POST 'https://0.0.0.0:8080/signin' -d '{
 	"email": "test@email.co",
-	"password": "encryptmeplz"
+	"password": "testotest"
+}'
+
+curl -k -X POST 'https://0.0.0.0:8080/player/create' -d '{
+	"email": "test@email.co",
+	"password": "testotest",
+
+	"templateID": "xxx",
+	"name": "testplayer"
 }'

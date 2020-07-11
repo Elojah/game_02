@@ -19,7 +19,7 @@ GODOC       = godoc
 GOFMT       = gofmt
 
 AUTH        = auth
-ASSETS      = assets
+MAPPER      = mapper
 BROWSER     = browser
 WEB         = web
 
@@ -29,7 +29,7 @@ M         = $(shell printf "\033[0;35m▶\033[0m")
 
 .PHONY: all
 
-all: auth assets browser web
+all: auth mapper browser web
 
 .PHONY: auth
 auth:  ## Build auth binary
@@ -40,14 +40,14 @@ auth:  ## Build auth binary
 		-o ../../bin/$(PACKAGE)_$(AUTH)_$(VERSION)
 	$Q cp bin/$(PACKAGE)_$(AUTH)_$(VERSION) bin/$(PACKAGE)_$(AUTH)
 
-.PHONY: assets
-assets:  ## Build assets binary
-	$(info $(M) building executable assets…) @
-	$Q cd cmd/$(ASSETS) && $(GO) build \
+.PHONY: mapper
+mapper:  ## Build mapper binary
+	$(info $(M) building executable mapper…) @
+	$Q cd cmd/$(MAPPER) && $(GO) build \
 		-tags release \
 		-ldflags '-X $(PACKAGE)/cmd.Version=$(VERSION)' \
-		-o ../../bin/$(PACKAGE)_$(ASSETS)_$(VERSION)
-	$Q cp bin/$(PACKAGE)_$(ASSETS)_$(VERSION) bin/$(PACKAGE)_$(ASSETS)
+		-o ../../bin/$(PACKAGE)_$(MAPPER)_$(VERSION)
+	$Q cp bin/$(PACKAGE)_$(MAPPER)_$(VERSION) bin/$(PACKAGE)_$(MAPPER)
 
 .PHONY: browser
 browser:  ## Build browser content
@@ -69,9 +69,9 @@ web: ## Build web binary
 	$Q yes | cp -Rrf cmd/$(WEB)/static bin/ # static files
 	$Q yes | cp -rf bin/$(PACKAGE)_$(BROWSER)_$(VERSION).wasm bin/static/$(PACKAGE)_$(BROWSER).wasm
 
-file-assets:  ## Copy assets directory into bin directory for testing and vendoring
-	$(info $(M) copy assets directory…) @
-	$Q yes | cp -Rrf assets bin/static/
+file-mapper:  ## Copy mapper directory into bin directory for testing and vendoring
+	$(info $(M) copy mapper directory…) @
+	$Q yes | cp -Rrf mapper bin/static/
 
 # Utils
 .PHONY: proto

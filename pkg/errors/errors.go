@@ -53,3 +53,17 @@ type ErrInvalidToken struct{}
 func (e ErrInvalidToken) Error() string {
 	return "invalid token"
 }
+
+// ErrInvalidNumericalRange is raised when a numerical value is out of range.
+type ErrInvalidNumericalRange struct {
+	Key   string
+	Value int
+
+	Min int
+	Max int
+}
+
+// Error implementation for ErrInvalidNumericalRange.
+func (e ErrInvalidNumericalRange) Error() string {
+	return fmt.Sprintf("key %s must be between %d and %d. current value: %d", e.Key, e.Min, e.Max, e.Value)
+}
