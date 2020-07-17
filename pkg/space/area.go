@@ -1,6 +1,7 @@
 package space
 
 import (
+	fmt "fmt"
 	"math/rand"
 
 	"github.com/elojah/game_02/pkg/geometry"
@@ -19,6 +20,7 @@ type FloorShape uint
 
 const (
 	Square FloorShape = iota
+	Rectangle
 	Circle
 	Cross
 
@@ -55,20 +57,64 @@ func NewArea(params AreaParams) (Area, error) {
 	a := Area{}
 	a.Sectors = append(a.Sectors, s)
 
+	generateFloor(AreaParams{})
+
 	return a, nil
 }
 
-func generateFloor(params AreaParams) [][]uint64 {
-	result := make([][]uint64, params.X)
+func generateFloor(params AreaParams) [][]TileKind {
+	result := make([][]TileKind, params.X)
 	for i := uint64(0); i < params.X; i++ {
-		result[i] = make([]uint64, params.Y)
+		result[i] = make([]TileKind, params.Y)
 	}
 
 	for i := uint64(0); i < params.NFloorHub; i++ {
 		centerX := rand.Uint64() % params.X
 		centerY := rand.Uint64() % params.Y
-		shape := rand.Uint64() % uint64(LenFloorShape)
-		size := params.FloorHubMinSize + (rand.Uint64() % (params.FloorHubMaxSize - params.FloorHubMinSize))
+		shape := FloorShape(rand.Uint64() % uint64(LenFloorShape))
+
+		setFloor := func(x, y uint64) {
+			if x >= 0 && x < params.X &&
+				y >= 0 && y < params.Y {
+				result[x][y] = Floor
+			}
+		}
+
+		switch shape {
+		case Square:
+			size := params.FloorHubMinSize + (rand.Uint64() % (params.FloorHubMaxSize - params.FloorHubMinSize))
+
+			for i := uint64(0); i < size; i++ {
+				for j := uint64(0); j < size; j++ {
+					setFloor(centerX-(size/2)+i, centerY-(size/2)+j)
+				}
+			}
+		case Rectangle:
+			sizeX := params.FloorHubMinSize + (rand.Uint64() % (params.FloorHubMaxSize - params.FloorHubMinSize))
+			sizeY := params.FloorHubMinSize + (rand.Uint64() % (params.FloorHubMaxSize - params.FloorHubMinSize))
+
+			for i := uint64(0); i < sizeX; i++ {
+				for j := uint64(0); j < sizeY; j++ {
+					setFloor(centerX-(sizeX/2)+i, centerY-(sizeY/2)+j)
+				}
+			}
+		case Circle:
+			size := params.FloorHubMinSize + (rand.Uint64() % (params.FloorHubMaxSize - params.FloorHubMinSize))
+			radius := (size / 2)
+
+			for i := uint64(0); i < size; i++ {
+				for j := uint64(0); j < size; j++ {
+					currentX := -radius + i
+					currentY := -radius + j
+
+					if (currentX*currentX)+(currentY*currentY) <= radius*radius {
+						setFloor(centerX+currentX, centerY+currentY)
+					}
+				}
+			}
+		default:
+			fmt.Println("unrecognized shape")
+		}
 
 	}
 
