@@ -3,16 +3,14 @@ package space
 import (
 	fmt "fmt"
 	"math/rand"
-
-	"github.com/elojah/game_02/pkg/geometry"
 )
 
 // TileKind is used for map generation.
 type TileKind uint
 
 const (
-	Floor TileKind = iota
-	Sky
+	Sky TileKind = iota
+	Floor
 	Box
 )
 
@@ -30,7 +28,7 @@ const (
 
 // Area represents a game zone with multiple sectors.
 type Area struct {
-	Sectors []Sector
+	Tiles [][]TileKind
 }
 
 // AreaParams parameters for sector creation.
@@ -39,84 +37,149 @@ type AreaParams struct {
 	Y uint64
 	Z uint64
 
-	NFloorHub       uint64 // number of big floor area hub
-	FloorHubMinSize uint64
-	FloorHubMaxSize uint64
+	NFloorPlatform       uint64 // number of big floor area hub
+	FloorPlatformMinSize uint64
+	FloorPlatformMaxSize uint64
 }
 
 // NewArea creates a new isolated area without tilemap.
 func NewArea(params AreaParams) (Area, error) {
-	s := Sector{
-		Dim: geometry.Vec3{
-			X: params.X,
-			Y: params.Y,
-			Z: params.Z,
-		},
-	}
 
 	a := Area{}
-	a.Sectors = append(a.Sectors, s)
 
-	generateFloor(AreaParams{})
+	generateArea(AreaParams{})
 
 	return a, nil
 }
 
-func generateFloor(params AreaParams) [][]TileKind {
-	result := make([][]TileKind, params.X)
+type Platform struct {
+	X     uint64
+	Y     uint64
+	Shape FloorShape
+}
+
+func (p Platform) Apply(params AreaParams, a *Area) {
+
+	setFloor := func(x, y uint64) {
+		if x >= 0 && x < params.X &&
+			y >= 0 && y < params.Y {
+			a.Tiles[x][y] = Floor
+		}
+	}
+
+	switch p.Shape {
+	case Square:
+		size := params.FloorPlatformMinSize + (rand.Uint64() % (params.FloorPlatformMaxSize - params.FloorPlatformMinSize))
+
+		for i := uint64(0); i < size; i++ {
+			for j := uint64(0); j < size; j++ {
+				setFloor(p.X-(size/2)+i, p.Y-(size/2)+j)
+			}
+		}
+	case Rectangle:
+		sizeX := params.FloorPlatformMinSize + (rand.Uint64() % (params.FloorPlatformMaxSize - params.FloorPlatformMinSize))
+		sizeY := params.FloorPlatformMinSize + (rand.Uint64() % (params.FloorPlatformMaxSize - params.FloorPlatformMinSize))
+
+		for i := uint64(0); i < sizeX; i++ {
+			for j := uint64(0); j < sizeY; j++ {
+				setFloor(p.X-(sizeX/2)+i, p.Y-(sizeY/2)+j)
+			}
+		}
+	case Circle:
+		size := params.FloorPlatformMinSize + (rand.Uint64() % (params.FloorPlatformMaxSize - params.FloorPlatformMinSize))
+		radius := (size / 2)
+
+		for i := uint64(0); i < size; i++ {
+			for j := uint64(0); j < size; j++ {
+				currentX := -radius + i
+				currentY := -radius + j
+
+				if (currentX*currentX)+(currentY*currentY) <= (radius*radius)+radius {
+					setFloor(p.X+currentX, p.Y+currentY)
+				}
+			}
+		}
+	default:
+		fmt.Println("unrecognized shape")
+	}
+}
+
+type Direction uint64
+
+const (
+	Up Direction = iota
+	Down
+	Left
+	Right
+)
+
+type Path struct {
+	Start    Platform
+	End      Platform
+	WidthMin uint64
+	WidthMax uint64
+}
+
+func (p Path) Apply(params AreaParams, a *Area) {
+	abs := func(n uint64) uint64 {
+		if n > 0 {
+			return n
+		}
+		return -n
+	}
+	orthoLength := abs(p.Start.X-p.End.X) + abs(p.Start.Y-p.End.Y)
+	elbows := rand.Uint64() % (orthoLength / 2)
+	for i := 0; i < elbows; i++ {
+		r := rand.Uint64() % 100
+
+	}
+}
+
+func generateArea(params AreaParams, start Platform, end Platform) Area {
+
+	a := Area{}
+	a.Tiles = make([][]TileKind, params.X)
+
 	for i := uint64(0); i < params.X; i++ {
-		result[i] = make([]TileKind, params.Y)
+		a.Tiles[i] = make([]TileKind, params.Y)
 	}
 
-	for i := uint64(0); i < params.NFloorHub; i++ {
-		centerX := rand.Uint64() % params.X
-		centerY := rand.Uint64() % params.Y
-		shape := FloorShape(rand.Uint64() % uint64(LenFloorShape))
+	platforms := make([]Platform, params.NFloorPlatform)
+	// sequence used to pick random platforms index for path tracing
+	sequence := make([]uint64, params.NFloorPlatform)
 
-		setFloor := func(x, y uint64) {
-			if x >= 0 && x < params.X &&
-				y >= 0 && y < params.Y {
-				result[x][y] = Floor
-			}
+	for i := uint64(0); i < params.NFloorPlatform; i++ {
+		platforms[i] = Platform{
+			X:     rand.Uint64() % params.X,
+			Y:     rand.Uint64() % params.Y,
+			Shape: FloorShape(rand.Uint64() % uint64(LenFloorShape-1)),
 		}
+		platforms[i].Apply(params, &a)
 
-		switch shape {
-		case Square:
-			size := params.FloorHubMinSize + (rand.Uint64() % (params.FloorHubMaxSize - params.FloorHubMinSize))
-
-			for i := uint64(0); i < size; i++ {
-				for j := uint64(0); j < size; j++ {
-					setFloor(centerX-(size/2)+i, centerY-(size/2)+j)
-				}
-			}
-		case Rectangle:
-			sizeX := params.FloorHubMinSize + (rand.Uint64() % (params.FloorHubMaxSize - params.FloorHubMinSize))
-			sizeY := params.FloorHubMinSize + (rand.Uint64() % (params.FloorHubMaxSize - params.FloorHubMinSize))
-
-			for i := uint64(0); i < sizeX; i++ {
-				for j := uint64(0); j < sizeY; j++ {
-					setFloor(centerX-(sizeX/2)+i, centerY-(sizeY/2)+j)
-				}
-			}
-		case Circle:
-			size := params.FloorHubMinSize + (rand.Uint64() % (params.FloorHubMaxSize - params.FloorHubMinSize))
-			radius := (size / 2)
-
-			for i := uint64(0); i < size; i++ {
-				for j := uint64(0); j < size; j++ {
-					currentX := -radius + i
-					currentY := -radius + j
-
-					if (currentX*currentX)+(currentY*currentY) <= radius*radius {
-						setFloor(centerX+currentX, centerY+currentY)
-					}
-				}
-			}
-		default:
-			fmt.Println("unrecognized shape")
-		}
-
+		sequence[i] = i
 	}
 
-	return result
+	for i := uint64(0); i < params.NFloorPlatform; i++ {
+		nPaths := rand.Uint64() % (params.NFloorPlatform / 2)
+
+		rand.Shuffle(len(sequence), func(i, j int) {
+			sequence[i], sequence[j] = sequence[j], sequence[i]
+		})
+
+		for j := 0; j < nPaths; j++ {
+			// same platform, try next one and increment nPaths to keep correct count
+			end := sequence[j]
+			if i == end {
+				nPaths++
+				continue
+			}
+
+			p := Path{
+				Start: platforms[i],
+				End:   platforms[end],
+			}
+			p.Apply(params, &a)
+		}
+	}
+	return a
 }
