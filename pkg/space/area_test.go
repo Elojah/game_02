@@ -1,4 +1,4 @@
-package space
+package space_test
 
 import (
 	"fmt"
@@ -7,6 +7,7 @@ import (
 	time "time"
 
 	"github.com/elojah/game_02/pkg/geometry"
+	"github.com/elojah/game_02/pkg/space"
 )
 
 func TestGenerateFloor(t *testing.T) {
@@ -39,8 +40,8 @@ func TestGenerateFloor(t *testing.T) {
 		t.Run("generatefloor"+d.name, func(t *testing.T) {
 			rand.Seed(time.Now().UTC().UnixNano())
 
-			actual, _ := NewArea(d.p.Size)
-			ps := actual.GeneratePlatforms(d.p.NPlatforms, d.p.PlatformSize, d.p.PlatformVariance)
+			actual, _ := space.NewArea(d.p.Size)                                                   // nolint: scopelint
+			ps := actual.GeneratePlatforms(d.p.NPlatforms, d.p.PlatformSize, d.p.PlatformVariance) // nolint: scopelint
 			actual.GeneratePaths(ps)
 
 			for _, line := range actual.Tiles {

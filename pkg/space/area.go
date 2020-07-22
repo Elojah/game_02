@@ -37,9 +37,7 @@ type Area struct {
 
 func (a *Area) setTile(x, y int64, tk TileKind, force bool) {
 	// force set floor on closest border if true
-	if force &&
-		x >= 0 && x < int64(a.Size.X) &&
-		y >= 0 && y < int64(a.Size.Y) {
+	if force && x >= 0 && x < int64(a.Size.X) && y >= 0 && y < int64(a.Size.Y) {
 		a.Tiles[x][y] = tk
 	} else if !force {
 		if x < 0 {
@@ -78,7 +76,7 @@ type Platform struct {
 }
 
 // GeneratePlatforms generate n platforms with variant size nd write them into a.
-// Returns platform array
+// Returns platform array.
 func (a *Area) GeneratePlatforms(n, size, variance uint64) []Platform {
 	platforms := make([]Platform, n)
 
@@ -92,6 +90,7 @@ func (a *Area) GeneratePlatforms(n, size, variance uint64) []Platform {
 		}
 		a.setPlatform(size, variance, platforms[i])
 	}
+
 	return platforms
 }
 
@@ -101,6 +100,7 @@ func (a *Area) setPlatform(size, variance uint64, p Platform) {
 		if variance != 0 {
 			return uint64(rand.Int63n(int64(variance)))
 		}
+
 		return uint64(0)
 	}
 
@@ -182,7 +182,7 @@ func (o Orientation) Orthogonal() Orientation {
 // GeneratePaths generates random paths between platforms. MUST BE APPLIED on previous generated platforms on SAME AREA.
 func (a *Area) GeneratePaths(ps []Platform) {
 	// Need at least 2 platforms to generate a path
-	if len(ps) < 2 {
+	if len(ps) < 2 { // nolint: gomnd
 		return
 	}
 
@@ -195,7 +195,7 @@ func (a *Area) GeneratePaths(ps []Platform) {
 	for i := 0; i < len(ps); i++ {
 		// each platform has 1 > path number > total number of platforms / 2
 		// division by 2 is magic number/operation (aesthetic)
-		nPaths := 1 + rand.Intn(len(ps)/2)
+		nPaths := 1 + rand.Intn(len(ps)/2) // nolint: gomnd
 
 		// shuffle sequence index and use N first elements to determine end paths.
 		rand.Shuffle(len(sequence), func(i, j int) {
@@ -276,7 +276,7 @@ func (a *Area) setPath(p Path) {
 	deltaY := int64(p.End.Position.Y) - int64(p.Start.Position.Y)
 
 	// nSubPaths represents number of straight line (no elbow) per axis, minimum 1 to ensure deltaX and deltaY coverage
-	nSubPaths := 1 + rand.Int63n(1+abs(deltaX)+abs(deltaY)) //nolint: gomnd
+	nSubPaths := 1 + rand.Int63n(1+abs(deltaX)+abs(deltaY))
 	// variance depends on delta axis, minimum 1 to avoid straight lines
 	varianceX := rand.Int63n(1 + abs(deltaX))
 	varianceY := rand.Int63n(1 + abs(deltaY))
@@ -288,9 +288,11 @@ func (a *Area) setPath(p Path) {
 	seqY0 := sumSequence(deltaY+varianceY, uint64(nSubPaths))
 	seqY1 := sumSequence(-varianceY, uint64(nSubPaths))
 
-	// merging and shuffling sequences by axis
+	// merging and shuffling sequences for X axis
 	seqX := append(seqX0, seqX1...)
 	rand.Shuffle(len(seqX), func(i, j int) { seqX[i], seqX[j] = seqX[j], seqX[i] })
+
+	// merging and shuffling sequences for Y axis
 	seqY := append(seqY0, seqY1...)
 	rand.Shuffle(len(seqY), func(i, j int) { seqY[i], seqY[j] = seqY[j], seqY[i] })
 
@@ -305,6 +307,7 @@ func (a *Area) setPath(p Path) {
 			// "unstack" sequence X
 			len := seqX[0]
 			seqX = seqX[1:]
+
 			for len != 0 {
 				if len > 0 {
 					currentX++
@@ -320,6 +323,7 @@ func (a *Area) setPath(p Path) {
 			// "unstack" sequence X
 			len := seqY[0]
 			seqY = seqY[1:]
+
 			for len != 0 {
 				if len > 0 {
 					currentY++
