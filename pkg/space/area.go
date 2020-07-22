@@ -309,10 +309,12 @@ func (a *Area) setPath(p Path) {
 			seqX = seqX[1:]
 
 			for len != 0 {
+				// path to the left
 				if len > 0 {
 					currentX++
 					len--
 				} else {
+					// path to the right
 					currentX--
 					len++
 				}
@@ -326,9 +328,11 @@ func (a *Area) setPath(p Path) {
 
 			for len != 0 {
 				if len > 0 {
+					// path to the bottom
 					currentY++
 					len--
 				} else {
+					// path to the top
 					currentX--
 					len++
 				}
@@ -337,6 +341,7 @@ func (a *Area) setPath(p Path) {
 			}
 		}
 
+		// switch current orientation to keep alternate horizontal/vertical
 		o = o.Orthogonal()
 	}
 }
