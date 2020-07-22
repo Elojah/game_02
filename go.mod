@@ -15,7 +15,6 @@ require (
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/hajimehoshi/ebiten v1.11.1
 	github.com/kr/pretty v0.2.0 // indirect
-	github.com/mroth/weightedrand v0.2.2
 	github.com/oklog/ulid v1.3.1
 	github.com/rs/zerolog v1.18.0
 	github.com/tidwall/buntdb v1.1.2
