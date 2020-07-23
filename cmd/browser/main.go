@@ -8,7 +8,10 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"github.com/elojah/game_02/cmd/browser/game"
+	"github.com/elojah/game_02/cmd/browser/http"
 	"github.com/elojah/game_02/cmd/browser/ws"
+	"github.com/elojah/game_02/pkg/geometry"
+	"github.com/elojah/game_02/pkg/space/dto"
 )
 
 var (
@@ -30,8 +33,39 @@ func run(prog string) {
 		return
 	}
 
+	// Init http client
+	client := http.Client{}
+	if err := client.Dial(http.Config{
+		MapperURL: "https://localhost:8082/",
+	}); err != nil {
+		log.Error().Err(err).Msg("failed to start http client")
+		return
+	}
+
+	// TMP
+	// At this point we should retrieve current entity sector
+	// Instead we create a new one here to test creation
+	a, err := client.PostSectorRandom(ctx, dto.PostSectorRandom{
+		Dimensions: geometry.Vec3{
+			X: 25,
+			Y: 18,
+		},
+		NPlatforms:       3,
+		PlatformSize:     4,
+		PlatformVariance: 2,
+		PathWidth:        2,
+		PathVariance:     1,
+	})
+	if err != nil {
+		log.Error().Err(err).Msg("failed to create new area")
+		return
+	}
+	// !TMP
+
 	// Init game
-	g := &game.Game{}
+	g := &game.Game{
+		Area: a,
+	}
 	if err := g.Dial(game.Config{}); err != nil {
 		log.Error().Err(err).Msg("failed to start game")
 		return

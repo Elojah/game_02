@@ -8,7 +8,7 @@ import (
 
 // Namespaces maps configs used for assets server.
 type Namespaces struct {
-	Assets services.Namespace
+	Mapper services.Namespace
 }
 
 // Launcher represents a assets server launcher.
@@ -35,7 +35,7 @@ func (l *Launcher) Up(configs services.Configs) error {
 	defer l.m.Unlock()
 
 	sconfig := Config{}
-	if err := sconfig.Dial(configs[l.ns.Assets]); err != nil {
+	if err := sconfig.Dial(configs[l.ns.Mapper]); err != nil {
 		return err
 	}
 

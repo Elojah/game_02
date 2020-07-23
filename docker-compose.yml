@@ -50,11 +50,11 @@ services:
       - redis
       - redis-lru
 
-  # Assets
-  assets:
+  # Mapper
+  mapper:
     build:
       context: .
-      dockerfile: docker/assets/Dockerfile
+      dockerfile: docker/mapper/Dockerfile
     volumes:
       - ./config/server.crt:/app/server.crt
       - ./config/server.key:/app/server.key

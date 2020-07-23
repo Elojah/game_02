@@ -61,8 +61,8 @@ func run(prog string, filename string) {
 	}
 
 	hl := h.NewLauncher(Namespaces{
-		Assets: "assets",
-	}, "assets")
+		Mapper: "mapper",
+	}, "mapper")
 	launchers.Add(hl)
 
 	if err := launchers.Up(filename); err != nil {
@@ -70,7 +70,7 @@ func run(prog string, filename string) {
 		return
 	}
 
-	log.Info().Msg("assets up")
+	log.Info().Msg("mapper up")
 
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, syscall.SIGHUP, syscall.SIGINT, syscall.SIGKILL)

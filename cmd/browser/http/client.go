@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"path"
 
 	"github.com/elojah/game_02/pkg/space"
 	"github.com/elojah/game_02/pkg/space/dto"
@@ -34,7 +35,7 @@ func (cl *Client) PostSectorRandom(ctx context.Context, req dto.PostSectorRandom
 		return space.Area{}, err
 	}
 
-	resp, err := cl.Post(cl.MapperURL, "application/json", bytes.NewReader(raw))
+	resp, err := cl.Post(path.Join(cl.MapperURL, "sector", "random"), "application/json", bytes.NewReader(raw))
 	if err != nil {
 		return space.Area{}, err
 	}

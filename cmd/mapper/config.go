@@ -4,7 +4,7 @@ import (
 	"github.com/elojah/game_02/pkg/errors"
 )
 
-// Config is web quic server structure config.
+// Config is web server structure config.
 type Config struct {
 	Address string `json:"address"`
 	Cert    string `json:"cert"`
