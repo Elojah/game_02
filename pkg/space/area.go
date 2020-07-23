@@ -11,6 +11,7 @@ import (
 type TileKind uint
 
 const (
+	// Sky REQUIRED to be 0 value, don't move it
 	Sky TileKind = iota
 	Floor
 	Box
@@ -150,10 +151,10 @@ func (a *Area) setPlatform(size, variance uint64, p Platform) {
 }
 
 type Path struct {
-	Start Platform
-	End   Platform
-	// WidthMin uint64
-	// WidthMax uint64
+	Start    Platform
+	End      Platform
+	Width    uint64
+	Variance uint64
 }
 
 type Orientation uint64
@@ -180,7 +181,7 @@ func (o Orientation) Orthogonal() Orientation {
 }
 
 // GeneratePaths generates random paths between platforms. MUST BE APPLIED on previous generated platforms on SAME AREA.
-func (a *Area) GeneratePaths(ps []Platform) {
+func (a *Area) GeneratePaths(ps []Platform, width, variance uint64) {
 	// Need at least 2 platforms to generate a path
 	if len(ps) < 2 { // nolint: gomnd
 		return
@@ -211,8 +212,10 @@ func (a *Area) GeneratePaths(ps []Platform) {
 			}
 
 			p := Path{
-				Start: ps[i],
-				End:   ps[end],
+				Start:    ps[i],
+				End:      ps[end],
+				Width:    width,
+				Variance: variance,
 			}
 			a.setPath(p)
 		}
@@ -220,7 +223,8 @@ func (a *Area) GeneratePaths(ps []Platform) {
 }
 
 // setPath actually set a random path between two platforms.
-func (a *Area) setPath(p Path) {
+// complex function, may require som refacto at some point.
+func (a *Area) setPath(p Path) { // nolint: gocognit
 	// local utility
 	abs := func(n int64) int64 {
 		if n > 0 {
@@ -303,6 +307,14 @@ func (a *Area) setPath(p Path) {
 	// loop on nSubPaths*4 to consume all sequences
 	// alternate between horizontal and vertical path for aesthetic
 	for i := int64(0); i < nSubPaths*4; i++ {
+		// compute random subpath width
+		w := p.Width + func() uint64 {
+			if p.Variance == 0 {
+				return 0
+			}
+			return uint64(rand.Int63n(int64(p.Variance)))
+		}()
+
 		if o == Horizontal {
 			// "unstack" sequence X
 			len := seqX[0]
@@ -320,6 +332,10 @@ func (a *Area) setPath(p Path) {
 				}
 
 				a.setTile(currentX, currentY, Floor, true)
+				// Add width path
+				for j := uint64(0); j < w; j++ {
+					a.setTile(currentX, currentY+int64(j), Floor, true)
+				}
 			}
 		} else {
 			// "unstack" sequence X
@@ -333,11 +349,15 @@ func (a *Area) setPath(p Path) {
 					len--
 				} else {
 					// path to the top
-					currentX--
+					currentY--
 					len++
 				}
 
 				a.setTile(currentX, currentY, Floor, true)
+				// Add width path
+				for j := uint64(0); j < w; j++ {
+					a.setTile(currentX+int64(j), currentY, Floor, true)
+				}
 			}
 		}
 

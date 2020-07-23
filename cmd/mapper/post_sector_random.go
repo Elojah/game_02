@@ -7,6 +7,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 
+	"github.com/elojah/game_02/pkg/space"
 	"github.com/elojah/game_02/pkg/space/dto"
 )
 
@@ -40,8 +41,13 @@ func (h handler) postSectorRandom(w http.ResponseWriter, r *http.Request) {
 
 	_ = ctx
 
+	// Create new area with platforms and paths
+	a, _ := space.NewArea(request.Dimensions)
+	ps := a.GeneratePlatforms(request.NPlatforms, request.PlatformSize, request.PlatformVariance)
+	a.GeneratePaths(ps, request.PathWidth, request.PathVariance)
+
 	// #Write response
-	raw, err := json.Marshal(nil)
+	raw, err := json.Marshal(a)
 	if err != nil {
 		logger.Error().Err(err).Msg("failed to marshal response")
 		http.Error(w, "failed to marshal response", http.StatusInternalServerError)

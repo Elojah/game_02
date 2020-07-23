@@ -15,7 +15,7 @@ message Sector {
 	geometry.Vec3 Dim                     = 2 [(gogoproto.nullable)   = false];
 	map<string, geometry.Vec3> Adjacents  = 3 [(gogoproto.nullable)   = false];
 
-	bytes TileMap                         = 4 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
-	repeated uint64 GraphicMap            = 5;
+	bytes TileSet                         = 4 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+	repeated uint64 TileMap               = 5;
 	repeated uint64 CollisionMap          = 6;
 }

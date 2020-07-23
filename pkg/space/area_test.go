@@ -1,7 +1,6 @@
 package space_test
 
 import (
-	"fmt"
 	"math/rand"
 	testing "testing"
 	time "time"
@@ -16,6 +15,8 @@ func TestGenerateFloor(t *testing.T) {
 		NPlatforms       uint64
 		PlatformSize     uint64
 		PlatformVariance uint64
+		PathWidth        uint64
+		PathVariance     uint64
 	}
 
 	for _, d := range []struct {
@@ -31,9 +32,11 @@ func TestGenerateFloor(t *testing.T) {
 					Y: 100,
 					Z: 1,
 				},
-				NPlatforms:       20,
-				PlatformSize:     4,
-				PlatformVariance: 0,
+				NPlatforms:       7,
+				PlatformSize:     10,
+				PlatformVariance: 5,
+				PathWidth:        2,
+				PathVariance:     2,
 			},
 		},
 	} {
@@ -42,14 +45,13 @@ func TestGenerateFloor(t *testing.T) {
 
 			actual, _ := space.NewArea(d.p.Size)                                                   // nolint: scopelint
 			ps := actual.GeneratePlatforms(d.p.NPlatforms, d.p.PlatformSize, d.p.PlatformVariance) // nolint: scopelint
-			actual.GeneratePaths(ps)
-
-			for _, line := range actual.Tiles {
-				for _, col := range line {
-					fmt.Print(col)
-				}
-				fmt.Println("")
-			}
+			actual.GeneratePaths(ps, d.p.PathWidth, d.p.PathVariance)                              // nolint: scopelint
+			// for _, line := range actual.Tiles {
+			// 	for _, col := range line {
+			// 		fmt.Print(col)
+			// 	}
+			// 	fmt.Println("")
+			// }
 		})
 	}
 }

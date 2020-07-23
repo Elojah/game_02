@@ -3,15 +3,16 @@
 
 package dto
 
-import proto "github.com/gogo/protobuf/proto"
-import fmt "fmt"
-import math "math"
-import _ "github.com/gogo/protobuf/gogoproto"
-
-import strings "strings"
-import reflect "reflect"
-
-import io "io"
+import (
+	fmt "fmt"
+	_ "github.com/gogo/protobuf/gogoproto"
+	proto "github.com/gogo/protobuf/proto"
+	io "io"
+	math "math"
+	math_bits "math/bits"
+	reflect "reflect"
+	strings "strings"
+)
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
@@ -22,19 +23,17 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type Auth struct {
-	Email                string   `protobuf:"bytes,1,opt,name=Email,json=email,proto3" json:"email"`
-	Token                string   `protobuf:"bytes,2,opt,name=Token,json=token,proto3" json:"token"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Email string `protobuf:"bytes,1,opt,name=Email,proto3" json:"email"`
+	Token string `protobuf:"bytes,2,opt,name=Token,proto3" json:"token"`
 }
 
 func (m *Auth) Reset()      { *m = Auth{} }
 func (*Auth) ProtoMessage() {}
 func (*Auth) Descriptor() ([]byte, []int) {
-	return fileDescriptor_account_6d6b685791c1a6ff, []int{0}
+	return fileDescriptor_8e28828dcb8d24f0, []int{0}
 }
 func (m *Auth) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -44,15 +43,15 @@ func (m *Auth) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Auth.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *Auth) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Auth.Merge(dst, src)
+func (m *Auth) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Auth.Merge(m, src)
 }
 func (m *Auth) XXX_Size() int {
 	return m.Size()
@@ -80,6 +79,26 @@ func (m *Auth) GetToken() string {
 func init() {
 	proto.RegisterType((*Auth)(nil), "dto.Auth")
 }
+
+func init() { proto.RegisterFile("account.proto", fileDescriptor_8e28828dcb8d24f0) }
+
+var fileDescriptor_8e28828dcb8d24f0 = []byte{
+	// 201 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x4d, 0x4c, 0x4e, 0xce,
+	0x2f, 0xcd, 0x2b, 0xd1, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x4e, 0x29, 0xc9, 0x97, 0xd2,
+	0x4d, 0xcf, 0x2c, 0xc9, 0x28, 0x4d, 0xd2, 0x4b, 0xce, 0xcf, 0xd5, 0x4f, 0xcf, 0x4f, 0xcf, 0xd7,
+	0x07, 0xcb, 0x25, 0x95, 0xa6, 0x81, 0x79, 0x60, 0x0e, 0x98, 0x05, 0xd1, 0xa3, 0xe4, 0xc1, 0xc5,
+	0xe2, 0x58, 0x5a, 0x92, 0x21, 0x24, 0xcf, 0xc5, 0xea, 0x9a, 0x9b, 0x98, 0x99, 0x23, 0xc1, 0xa8,
+	0xc0, 0xa8, 0xc1, 0xe9, 0xc4, 0xf9, 0xea, 0x9e, 0x3c, 0x6b, 0x2a, 0x48, 0x20, 0x08, 0x22, 0x0e,
+	0x52, 0x10, 0x92, 0x9f, 0x9d, 0x9a, 0x27, 0xc1, 0x84, 0x50, 0x50, 0x02, 0x12, 0x08, 0x82, 0x88,
+	0x3b, 0x39, 0x5c, 0x78, 0x28, 0xc7, 0x70, 0xe3, 0xa1, 0x1c, 0xc3, 0x87, 0x87, 0x72, 0x8c, 0x3f,
+	0x1e, 0xca, 0x31, 0x36, 0x3c, 0x92, 0x63, 0x5c, 0xf1, 0x48, 0x8e, 0x71, 0xc7, 0x23, 0x39, 0xc6,
+	0x03, 0x8f, 0xe4, 0x18, 0x4f, 0x3c, 0x92, 0x63, 0xbc, 0xf0, 0x48, 0x8e, 0xf1, 0xc1, 0x23, 0x39,
+	0xc6, 0x17, 0x8f, 0xe4, 0x18, 0x3e, 0x3c, 0x92, 0x63, 0x9c, 0xf0, 0x58, 0x8e, 0xe1, 0xc2, 0x63,
+	0x39, 0x86, 0x1b, 0x8f, 0xe5, 0x18, 0x92, 0xd8, 0xc0, 0x4e, 0x32, 0x06, 0x04, 0x00, 0x00, 0xff,
+	0xff, 0x91, 0x6b, 0x40, 0x09, 0xd7, 0x00, 0x00, 0x00,
+}
+
 func (this *Auth) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
@@ -129,7 +148,7 @@ func valueToGoStringAccount(v interface{}, typ string) string {
 func (m *Auth) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -137,33 +156,42 @@ func (m *Auth) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Auth) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Auth) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Email) > 0 {
-		dAtA[i] = 0xa
-		i++
-		i = encodeVarintAccount(dAtA, i, uint64(len(m.Email)))
-		i += copy(dAtA[i:], m.Email)
-	}
 	if len(m.Token) > 0 {
-		dAtA[i] = 0x12
-		i++
+		i -= len(m.Token)
+		copy(dAtA[i:], m.Token)
 		i = encodeVarintAccount(dAtA, i, uint64(len(m.Token)))
-		i += copy(dAtA[i:], m.Token)
+		i--
+		dAtA[i] = 0x12
 	}
-	return i, nil
+	if len(m.Email) > 0 {
+		i -= len(m.Email)
+		copy(dAtA[i:], m.Email)
+		i = encodeVarintAccount(dAtA, i, uint64(len(m.Email)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
 }
 
 func encodeVarintAccount(dAtA []byte, offset int, v uint64) int {
+	offset -= sovAccount(v)
+	base := offset
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
 		v >>= 7
 		offset++
 	}
 	dAtA[offset] = uint8(v)
-	return offset + 1
+	return base
 }
 func NewPopulatedAuth(r randyAccount, easy bool) *Auth {
 	this := &Auth{}
@@ -247,6 +275,9 @@ func encodeVarintPopulateAccount(dAtA []byte, v uint64) []byte {
 	return dAtA
 }
 func (m *Auth) Size() (n int) {
+	if m == nil {
+		return 0
+	}
 	var l int
 	_ = l
 	l = len(m.Email)
@@ -261,14 +292,7 @@ func (m *Auth) Size() (n int) {
 }
 
 func sovAccount(x uint64) (n int) {
-	for {
-		n++
-		x >>= 7
-		if x == 0 {
-			break
-		}
-	}
-	return n
+	return (math_bits.Len64(x|1) + 6) / 7
 }
 func sozAccount(x uint64) (n int) {
 	return sovAccount(uint64((x << 1) ^ uint64((int64(x) >> 63))))
@@ -307,7 +331,7 @@ func (m *Auth) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -335,7 +359,7 @@ func (m *Auth) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -345,6 +369,9 @@ func (m *Auth) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthAccount
 			}
 			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthAccount
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -364,7 +391,7 @@ func (m *Auth) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -374,6 +401,9 @@ func (m *Auth) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthAccount
 			}
 			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthAccount
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -386,6 +416,9 @@ func (m *Auth) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthAccount
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthAccount
 			}
 			if (iNdEx + skippy) > l {
@@ -403,6 +436,7 @@ func (m *Auth) Unmarshal(dAtA []byte) error {
 func skipAccount(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
+	depth := 0
 	for iNdEx < l {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
@@ -434,10 +468,8 @@ func skipAccount(dAtA []byte) (n int, err error) {
 					break
 				}
 			}
-			return iNdEx, nil
 		case 1:
 			iNdEx += 8
-			return iNdEx, nil
 		case 2:
 			var length int
 			for shift := uint(0); ; shift += 7 {
@@ -454,71 +486,34 @@ func skipAccount(dAtA []byte) (n int, err error) {
 					break
 				}
 			}
-			iNdEx += length
 			if length < 0 {
 				return 0, ErrInvalidLengthAccount
 			}
-			return iNdEx, nil
+			iNdEx += length
 		case 3:
-			for {
-				var innerWire uint64
-				var start int = iNdEx
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return 0, ErrIntOverflowAccount
-					}
-					if iNdEx >= l {
-						return 0, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					innerWire |= (uint64(b) & 0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				innerWireType := int(innerWire & 0x7)
-				if innerWireType == 4 {
-					break
-				}
-				next, err := skipAccount(dAtA[start:])
-				if err != nil {
-					return 0, err
-				}
-				iNdEx = start + next
-			}
-			return iNdEx, nil
+			depth++
 		case 4:
-			return iNdEx, nil
+			if depth == 0 {
+				return 0, ErrUnexpectedEndOfGroupAccount
+			}
+			depth--
 		case 5:
 			iNdEx += 4
-			return iNdEx, nil
 		default:
 			return 0, fmt.Errorf("proto: illegal wireType %d", wireType)
 		}
+		if iNdEx < 0 {
+			return 0, ErrInvalidLengthAccount
+		}
+		if depth == 0 {
+			return iNdEx, nil
+		}
 	}
-	panic("unreachable")
+	return 0, io.ErrUnexpectedEOF
 }
 
 var (
-	ErrInvalidLengthAccount = fmt.Errorf("proto: negative length found during unmarshaling")
-	ErrIntOverflowAccount   = fmt.Errorf("proto: integer overflow")
+	ErrInvalidLengthAccount        = fmt.Errorf("proto: negative length found during unmarshaling")
+	ErrIntOverflowAccount          = fmt.Errorf("proto: integer overflow")
+	ErrUnexpectedEndOfGroupAccount = fmt.Errorf("proto: unexpected end of group")
 )
-
-func init() { proto.RegisterFile("account.proto", fileDescriptor_account_6d6b685791c1a6ff) }
-
-var fileDescriptor_account_6d6b685791c1a6ff = []byte{
-	// 192 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x4d, 0x4c, 0x4e, 0xce,
-	0x2f, 0xcd, 0x2b, 0xd1, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x4e, 0x29, 0xc9, 0x97, 0xd2,
-	0x4d, 0xcf, 0x2c, 0xc9, 0x28, 0x4d, 0xd2, 0x4b, 0xce, 0xcf, 0xd5, 0x4f, 0xcf, 0x4f, 0xcf, 0xd7,
-	0x07, 0xcb, 0x25, 0x95, 0xa6, 0x81, 0x79, 0x60, 0x0e, 0x98, 0x05, 0xd1, 0xa3, 0xe4, 0xc1, 0xc5,
-	0xe2, 0x58, 0x5a, 0x92, 0x21, 0x24, 0xcf, 0xc5, 0xea, 0x9a, 0x9b, 0x98, 0x99, 0x23, 0xc1, 0xa8,
-	0xc0, 0xa8, 0xc1, 0xe9, 0xc4, 0xf9, 0xea, 0x9e, 0x3c, 0x6b, 0x2a, 0x48, 0x20, 0x08, 0x42, 0x81,
-	0x14, 0x84, 0xe4, 0x67, 0xa7, 0xe6, 0x49, 0x30, 0x21, 0x14, 0x94, 0x80, 0x04, 0x82, 0x20, 0x94,
-	0x93, 0xc5, 0x85, 0x87, 0x72, 0x0c, 0x37, 0x1e, 0xca, 0x31, 0x7c, 0x78, 0x28, 0xc7, 0xf8, 0xe3,
-	0xa1, 0x1c, 0x63, 0xc3, 0x23, 0x39, 0xc6, 0x15, 0x8f, 0xe4, 0x18, 0x77, 0x3c, 0x92, 0x63, 0x3c,
-	0xf0, 0x48, 0x8e, 0xf1, 0xc4, 0x23, 0x39, 0xc6, 0x0b, 0x8f, 0xe4, 0x18, 0x1f, 0x3c, 0x92, 0x63,
-	0x7c, 0xf1, 0x48, 0x8e, 0xe1, 0xc3, 0x23, 0x39, 0xc6, 0x09, 0x8f, 0xe5, 0x18, 0x92, 0xd8, 0xc0,
-	0x4e, 0x31, 0x06, 0x04, 0x00, 0x00, 0xff, 0xff, 0x04, 0x80, 0xeb, 0x52, 0xcf, 0x00, 0x00, 0x00,
-}

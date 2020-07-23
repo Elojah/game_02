@@ -3,18 +3,18 @@
 
 package space
 
-import proto "github.com/gogo/protobuf/proto"
-import fmt "fmt"
-import math "math"
-import geometry "github.com/elojah/game_02/pkg/geometry"
-import _ "github.com/gogo/protobuf/gogoproto"
-
-import github_com_elojah_game_02_pkg_ulid "github.com/elojah/game_02/pkg/ulid"
-
-import strings "strings"
-import reflect "reflect"
-
-import io "io"
+import (
+	fmt "fmt"
+	geometry "github.com/elojah/game_02/pkg/geometry"
+	github_com_elojah_game_02_pkg_ulid "github.com/elojah/game_02/pkg/ulid"
+	_ "github.com/gogo/protobuf/gogoproto"
+	proto "github.com/gogo/protobuf/proto"
+	io "io"
+	math "math"
+	math_bits "math/bits"
+	reflect "reflect"
+	strings "strings"
+)
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
@@ -25,21 +25,19 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type Coordinate struct {
-	Position             geometry.Vec3                         `protobuf:"bytes,1,opt,name=Position,json=position" json:"Position"`
-	Direction            geometry.Vec3                         `protobuf:"bytes,2,opt,name=Direction,json=direction" json:"Direction"`
-	TS                   uint64                                `protobuf:"varint,3,opt,name=TS,json=tS,proto3" json:"TS,omitempty"`
-	EntityID             github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,4,opt,name=EntityID,json=entityID,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"EntityID"`
-	XXX_NoUnkeyedLiteral struct{}                              `json:"-"`
-	XXX_sizecache        int32                                 `json:"-"`
+	Position  geometry.Vec3                         `protobuf:"bytes,1,opt,name=Position,proto3" json:"Position"`
+	Direction geometry.Vec3                         `protobuf:"bytes,2,opt,name=Direction,proto3" json:"Direction"`
+	TS        uint64                                `protobuf:"varint,3,opt,name=TS,proto3" json:"TS,omitempty"`
+	EntityID  github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,4,opt,name=EntityID,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"EntityID"`
 }
 
 func (m *Coordinate) Reset()      { *m = Coordinate{} }
 func (*Coordinate) ProtoMessage() {}
 func (*Coordinate) Descriptor() ([]byte, []int) {
-	return fileDescriptor_coordinate_288cf16aae7f5e50, []int{0}
+	return fileDescriptor_11af1b257e634701, []int{0}
 }
 func (m *Coordinate) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -49,15 +47,15 @@ func (m *Coordinate) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Coordinate.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *Coordinate) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Coordinate.Merge(dst, src)
+func (m *Coordinate) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Coordinate.Merge(m, src)
 }
 func (m *Coordinate) XXX_Size() int {
 	return m.Size()
@@ -92,6 +90,33 @@ func (m *Coordinate) GetTS() uint64 {
 func init() {
 	proto.RegisterType((*Coordinate)(nil), "space.Coordinate")
 }
+
+func init() { proto.RegisterFile("coordinate.proto", fileDescriptor_11af1b257e634701) }
+
+var fileDescriptor_11af1b257e634701 = []byte{
+	// 305 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x48, 0xce, 0xcf, 0x2f,
+	0x4a, 0xc9, 0xcc, 0x4b, 0x2c, 0x49, 0xd5, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x2d, 0x2e,
+	0x48, 0x4c, 0x4e, 0x95, 0xd2, 0x4d, 0xcf, 0x2c, 0xc9, 0x28, 0x4d, 0xd2, 0x4b, 0xce, 0xcf, 0xd5,
+	0x4f, 0xcf, 0x4f, 0xcf, 0xd7, 0x07, 0xcb, 0x26, 0x95, 0xa6, 0x81, 0x79, 0x60, 0x0e, 0x98, 0x05,
+	0xd1, 0x25, 0x65, 0x8a, 0xa4, 0x3c, 0x35, 0x27, 0x3f, 0x2b, 0x31, 0x43, 0x3f, 0x3d, 0x31, 0x37,
+	0x35, 0xde, 0xc0, 0x48, 0xbf, 0x20, 0x3b, 0x5d, 0x3f, 0x3d, 0x35, 0x3f, 0x37, 0xb5, 0xa4, 0xa8,
+	0x12, 0xce, 0x80, 0x68, 0x53, 0x3a, 0xcb, 0xc8, 0xc5, 0xe5, 0x0c, 0x77, 0x81, 0x90, 0x01, 0x17,
+	0x47, 0x40, 0x7e, 0x71, 0x66, 0x49, 0x66, 0x7e, 0x9e, 0x04, 0xa3, 0x02, 0xa3, 0x06, 0xb7, 0x11,
+	0x9f, 0x1e, 0x5c, 0x47, 0x58, 0x6a, 0xb2, 0xb1, 0x13, 0xcb, 0x89, 0x7b, 0xf2, 0x0c, 0x41, 0x70,
+	0x55, 0x42, 0x46, 0x5c, 0x9c, 0x2e, 0x99, 0x45, 0xa9, 0xc9, 0x60, 0x2d, 0x4c, 0x78, 0xb4, 0x20,
+	0x94, 0x09, 0xf1, 0x71, 0x31, 0x85, 0x04, 0x4b, 0x30, 0x2b, 0x30, 0x6a, 0xb0, 0x04, 0x31, 0x85,
+	0x04, 0x0b, 0x79, 0x72, 0x71, 0xb8, 0xe6, 0x95, 0x64, 0x96, 0x54, 0x7a, 0xba, 0x48, 0xb0, 0x28,
+	0x30, 0x6a, 0xf0, 0x38, 0xe9, 0x82, 0xb4, 0xdc, 0xba, 0x27, 0xaf, 0x8a, 0xdf, 0x57, 0xa5, 0x39,
+	0x99, 0x29, 0x7a, 0x9e, 0x2e, 0x41, 0x70, 0xed, 0x4e, 0x0e, 0x17, 0x1e, 0xca, 0x31, 0xdc, 0x78,
+	0x28, 0xc7, 0xf0, 0xe1, 0xa1, 0x1c, 0xe3, 0x8f, 0x87, 0x72, 0x8c, 0x0d, 0x8f, 0xe4, 0x18, 0x57,
+	0x3c, 0x92, 0x63, 0xdc, 0xf1, 0x48, 0x8e, 0xf1, 0xc0, 0x23, 0x39, 0xc6, 0x13, 0x8f, 0xe4, 0x18,
+	0x2f, 0x3c, 0x92, 0x63, 0x7c, 0xf0, 0x48, 0x8e, 0xf1, 0xc5, 0x23, 0x39, 0x86, 0x0f, 0x8f, 0xe4,
+	0x18, 0x27, 0x3c, 0x96, 0x63, 0xb8, 0xf0, 0x58, 0x8e, 0xe1, 0xc6, 0x63, 0x39, 0x86, 0x24, 0x36,
+	0x70, 0xc0, 0x18, 0x03, 0x02, 0x00, 0x00, 0xff, 0xff, 0x06, 0xa0, 0x37, 0x60, 0x99, 0x01, 0x00,
+	0x00,
+}
+
 func (this *Coordinate) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
@@ -149,7 +174,7 @@ func valueToGoStringCoordinate(v interface{}, typ string) string {
 func (m *Coordinate) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -157,50 +182,63 @@ func (m *Coordinate) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Coordinate) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Coordinate) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintCoordinate(dAtA, i, uint64(m.Position.Size()))
-	n1, err := m.Position.MarshalTo(dAtA[i:])
-	if err != nil {
-		return 0, err
+	{
+		size := m.EntityID.Size()
+		i -= size
+		if _, err := m.EntityID.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintCoordinate(dAtA, i, uint64(size))
 	}
-	i += n1
-	dAtA[i] = 0x12
-	i++
-	i = encodeVarintCoordinate(dAtA, i, uint64(m.Direction.Size()))
-	n2, err := m.Direction.MarshalTo(dAtA[i:])
-	if err != nil {
-		return 0, err
-	}
-	i += n2
-	if m.TS != 0 {
-		dAtA[i] = 0x18
-		i++
-		i = encodeVarintCoordinate(dAtA, i, uint64(m.TS))
-	}
+	i--
 	dAtA[i] = 0x22
-	i++
-	i = encodeVarintCoordinate(dAtA, i, uint64(m.EntityID.Size()))
-	n3, err := m.EntityID.MarshalTo(dAtA[i:])
-	if err != nil {
-		return 0, err
+	if m.TS != 0 {
+		i = encodeVarintCoordinate(dAtA, i, uint64(m.TS))
+		i--
+		dAtA[i] = 0x18
 	}
-	i += n3
-	return i, nil
+	{
+		size, err := m.Direction.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintCoordinate(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0x12
+	{
+		size, err := m.Position.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintCoordinate(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
 }
 
 func encodeVarintCoordinate(dAtA []byte, offset int, v uint64) int {
+	offset -= sovCoordinate(v)
+	base := offset
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
 		v >>= 7
 		offset++
 	}
 	dAtA[offset] = uint8(v)
-	return offset + 1
+	return base
 }
 func NewPopulatedCoordinate(r randyCoordinate, easy bool) *Coordinate {
 	this := &Coordinate{}
@@ -289,6 +327,9 @@ func encodeVarintPopulateCoordinate(dAtA []byte, v uint64) []byte {
 	return dAtA
 }
 func (m *Coordinate) Size() (n int) {
+	if m == nil {
+		return 0
+	}
 	var l int
 	_ = l
 	l = m.Position.Size()
@@ -304,14 +345,7 @@ func (m *Coordinate) Size() (n int) {
 }
 
 func sovCoordinate(x uint64) (n int) {
-	for {
-		n++
-		x >>= 7
-		if x == 0 {
-			break
-		}
-	}
-	return n
+	return (math_bits.Len64(x|1) + 6) / 7
 }
 func sozCoordinate(x uint64) (n int) {
 	return sovCoordinate(uint64((x << 1) ^ uint64((int64(x) >> 63))))
@@ -321,8 +355,8 @@ func (this *Coordinate) String() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&Coordinate{`,
-		`Position:` + strings.Replace(strings.Replace(this.Position.String(), "Vec3", "geometry.Vec3", 1), `&`, ``, 1) + `,`,
-		`Direction:` + strings.Replace(strings.Replace(this.Direction.String(), "Vec3", "geometry.Vec3", 1), `&`, ``, 1) + `,`,
+		`Position:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.Position), "Vec3", "geometry.Vec3", 1), `&`, ``, 1) + `,`,
+		`Direction:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.Direction), "Vec3", "geometry.Vec3", 1), `&`, ``, 1) + `,`,
 		`TS:` + fmt.Sprintf("%v", this.TS) + `,`,
 		`EntityID:` + fmt.Sprintf("%v", this.EntityID) + `,`,
 		`}`,
@@ -352,7 +386,7 @@ func (m *Coordinate) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -380,7 +414,7 @@ func (m *Coordinate) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= (int(b) & 0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -389,6 +423,9 @@ func (m *Coordinate) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthCoordinate
 			}
 			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCoordinate
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -410,7 +447,7 @@ func (m *Coordinate) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= (int(b) & 0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -419,6 +456,9 @@ func (m *Coordinate) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthCoordinate
 			}
 			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCoordinate
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -440,7 +480,7 @@ func (m *Coordinate) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.TS |= (uint64(b) & 0x7F) << shift
+				m.TS |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -459,7 +499,7 @@ func (m *Coordinate) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				byteLen |= (int(b) & 0x7F) << shift
+				byteLen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -468,6 +508,9 @@ func (m *Coordinate) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthCoordinate
 			}
 			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthCoordinate
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -482,6 +525,9 @@ func (m *Coordinate) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthCoordinate
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthCoordinate
 			}
 			if (iNdEx + skippy) > l {
@@ -499,6 +545,7 @@ func (m *Coordinate) Unmarshal(dAtA []byte) error {
 func skipCoordinate(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
+	depth := 0
 	for iNdEx < l {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
@@ -530,10 +577,8 @@ func skipCoordinate(dAtA []byte) (n int, err error) {
 					break
 				}
 			}
-			return iNdEx, nil
 		case 1:
 			iNdEx += 8
-			return iNdEx, nil
 		case 2:
 			var length int
 			for shift := uint(0); ; shift += 7 {
@@ -550,78 +595,34 @@ func skipCoordinate(dAtA []byte) (n int, err error) {
 					break
 				}
 			}
-			iNdEx += length
 			if length < 0 {
 				return 0, ErrInvalidLengthCoordinate
 			}
-			return iNdEx, nil
+			iNdEx += length
 		case 3:
-			for {
-				var innerWire uint64
-				var start int = iNdEx
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return 0, ErrIntOverflowCoordinate
-					}
-					if iNdEx >= l {
-						return 0, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					innerWire |= (uint64(b) & 0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				innerWireType := int(innerWire & 0x7)
-				if innerWireType == 4 {
-					break
-				}
-				next, err := skipCoordinate(dAtA[start:])
-				if err != nil {
-					return 0, err
-				}
-				iNdEx = start + next
-			}
-			return iNdEx, nil
+			depth++
 		case 4:
-			return iNdEx, nil
+			if depth == 0 {
+				return 0, ErrUnexpectedEndOfGroupCoordinate
+			}
+			depth--
 		case 5:
 			iNdEx += 4
-			return iNdEx, nil
 		default:
 			return 0, fmt.Errorf("proto: illegal wireType %d", wireType)
 		}
+		if iNdEx < 0 {
+			return 0, ErrInvalidLengthCoordinate
+		}
+		if depth == 0 {
+			return iNdEx, nil
+		}
 	}
-	panic("unreachable")
+	return 0, io.ErrUnexpectedEOF
 }
 
 var (
-	ErrInvalidLengthCoordinate = fmt.Errorf("proto: negative length found during unmarshaling")
-	ErrIntOverflowCoordinate   = fmt.Errorf("proto: integer overflow")
+	ErrInvalidLengthCoordinate        = fmt.Errorf("proto: negative length found during unmarshaling")
+	ErrIntOverflowCoordinate          = fmt.Errorf("proto: integer overflow")
+	ErrUnexpectedEndOfGroupCoordinate = fmt.Errorf("proto: unexpected end of group")
 )
-
-func init() { proto.RegisterFile("coordinate.proto", fileDescriptor_coordinate_288cf16aae7f5e50) }
-
-var fileDescriptor_coordinate_288cf16aae7f5e50 = []byte{
-	// 302 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x48, 0xce, 0xcf, 0x2f,
-	0x4a, 0xc9, 0xcc, 0x4b, 0x2c, 0x49, 0xd5, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x2d, 0x2e,
-	0x48, 0x4c, 0x4e, 0x95, 0xd2, 0x4d, 0xcf, 0x2c, 0xc9, 0x28, 0x4d, 0xd2, 0x4b, 0xce, 0xcf, 0xd5,
-	0x4f, 0xcf, 0x4f, 0xcf, 0xd7, 0x07, 0xcb, 0x26, 0x95, 0xa6, 0x81, 0x79, 0x60, 0x0e, 0x98, 0x05,
-	0xd1, 0x25, 0x65, 0x8a, 0xa4, 0x3c, 0x35, 0x27, 0x3f, 0x2b, 0x31, 0x43, 0x3f, 0x3d, 0x31, 0x37,
-	0x35, 0xde, 0xc0, 0x48, 0xbf, 0x20, 0x3b, 0x5d, 0x3f, 0x3d, 0x35, 0x3f, 0x37, 0xb5, 0xa4, 0xa8,
-	0x12, 0xce, 0x80, 0x68, 0x53, 0x3a, 0xcb, 0xc8, 0xc5, 0xe5, 0x0c, 0x77, 0x81, 0x90, 0x01, 0x17,
-	0x47, 0x40, 0x7e, 0x71, 0x66, 0x49, 0x66, 0x7e, 0x9e, 0x04, 0xa3, 0x02, 0xa3, 0x06, 0xb7, 0x11,
-	0x9f, 0x1e, 0x5c, 0x47, 0x58, 0x6a, 0xb2, 0xb1, 0x13, 0xcb, 0x89, 0x7b, 0xf2, 0x0c, 0x41, 0x1c,
-	0x05, 0x50, 0x55, 0x42, 0x46, 0x5c, 0x9c, 0x2e, 0x99, 0x45, 0xa9, 0xc9, 0x60, 0x2d, 0x4c, 0x78,
-	0xb4, 0x70, 0xa6, 0xc0, 0x94, 0x09, 0xf1, 0x71, 0x31, 0x85, 0x04, 0x4b, 0x30, 0x2b, 0x30, 0x6a,
-	0xb0, 0x04, 0x31, 0x95, 0x04, 0x0b, 0x79, 0x72, 0x71, 0xb8, 0xe6, 0x95, 0x64, 0x96, 0x54, 0x7a,
-	0xba, 0x48, 0xb0, 0x28, 0x30, 0x6a, 0xf0, 0x38, 0xe9, 0x82, 0xb4, 0xdc, 0xba, 0x27, 0xaf, 0x8a,
-	0xdf, 0x57, 0xa5, 0x39, 0x99, 0x29, 0x7a, 0x9e, 0x2e, 0x41, 0x1c, 0xa9, 0x50, 0xed, 0x4e, 0x16,
-	0x17, 0x1e, 0xca, 0x31, 0xdc, 0x78, 0x28, 0xc7, 0xf0, 0xe1, 0xa1, 0x1c, 0xe3, 0x8f, 0x87, 0x72,
-	0x8c, 0x0d, 0x8f, 0xe4, 0x18, 0x57, 0x3c, 0x92, 0x63, 0xdc, 0xf1, 0x48, 0x8e, 0xf1, 0xc0, 0x23,
-	0x39, 0xc6, 0x13, 0x8f, 0xe4, 0x18, 0x2f, 0x3c, 0x92, 0x63, 0x7c, 0xf0, 0x48, 0x8e, 0xf1, 0xc5,
-	0x23, 0x39, 0x86, 0x0f, 0x8f, 0xe4, 0x18, 0x27, 0x3c, 0x96, 0x63, 0x48, 0x62, 0x03, 0x07, 0x88,
-	0x31, 0x20, 0x00, 0x00, 0xff, 0xff, 0xce, 0xe4, 0x31, 0x9b, 0x91, 0x01, 0x00, 0x00,
-}

@@ -3,18 +3,18 @@
 
 package entity
 
-import proto "github.com/gogo/protobuf/proto"
-import fmt "fmt"
-import math "math"
-import geometry "github.com/elojah/game_02/pkg/geometry"
-import _ "github.com/gogo/protobuf/gogoproto"
-
-import github_com_elojah_game_02_pkg_ulid "github.com/elojah/game_02/pkg/ulid"
-
-import strings "strings"
-import reflect "reflect"
-
-import io "io"
+import (
+	fmt "fmt"
+	geometry "github.com/elojah/game_02/pkg/geometry"
+	github_com_elojah_game_02_pkg_ulid "github.com/elojah/game_02/pkg/ulid"
+	_ "github.com/gogo/protobuf/gogoproto"
+	proto "github.com/gogo/protobuf/proto"
+	io "io"
+	math "math"
+	math_bits "math/bits"
+	reflect "reflect"
+	strings "strings"
+)
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
@@ -25,19 +25,17 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type Cast struct {
-	AbilityID            github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,1,opt,name=AbilityID,json=abilityID,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"AbilityID"`
-	TS                   uint64                                `protobuf:"varint,2,opt,name=TS,json=tS,proto3" json:"TS,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}                              `json:"-"`
-	XXX_sizecache        int32                                 `json:"-"`
+	AbilityID github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,1,opt,name=AbilityID,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"AbilityID"`
+	TS        uint64                                `protobuf:"varint,2,opt,name=TS,proto3" json:"TS,omitempty"`
 }
 
 func (m *Cast) Reset()      { *m = Cast{} }
 func (*Cast) ProtoMessage() {}
 func (*Cast) Descriptor() ([]byte, []int) {
-	return fileDescriptor_entity_34a0184a9acbdcf7, []int{0}
+	return fileDescriptor_cf50d946d740d100, []int{0}
 }
 func (m *Cast) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -47,15 +45,15 @@ func (m *Cast) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Cast.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *Cast) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Cast.Merge(dst, src)
+func (m *Cast) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Cast.Merge(m, src)
 }
 func (m *Cast) XXX_Size() int {
 	return m.Size()
@@ -75,37 +73,35 @@ func (m *Cast) GetTS() uint64 {
 
 type E struct {
 	// #Identifiers
-	ID         github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,1,opt,name=ID,json=iD,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"ID"`
-	TemplateID github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,2,opt,name=TemplateID,json=templateID,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"TemplateID"`
-	Name       string                                `protobuf:"bytes,3,opt,name=Name,json=name,proto3" json:"Name,omitempty"`
+	ID         github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,1,opt,name=ID,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"ID"`
+	TemplateID github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,2,opt,name=TemplateID,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"TemplateID"`
+	Name       string                                `protobuf:"bytes,3,opt,name=Name,proto3" json:"Name,omitempty"`
 	// owner is nil if entity is controlled by player, else it will be pc entity id.
-	OwnerID github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,4,opt,name=OwnerID,json=ownerID,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"OwnerID"`
+	OwnerID github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,4,opt,name=OwnerID,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"OwnerID"`
 	// #Stats
-	Dead  bool   `protobuf:"varint,5,opt,name=Dead,json=dead,proto3" json:"Dead,omitempty"`
-	HP    uint64 `protobuf:"varint,6,opt,name=HP,json=hP,proto3" json:"HP,omitempty"`
-	MaxHP uint64 `protobuf:"varint,7,opt,name=MaxHP,json=maxHP,proto3" json:"MaxHP,omitempty"`
-	MP    uint64 `protobuf:"varint,8,opt,name=MP,json=mP,proto3" json:"MP,omitempty"`
-	MaxMP uint64 `protobuf:"varint,9,opt,name=MaxMP,json=maxMP,proto3" json:"MaxMP,omitempty"`
+	Dead  bool   `protobuf:"varint,5,opt,name=Dead,proto3" json:"Dead,omitempty"`
+	HP    uint64 `protobuf:"varint,6,opt,name=HP,proto3" json:"HP,omitempty"`
+	MaxHP uint64 `protobuf:"varint,7,opt,name=MaxHP,proto3" json:"MaxHP,omitempty"`
+	MP    uint64 `protobuf:"varint,8,opt,name=MP,proto3" json:"MP,omitempty"`
+	MaxMP uint64 `protobuf:"varint,9,opt,name=MaxMP,proto3" json:"MaxMP,omitempty"`
 	// #Spatial & graphic parameters
-	Direction geometry.Vec3                         `protobuf:"bytes,10,opt,name=Direction,json=direction" json:"Direction"`
-	Position  geometry.Vec3                         `protobuf:"bytes,11,opt,name=Position,json=position" json:"Position"`
-	Cast      *Cast                                 `protobuf:"bytes,12,opt,name=Cast,json=cast" json:"Cast,omitempty"`
-	AssetID   github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,13,opt,name=AssetID,json=assetID,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"AssetID"`
+	Direction geometry.Vec3                         `protobuf:"bytes,10,opt,name=Direction,proto3" json:"Direction"`
+	Position  geometry.Vec3                         `protobuf:"bytes,11,opt,name=Position,proto3" json:"Position"`
+	Cast      *Cast                                 `protobuf:"bytes,12,opt,name=Cast,proto3" json:"Cast,omitempty"`
+	AssetID   github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,13,opt,name=AssetID,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"AssetID"`
 	// #In game external ids
-	InventoryID github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,14,opt,name=InventoryID,json=inventoryID,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"InventoryID"`
-	SpawnID     github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,15,opt,name=SpawnID,json=spawnID,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"SpawnID"`
+	InventoryID github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,14,opt,name=InventoryID,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"InventoryID"`
+	SpawnID     github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,15,opt,name=SpawnID,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"SpawnID"`
 	// Timestamp of entity state.
-	TS uint64 `protobuf:"varint,16,opt,name=TS,json=tS,proto3" json:"TS,omitempty"`
+	TS uint64 `protobuf:"varint,16,opt,name=TS,proto3" json:"TS,omitempty"`
 	// State is a technical requirement for redis set, each "state" of entity must be unique.
-	State                github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,17,opt,name=State,json=state,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"State"`
-	XXX_NoUnkeyedLiteral struct{}                              `json:"-"`
-	XXX_sizecache        int32                                 `json:"-"`
+	State github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,17,opt,name=State,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"State"`
 }
 
 func (m *E) Reset()      { *m = E{} }
 func (*E) ProtoMessage() {}
 func (*E) Descriptor() ([]byte, []int) {
-	return fileDescriptor_entity_34a0184a9acbdcf7, []int{1}
+	return fileDescriptor_cf50d946d740d100, []int{1}
 }
 func (m *E) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -115,15 +111,15 @@ func (m *E) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_E.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *E) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_E.Merge(dst, src)
+func (m *E) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_E.Merge(m, src)
 }
 func (m *E) XXX_Size() int {
 	return m.Size()
@@ -208,6 +204,45 @@ func init() {
 	proto.RegisterType((*Cast)(nil), "entity.Cast")
 	proto.RegisterType((*E)(nil), "entity.E")
 }
+
+func init() { proto.RegisterFile("entity.proto", fileDescriptor_cf50d946d740d100) }
+
+var fileDescriptor_cf50d946d740d100 = []byte{
+	// 504 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x93, 0xbf, 0x6f, 0xd3, 0x40,
+	0x14, 0xc7, 0xfd, 0x82, 0xf3, 0xeb, 0x12, 0x02, 0x9c, 0x18, 0x4e, 0x1d, 0xae, 0x56, 0x25, 0x90,
+	0x97, 0xda, 0x55, 0x2a, 0x46, 0x24, 0x9a, 0x1a, 0x35, 0x16, 0x32, 0xb5, 0x9c, 0x88, 0x15, 0x39,
+	0xe9, 0xe1, 0x1a, 0x62, 0x5f, 0xe4, 0x5c, 0x28, 0xd9, 0xf8, 0x13, 0x18, 0xf8, 0x23, 0xf8, 0x13,
+	0x18, 0x19, 0x3b, 0x66, 0xac, 0x18, 0x2a, 0xe2, 0x2c, 0x8c, 0x1d, 0x19, 0x91, 0xcf, 0x49, 0x9a,
+	0xa9, 0x52, 0xbd, 0xbd, 0xf7, 0xfc, 0xfd, 0x7e, 0xf4, 0xf4, 0xfc, 0x3d, 0xd4, 0x64, 0xb1, 0x08,
+	0xc5, 0xcc, 0x18, 0x27, 0x5c, 0x70, 0x5c, 0xc9, 0xbb, 0x9d, 0xfd, 0x20, 0x14, 0xe7, 0xd3, 0x81,
+	0x31, 0xe4, 0x91, 0x19, 0xf0, 0x80, 0x9b, 0xf2, 0xf3, 0x60, 0xfa, 0x41, 0x76, 0xb2, 0x91, 0x55,
+	0x6e, 0xdb, 0x79, 0xb1, 0x25, 0x67, 0x23, 0xfe, 0xd1, 0x3f, 0x37, 0x03, 0x3f, 0x62, 0xef, 0x0f,
+	0xda, 0xe6, 0xf8, 0x53, 0x60, 0x06, 0x8c, 0x47, 0x4c, 0x24, 0xb3, 0x4d, 0x91, 0xdb, 0xf6, 0x86,
+	0x48, 0x3d, 0xf6, 0x27, 0x02, 0xbf, 0x41, 0xf5, 0xa3, 0x41, 0x38, 0x0a, 0xc5, 0xcc, 0xb6, 0x08,
+	0x68, 0xa0, 0x37, 0x3b, 0xfb, 0x97, 0xd7, 0xbb, 0xca, 0xef, 0xeb, 0xdd, 0x67, 0x77, 0x93, 0xa7,
+	0xa3, 0xf0, 0xcc, 0xb0, 0x2d, 0xef, 0xd6, 0x8f, 0x5b, 0xa8, 0xd4, 0xef, 0x91, 0x92, 0x06, 0xba,
+	0xea, 0x95, 0xfa, 0xbd, 0xbd, 0xef, 0x15, 0x04, 0xaf, 0xf1, 0x4b, 0x54, 0x2a, 0xca, 0x2e, 0xd9,
+	0x16, 0x76, 0x10, 0xea, 0xb3, 0x68, 0x3c, 0xf2, 0x05, 0xb3, 0x2d, 0x09, 0xbf, 0x37, 0x66, 0x0b,
+	0x80, 0x31, 0x52, 0xdf, 0xfa, 0x11, 0x23, 0x0f, 0x34, 0xd0, 0xeb, 0x9e, 0xac, 0xf1, 0x09, 0xaa,
+	0x9e, 0x5e, 0xc4, 0x2c, 0xb1, 0x2d, 0xa2, 0x16, 0xe1, 0xaf, 0xdd, 0x19, 0xdc, 0x62, 0xfe, 0x19,
+	0x29, 0x6b, 0xa0, 0xd7, 0x3c, 0x59, 0x67, 0x47, 0xe9, 0xba, 0xa4, 0x92, 0x1f, 0xa5, 0xeb, 0xe2,
+	0xa7, 0xa8, 0xec, 0xf8, 0x5f, 0xba, 0x2e, 0xa9, 0xca, 0x51, 0xde, 0x64, 0x2a, 0xc7, 0x25, 0xb5,
+	0x5c, 0xe5, 0xac, 0x55, 0x8e, 0x4b, 0xea, 0x1b, 0x95, 0xe3, 0xe2, 0x36, 0xaa, 0x5b, 0x61, 0xc2,
+	0x86, 0x22, 0xe4, 0x31, 0x41, 0x1a, 0xe8, 0x8d, 0x76, 0xcb, 0xd8, 0xfc, 0xd9, 0x77, 0x6c, 0x78,
+	0xd8, 0x51, 0xb3, 0xd5, 0xbd, 0x5b, 0x19, 0x3e, 0x40, 0x35, 0x97, 0x4f, 0x42, 0x69, 0x69, 0xdc,
+	0x61, 0xd9, 0xa8, 0xf0, 0xf3, 0x3c, 0x1b, 0xa4, 0x29, 0xd5, 0x4d, 0x63, 0x15, 0xd3, 0x6c, 0x26,
+	0xb5, 0xe0, 0xe5, 0xd9, 0x39, 0x41, 0xd5, 0xa3, 0xc9, 0x84, 0x09, 0xdb, 0x22, 0x0f, 0x0b, 0x9d,
+	0x6d, 0xe5, 0xc6, 0xa7, 0xa8, 0x61, 0xc7, 0x9f, 0x59, 0x2c, 0x78, 0x92, 0xc5, 0xb0, 0x55, 0x04,
+	0xb6, 0x4d, 0xc8, 0x36, 0xeb, 0x8d, 0xfd, 0x8b, 0xd8, 0xb6, 0xc8, 0xa3, 0x42, 0x9b, 0xad, 0xdc,
+	0xab, 0x44, 0x3f, 0x5e, 0x27, 0x1a, 0x1f, 0xa3, 0x72, 0x4f, 0xf8, 0x82, 0x91, 0x27, 0x45, 0xb0,
+	0xb9, 0xb7, 0xf3, 0x6a, 0xbe, 0xa0, 0xca, 0xd5, 0x82, 0x2a, 0x37, 0x0b, 0x0a, 0xff, 0x16, 0x14,
+	0xbe, 0xa6, 0x14, 0x7e, 0xa4, 0x14, 0x7e, 0xa6, 0x14, 0x7e, 0xa5, 0x14, 0x2e, 0x53, 0x0a, 0xf3,
+	0x94, 0xc2, 0x9f, 0x94, 0xc2, 0xdf, 0x94, 0x2a, 0x37, 0x29, 0x85, 0x6f, 0x4b, 0xaa, 0xcc, 0x97,
+	0x54, 0xb9, 0x5a, 0x52, 0x65, 0x50, 0x91, 0x8f, 0xf8, 0xf0, 0x7f, 0x00, 0x00, 0x00, 0xff, 0xff,
+	0x34, 0x5d, 0xf5, 0xe2, 0x42, 0x04, 0x00, 0x00,
+}
+
 func (this *Cast) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
@@ -357,7 +392,7 @@ func valueToGoStringEntity(v interface{}, typ string) string {
 func (m *Cast) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -365,30 +400,37 @@ func (m *Cast) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Cast) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Cast) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.AbilityID.Size()))
-	n1, err := m.AbilityID.MarshalTo(dAtA[i:])
-	if err != nil {
-		return 0, err
-	}
-	i += n1
 	if m.TS != 0 {
-		dAtA[i] = 0x10
-		i++
 		i = encodeVarintEntity(dAtA, i, uint64(m.TS))
+		i--
+		dAtA[i] = 0x10
 	}
-	return i, nil
+	{
+		size := m.AbilityID.Size()
+		i -= size
+		if _, err := m.AbilityID.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintEntity(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
 }
 
 func (m *E) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -396,148 +438,176 @@ func (m *E) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *E) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *E) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.ID.Size()))
-	n2, err := m.ID.MarshalTo(dAtA[i:])
-	if err != nil {
-		return 0, err
+	{
+		size := m.State.Size()
+		i -= size
+		if _, err := m.State.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintEntity(dAtA, i, uint64(size))
 	}
-	i += n2
-	dAtA[i] = 0x12
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.TemplateID.Size()))
-	n3, err := m.TemplateID.MarshalTo(dAtA[i:])
-	if err != nil {
-		return 0, err
+	i--
+	dAtA[i] = 0x1
+	i--
+	dAtA[i] = 0x8a
+	if m.TS != 0 {
+		i = encodeVarintEntity(dAtA, i, uint64(m.TS))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0x80
 	}
-	i += n3
-	if len(m.Name) > 0 {
-		dAtA[i] = 0x1a
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Name)))
-		i += copy(dAtA[i:], m.Name)
+	{
+		size := m.SpawnID.Size()
+		i -= size
+		if _, err := m.SpawnID.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintEntity(dAtA, i, uint64(size))
 	}
-	dAtA[i] = 0x22
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.OwnerID.Size()))
-	n4, err := m.OwnerID.MarshalTo(dAtA[i:])
-	if err != nil {
-		return 0, err
+	i--
+	dAtA[i] = 0x7a
+	{
+		size := m.InventoryID.Size()
+		i -= size
+		if _, err := m.InventoryID.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintEntity(dAtA, i, uint64(size))
 	}
-	i += n4
+	i--
+	dAtA[i] = 0x72
+	{
+		size := m.AssetID.Size()
+		i -= size
+		if _, err := m.AssetID.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintEntity(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0x6a
+	if m.Cast != nil {
+		{
+			size, err := m.Cast.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x62
+	}
+	{
+		size, err := m.Position.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintEntity(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0x5a
+	{
+		size, err := m.Direction.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintEntity(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0x52
+	if m.MaxMP != 0 {
+		i = encodeVarintEntity(dAtA, i, uint64(m.MaxMP))
+		i--
+		dAtA[i] = 0x48
+	}
+	if m.MP != 0 {
+		i = encodeVarintEntity(dAtA, i, uint64(m.MP))
+		i--
+		dAtA[i] = 0x40
+	}
+	if m.MaxHP != 0 {
+		i = encodeVarintEntity(dAtA, i, uint64(m.MaxHP))
+		i--
+		dAtA[i] = 0x38
+	}
+	if m.HP != 0 {
+		i = encodeVarintEntity(dAtA, i, uint64(m.HP))
+		i--
+		dAtA[i] = 0x30
+	}
 	if m.Dead {
-		dAtA[i] = 0x28
-		i++
+		i--
 		if m.Dead {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i++
+		i--
+		dAtA[i] = 0x28
 	}
-	if m.HP != 0 {
-		dAtA[i] = 0x30
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.HP))
-	}
-	if m.MaxHP != 0 {
-		dAtA[i] = 0x38
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.MaxHP))
-	}
-	if m.MP != 0 {
-		dAtA[i] = 0x40
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.MP))
-	}
-	if m.MaxMP != 0 {
-		dAtA[i] = 0x48
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.MaxMP))
-	}
-	dAtA[i] = 0x52
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.Direction.Size()))
-	n5, err := m.Direction.MarshalTo(dAtA[i:])
-	if err != nil {
-		return 0, err
-	}
-	i += n5
-	dAtA[i] = 0x5a
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.Position.Size()))
-	n6, err := m.Position.MarshalTo(dAtA[i:])
-	if err != nil {
-		return 0, err
-	}
-	i += n6
-	if m.Cast != nil {
-		dAtA[i] = 0x62
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Cast.Size()))
-		n7, err := m.Cast.MarshalTo(dAtA[i:])
-		if err != nil {
+	{
+		size := m.OwnerID.Size()
+		i -= size
+		if _, err := m.OwnerID.MarshalTo(dAtA[i:]); err != nil {
 			return 0, err
 		}
-		i += n7
+		i = encodeVarintEntity(dAtA, i, uint64(size))
 	}
-	dAtA[i] = 0x6a
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.AssetID.Size()))
-	n8, err := m.AssetID.MarshalTo(dAtA[i:])
-	if err != nil {
-		return 0, err
+	i--
+	dAtA[i] = 0x22
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Name)))
+		i--
+		dAtA[i] = 0x1a
 	}
-	i += n8
-	dAtA[i] = 0x72
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.InventoryID.Size()))
-	n9, err := m.InventoryID.MarshalTo(dAtA[i:])
-	if err != nil {
-		return 0, err
+	{
+		size := m.TemplateID.Size()
+		i -= size
+		if _, err := m.TemplateID.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintEntity(dAtA, i, uint64(size))
 	}
-	i += n9
-	dAtA[i] = 0x7a
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.SpawnID.Size()))
-	n10, err := m.SpawnID.MarshalTo(dAtA[i:])
-	if err != nil {
-		return 0, err
+	i--
+	dAtA[i] = 0x12
+	{
+		size := m.ID.Size()
+		i -= size
+		if _, err := m.ID.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintEntity(dAtA, i, uint64(size))
 	}
-	i += n10
-	if m.TS != 0 {
-		dAtA[i] = 0x80
-		i++
-		dAtA[i] = 0x1
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.TS))
-	}
-	dAtA[i] = 0x8a
-	i++
-	dAtA[i] = 0x1
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.State.Size()))
-	n11, err := m.State.MarshalTo(dAtA[i:])
-	if err != nil {
-		return 0, err
-	}
-	i += n11
-	return i, nil
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
 }
 
 func encodeVarintEntity(dAtA []byte, offset int, v uint64) int {
+	offset -= sovEntity(v)
+	base := offset
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
 		v >>= 7
 		offset++
 	}
 	dAtA[offset] = uint8(v)
-	return offset + 1
+	return base
 }
 func NewPopulatedCast(r randyEntity, easy bool) *Cast {
 	this := &Cast{}
@@ -567,7 +637,7 @@ func NewPopulatedE(r randyEntity, easy bool) *E {
 	this.Direction = *v5
 	v6 := geometry.NewPopulatedVec3(r, easy)
 	this.Position = *v6
-	if r.Intn(10) != 0 {
+	if r.Intn(5) != 0 {
 		this.Cast = NewPopulatedCast(r, easy)
 	}
 	v7 := github_com_elojah_game_02_pkg_ulid.NewPopulatedID(r)
@@ -657,6 +727,9 @@ func encodeVarintPopulateEntity(dAtA []byte, v uint64) []byte {
 	return dAtA
 }
 func (m *Cast) Size() (n int) {
+	if m == nil {
+		return 0
+	}
 	var l int
 	_ = l
 	l = m.AbilityID.Size()
@@ -668,6 +741,9 @@ func (m *Cast) Size() (n int) {
 }
 
 func (m *E) Size() (n int) {
+	if m == nil {
+		return 0
+	}
 	var l int
 	_ = l
 	l = m.ID.Size()
@@ -718,14 +794,7 @@ func (m *E) Size() (n int) {
 }
 
 func sovEntity(x uint64) (n int) {
-	for {
-		n++
-		x >>= 7
-		if x == 0 {
-			break
-		}
-	}
-	return n
+	return (math_bits.Len64(x|1) + 6) / 7
 }
 func sozEntity(x uint64) (n int) {
 	return sovEntity(uint64((x << 1) ^ uint64((int64(x) >> 63))))
@@ -755,9 +824,9 @@ func (this *E) String() string {
 		`MaxHP:` + fmt.Sprintf("%v", this.MaxHP) + `,`,
 		`MP:` + fmt.Sprintf("%v", this.MP) + `,`,
 		`MaxMP:` + fmt.Sprintf("%v", this.MaxMP) + `,`,
-		`Direction:` + strings.Replace(strings.Replace(this.Direction.String(), "Vec3", "geometry.Vec3", 1), `&`, ``, 1) + `,`,
-		`Position:` + strings.Replace(strings.Replace(this.Position.String(), "Vec3", "geometry.Vec3", 1), `&`, ``, 1) + `,`,
-		`Cast:` + strings.Replace(fmt.Sprintf("%v", this.Cast), "Cast", "Cast", 1) + `,`,
+		`Direction:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.Direction), "Vec3", "geometry.Vec3", 1), `&`, ``, 1) + `,`,
+		`Position:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.Position), "Vec3", "geometry.Vec3", 1), `&`, ``, 1) + `,`,
+		`Cast:` + strings.Replace(this.Cast.String(), "Cast", "Cast", 1) + `,`,
 		`AssetID:` + fmt.Sprintf("%v", this.AssetID) + `,`,
 		`InventoryID:` + fmt.Sprintf("%v", this.InventoryID) + `,`,
 		`SpawnID:` + fmt.Sprintf("%v", this.SpawnID) + `,`,
@@ -790,7 +859,7 @@ func (m *Cast) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -818,7 +887,7 @@ func (m *Cast) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				byteLen |= (int(b) & 0x7F) << shift
+				byteLen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -827,6 +896,9 @@ func (m *Cast) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthEntity
 			}
 			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthEntity
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -848,7 +920,7 @@ func (m *Cast) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.TS |= (uint64(b) & 0x7F) << shift
+				m.TS |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -860,6 +932,9 @@ func (m *Cast) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthEntity
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthEntity
 			}
 			if (iNdEx + skippy) > l {
@@ -889,7 +964,7 @@ func (m *E) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -917,7 +992,7 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				byteLen |= (int(b) & 0x7F) << shift
+				byteLen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -926,6 +1001,9 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthEntity
 			}
 			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthEntity
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -947,7 +1025,7 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				byteLen |= (int(b) & 0x7F) << shift
+				byteLen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -956,6 +1034,9 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthEntity
 			}
 			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthEntity
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -977,7 +1058,7 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -987,6 +1068,9 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthEntity
 			}
 			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthEntity
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1006,7 +1090,7 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				byteLen |= (int(b) & 0x7F) << shift
+				byteLen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1015,6 +1099,9 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthEntity
 			}
 			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthEntity
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1036,7 +1123,7 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				v |= (int(b) & 0x7F) << shift
+				v |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1056,7 +1143,7 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.HP |= (uint64(b) & 0x7F) << shift
+				m.HP |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1075,7 +1162,7 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.MaxHP |= (uint64(b) & 0x7F) << shift
+				m.MaxHP |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1094,7 +1181,7 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.MP |= (uint64(b) & 0x7F) << shift
+				m.MP |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1113,7 +1200,7 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.MaxMP |= (uint64(b) & 0x7F) << shift
+				m.MaxMP |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1132,7 +1219,7 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= (int(b) & 0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1141,6 +1228,9 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthEntity
 			}
 			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthEntity
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1162,7 +1252,7 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= (int(b) & 0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1171,6 +1261,9 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthEntity
 			}
 			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthEntity
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1192,7 +1285,7 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= (int(b) & 0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1201,6 +1294,9 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthEntity
 			}
 			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthEntity
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1225,7 +1321,7 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				byteLen |= (int(b) & 0x7F) << shift
+				byteLen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1234,6 +1330,9 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthEntity
 			}
 			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthEntity
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1255,7 +1354,7 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				byteLen |= (int(b) & 0x7F) << shift
+				byteLen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1264,6 +1363,9 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthEntity
 			}
 			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthEntity
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1285,7 +1387,7 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				byteLen |= (int(b) & 0x7F) << shift
+				byteLen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1294,6 +1396,9 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthEntity
 			}
 			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthEntity
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1315,7 +1420,7 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.TS |= (uint64(b) & 0x7F) << shift
+				m.TS |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1334,7 +1439,7 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				byteLen |= (int(b) & 0x7F) << shift
+				byteLen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1343,6 +1448,9 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthEntity
 			}
 			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthEntity
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1357,6 +1465,9 @@ func (m *E) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthEntity
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthEntity
 			}
 			if (iNdEx + skippy) > l {
@@ -1374,6 +1485,7 @@ func (m *E) Unmarshal(dAtA []byte) error {
 func skipEntity(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
+	depth := 0
 	for iNdEx < l {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
@@ -1405,10 +1517,8 @@ func skipEntity(dAtA []byte) (n int, err error) {
 					break
 				}
 			}
-			return iNdEx, nil
 		case 1:
 			iNdEx += 8
-			return iNdEx, nil
 		case 2:
 			var length int
 			for shift := uint(0); ; shift += 7 {
@@ -1425,92 +1535,34 @@ func skipEntity(dAtA []byte) (n int, err error) {
 					break
 				}
 			}
-			iNdEx += length
 			if length < 0 {
 				return 0, ErrInvalidLengthEntity
 			}
-			return iNdEx, nil
+			iNdEx += length
 		case 3:
-			for {
-				var innerWire uint64
-				var start int = iNdEx
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return 0, ErrIntOverflowEntity
-					}
-					if iNdEx >= l {
-						return 0, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					innerWire |= (uint64(b) & 0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				innerWireType := int(innerWire & 0x7)
-				if innerWireType == 4 {
-					break
-				}
-				next, err := skipEntity(dAtA[start:])
-				if err != nil {
-					return 0, err
-				}
-				iNdEx = start + next
-			}
-			return iNdEx, nil
+			depth++
 		case 4:
-			return iNdEx, nil
+			if depth == 0 {
+				return 0, ErrUnexpectedEndOfGroupEntity
+			}
+			depth--
 		case 5:
 			iNdEx += 4
-			return iNdEx, nil
 		default:
 			return 0, fmt.Errorf("proto: illegal wireType %d", wireType)
 		}
+		if iNdEx < 0 {
+			return 0, ErrInvalidLengthEntity
+		}
+		if depth == 0 {
+			return iNdEx, nil
+		}
 	}
-	panic("unreachable")
+	return 0, io.ErrUnexpectedEOF
 }
 
 var (
-	ErrInvalidLengthEntity = fmt.Errorf("proto: negative length found during unmarshaling")
-	ErrIntOverflowEntity   = fmt.Errorf("proto: integer overflow")
+	ErrInvalidLengthEntity        = fmt.Errorf("proto: negative length found during unmarshaling")
+	ErrIntOverflowEntity          = fmt.Errorf("proto: integer overflow")
+	ErrUnexpectedEndOfGroupEntity = fmt.Errorf("proto: unexpected end of group")
 )
-
-func init() { proto.RegisterFile("entity.proto", fileDescriptor_entity_34a0184a9acbdcf7) }
-
-var fileDescriptor_entity_34a0184a9acbdcf7 = []byte{
-	// 517 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x93, 0x3f, 0x6f, 0xd3, 0x4e,
-	0x1c, 0xc6, 0x73, 0xf9, 0x39, 0x7f, 0x7c, 0xc9, 0x2f, 0xc0, 0x89, 0xe1, 0xd4, 0xe1, 0x1a, 0x55,
-	0x02, 0x65, 0x69, 0x5c, 0xa5, 0x42, 0x62, 0x61, 0x68, 0x6a, 0xd4, 0x5a, 0xc8, 0xd4, 0x72, 0x2a,
-	0x56, 0x74, 0xb1, 0x0f, 0xe7, 0x20, 0xf6, 0x59, 0xf6, 0x85, 0x92, 0x8d, 0x97, 0xc0, 0xc0, 0x8b,
-	0xe0, 0x25, 0x30, 0x32, 0x76, 0xec, 0x88, 0x18, 0x2a, 0x62, 0x16, 0xc6, 0x8e, 0x8c, 0xe8, 0xce,
-	0x49, 0x60, 0xaa, 0x84, 0xb7, 0x7b, 0xce, 0xcf, 0xf3, 0xd1, 0x57, 0x5f, 0x3f, 0x07, 0xbb, 0x2c,
-	0x91, 0x5c, 0x2e, 0x87, 0x69, 0x26, 0xa4, 0x40, 0xcd, 0x52, 0xed, 0xec, 0x47, 0x5c, 0xce, 0x16,
-	0xd3, 0x61, 0x20, 0x62, 0x2b, 0x12, 0x91, 0xb0, 0xf4, 0xe7, 0xe9, 0xe2, 0x95, 0x56, 0x5a, 0xe8,
-	0x53, 0x19, 0xdb, 0x79, 0xf4, 0x97, 0x9d, 0xcd, 0xc5, 0x6b, 0x3a, 0xb3, 0x22, 0x1a, 0xb3, 0x97,
-	0x07, 0x23, 0x2b, 0x7d, 0x13, 0x59, 0x11, 0x13, 0x31, 0x93, 0xd9, 0x72, 0x7b, 0x28, 0x63, 0x7b,
-	0x01, 0x34, 0x8e, 0x69, 0x2e, 0xd1, 0x33, 0x68, 0x1e, 0x4d, 0xf9, 0x9c, 0xcb, 0xa5, 0x63, 0x63,
-	0xd0, 0x07, 0x83, 0xee, 0x78, 0xff, 0xf2, 0x7a, 0xb7, 0xf6, 0xed, 0x7a, 0xf7, 0xc1, 0xed, 0xe4,
-	0xc5, 0x9c, 0x87, 0x43, 0xc7, 0xf6, 0x4d, 0xba, 0xc9, 0xa3, 0x1e, 0xac, 0x9f, 0x4f, 0x70, 0xbd,
-	0x0f, 0x06, 0x86, 0x5f, 0x97, 0x93, 0xbd, 0x8f, 0x4d, 0x08, 0x9e, 0xa2, 0x27, 0xb0, 0x5e, 0x95,
-	0x5d, 0xe7, 0x36, 0x72, 0x21, 0x3c, 0x67, 0x71, 0x3a, 0xa7, 0x92, 0x39, 0xb6, 0x86, 0xff, 0x33,
-	0x06, 0xca, 0x2d, 0x00, 0x21, 0x68, 0x3c, 0xa7, 0x31, 0xc3, 0xff, 0xf5, 0xc1, 0xc0, 0xf4, 0x8d,
-	0x84, 0xc6, 0x0c, 0x9d, 0xc0, 0xd6, 0xd9, 0x45, 0xc2, 0x32, 0xc7, 0xc6, 0x46, 0x15, 0x7e, 0x4b,
-	0x94, 0x69, 0x05, 0xb7, 0x19, 0x0d, 0x71, 0xa3, 0x0f, 0x06, 0x6d, 0xdf, 0x08, 0x19, 0x0d, 0xd5,
-	0x52, 0x4e, 0x3d, 0xdc, 0x2c, 0x97, 0x32, 0xf3, 0xd0, 0x7d, 0xd8, 0x70, 0xe9, 0xbb, 0x53, 0x0f,
-	0xb7, 0xf4, 0x55, 0x23, 0x56, 0x42, 0xb9, 0x5c, 0x0f, 0xb7, 0x4b, 0x57, 0xbc, 0x71, 0xb9, 0x1e,
-	0x36, 0xb7, 0x2e, 0xd7, 0x43, 0x23, 0x68, 0xda, 0x3c, 0x63, 0x81, 0xe4, 0x22, 0xc1, 0xb0, 0x0f,
-	0x06, 0x9d, 0x51, 0x6f, 0xb8, 0xfd, 0xb3, 0x2f, 0x58, 0x70, 0x38, 0x36, 0xd4, 0xe8, 0xbe, 0x19,
-	0x6e, 0x6c, 0xe8, 0x00, 0xb6, 0x3d, 0x91, 0x73, 0x1d, 0xe9, 0xdc, 0x12, 0x69, 0xa7, 0x6b, 0x17,
-	0x7a, 0x58, 0x76, 0x03, 0x77, 0xb5, 0xbb, 0x3b, 0x5c, 0xd7, 0x54, 0xdd, 0x69, 0x2f, 0xf0, 0x8d,
-	0x40, 0x75, 0xe7, 0x04, 0xb6, 0x8e, 0xf2, 0x9c, 0x49, 0xc7, 0xc6, 0xff, 0x57, 0x5a, 0x1b, 0x2d,
-	0xd3, 0xe8, 0x0c, 0x76, 0x9c, 0xe4, 0x2d, 0x4b, 0xa4, 0xc8, 0x54, 0x0d, 0x7b, 0x55, 0x60, 0x1d,
-	0xfe, 0x87, 0xa0, 0x26, 0x9b, 0xa4, 0xf4, 0x22, 0x71, 0x6c, 0x7c, 0xa7, 0xd2, 0x64, 0x79, 0x99,
-	0x5e, 0x37, 0xfa, 0xee, 0xa6, 0xd1, 0xe8, 0x18, 0x36, 0x26, 0x92, 0x4a, 0x86, 0xef, 0x55, 0xc1,
-	0x36, 0x72, 0x95, 0x1d, 0x3f, 0xbe, 0x5a, 0x91, 0xda, 0xd7, 0x15, 0xa9, 0xdd, 0xac, 0x08, 0xf8,
-	0xb5, 0x22, 0xe0, 0x7d, 0x41, 0xc0, 0xa7, 0x82, 0x80, 0xcf, 0x05, 0x01, 0x5f, 0x0a, 0x02, 0x2e,
-	0x0b, 0x02, 0xae, 0x0a, 0x02, 0xbe, 0x17, 0x04, 0xfc, 0x2c, 0x48, 0xed, 0xa6, 0x20, 0xe0, 0xc3,
-	0x0f, 0x52, 0x9b, 0x36, 0xf5, 0xe3, 0x3d, 0xfc, 0x1d, 0x00, 0x00, 0xff, 0xff, 0x69, 0x7a, 0x29,
-	0xea, 0x3a, 0x04, 0x00, 0x00,
-}
