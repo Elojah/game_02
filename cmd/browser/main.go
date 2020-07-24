@@ -36,7 +36,7 @@ func run(prog string) {
 	// Init http client
 	client := http.Client{}
 	if err := client.Dial(http.Config{
-		MapperURL: "https://localhost:8082/",
+		MapperURL: "https://localhost:8082/sector/random",
 	}); err != nil {
 		log.Error().Err(err).Msg("failed to start http client")
 		return
@@ -50,11 +50,13 @@ func run(prog string) {
 			X: 25,
 			Y: 18,
 		},
-		NPlatforms:       3,
-		PlatformSize:     4,
-		PlatformVariance: 2,
-		PathWidth:        2,
-		PathVariance:     1,
+		NPlatforms:        3,
+		PlatformSize:      4,
+		PlatformVariance:  2,
+		NPaths:            1,
+		PathVariance:      2,
+		PathWidth:         2,
+		PathWidthVariance: 2,
 	})
 	if err != nil {
 		log.Error().Err(err).Msg("failed to create new area")

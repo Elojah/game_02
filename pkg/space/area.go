@@ -181,7 +181,7 @@ func (o Orientation) Orthogonal() Orientation {
 }
 
 // GeneratePaths generates random paths between platforms. MUST BE APPLIED on previous generated platforms on SAME AREA.
-func (a *Area) GeneratePaths(ps []Platform, width, variance uint64) {
+func (a *Area) GeneratePaths(ps []Platform, n, variance, width, widthVariance uint64) {
 	// Need at least 2 platforms to generate a path
 	if len(ps) < 2 { // nolint: gomnd
 		return
@@ -194,16 +194,22 @@ func (a *Area) GeneratePaths(ps []Platform, width, variance uint64) {
 	}
 
 	for i := 0; i < len(ps); i++ {
-		// each platform has 1 > path number > total number of platforms / 2
-		// division by 2 is magic number/operation (aesthetic)
-		nPaths := 1 + rand.Intn(len(ps)/2) // nolint: gomnd
+		nPaths := int64(n) + func() int64 {
+			if variance == 0 {
+				return 0
+			}
+			return rand.Int63n(int64(variance))
+		}()
+		if nPaths >= int64(len(ps)) {
+			nPaths = int64(len(ps)) - 1
+		}
 
 		// shuffle sequence index and use N first elements to determine end paths.
 		rand.Shuffle(len(sequence), func(i, j int) {
 			sequence[i], sequence[j] = sequence[j], sequence[i]
 		})
 
-		for j := 0; j < nPaths; j++ {
+		for j := int64(0); j < nPaths; j++ {
 			// same platform, try next one and increment nPaths to keep correct count
 			end := sequence[j]
 			if i == end {
@@ -215,7 +221,7 @@ func (a *Area) GeneratePaths(ps []Platform, width, variance uint64) {
 				Start:    ps[i],
 				End:      ps[end],
 				Width:    width,
-				Variance: variance,
+				Variance: widthVariance,
 			}
 			a.setPath(p)
 		}

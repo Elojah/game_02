@@ -3,9 +3,9 @@ package http
 import (
 	"bytes"
 	"context"
+	"crypto/tls"
 	"encoding/json"
 	"net/http"
-	"path"
 
 	"github.com/elojah/game_02/pkg/space"
 	"github.com/elojah/game_02/pkg/space/dto"
@@ -19,7 +19,11 @@ type Client struct {
 }
 
 func (cl *Client) Dial(c Config) error {
-	cl.Client = &http.Client{}
+	cl.Client = &http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, // nolint: gosec
+		},
+	}
 	cl.MapperURL = c.MapperURL
 
 	return nil
@@ -29,13 +33,20 @@ func (cl *Client) Close() error {
 	return nil
 }
 
-func (cl *Client) PostSectorRandom(ctx context.Context, req dto.PostSectorRandom) (space.Area, error) {
-	raw, err := json.Marshal(req)
+func (cl *Client) PostSectorRandom(ctx context.Context, params dto.PostSectorRandom) (space.Area, error) {
+	raw, err := json.Marshal(params)
 	if err != nil {
 		return space.Area{}, err
 	}
 
-	resp, err := cl.Post(path.Join(cl.MapperURL, "sector", "random"), "application/json", bytes.NewReader(raw))
+	req, err := http.NewRequest(http.MethodPost, cl.MapperURL, bytes.NewReader(raw))
+	if err != nil {
+		return space.Area{}, err
+	}
+
+	req.Header.Set("Origin", "https://localhost:8080")
+
+	resp, err := cl.Do(req)
 	if err != nil {
 		return space.Area{}, err
 	}

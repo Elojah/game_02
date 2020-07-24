@@ -44,7 +44,7 @@ func (h handler) postSectorRandom(w http.ResponseWriter, r *http.Request) {
 	// Create new area with platforms and paths
 	a, _ := space.NewArea(request.Dimensions)
 	ps := a.GeneratePlatforms(request.NPlatforms, request.PlatformSize, request.PlatformVariance)
-	a.GeneratePaths(ps, request.PathWidth, request.PathVariance)
+	a.GeneratePaths(ps, request.NPaths, request.PathVariance, request.PathWidth, request.PathWidthVariance)
 
 	// #Write response
 	raw, err := json.Marshal(a)
@@ -54,6 +54,10 @@ func (h handler) postSectorRandom(w http.ResponseWriter, r *http.Request) {
 
 		return
 	}
+
+	// FIXME middleware/remove/adapt ?
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+	w.Header().Add("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, HEAD, OPTIONS")
 
 	if _, err := w.Write(raw); err != nil {
 		logger.Error().Err(err).Msg("failed to write response")

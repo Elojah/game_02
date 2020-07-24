@@ -9,7 +9,7 @@
 		"password": "secret",
 		"db": 0
 	},
-	"assets": {
+	"mapper": {
 		"address": "0.0.0.0:8081",
 		"cert": "server.crt",
 		"key": "server.key"

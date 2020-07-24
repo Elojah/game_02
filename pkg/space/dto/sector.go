@@ -35,18 +35,21 @@ func (r GetSector) Check() error {
 type PostSectorRandom struct {
 	dto.Auth
 
-	Dimensions       geometry.Vec3 `json:"dimensions"`
-	NPlatforms       uint64        `json:"n_platforms"`
-	PlatformSize     uint64        `json:"platform_size"`
-	PlatformVariance uint64        `json:"platform_variance"`
-	PathWidth        uint64        `json:"path_width"`
-	PathVariance     uint64        `json:"path_variance"`
+	Dimensions        geometry.Vec3 `json:"dimensions"`
+	NPlatforms        uint64        `json:"n_platforms"`
+	PlatformSize      uint64        `json:"platform_size"`
+	PlatformVariance  uint64        `json:"platform_variance"`
+	NPaths            uint64        `json:"n_paths"`
+	PathVariance      uint64        `json:"path_variance"`
+	PathWidth         uint64        `json:"path_width"`
+	PathWidthVariance uint64        `json:"path_width_variance"`
 }
 
 func (r PostSectorRandom) Check() error {
-	if err := r.Auth.Check(); err != nil {
-		return err
-	}
+	// FIXME uncomment
+	// if err := r.Auth.Check(); err != nil {
+	// 	return err
+	// }
 
 	if r.Dimensions.X < minDimension || r.Dimensions.X > maxDimension {
 		return errors.ErrInvalidNumericalRange{

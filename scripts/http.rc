@@ -1,18 +1,32 @@
-curl -k -X POST 'https://0.0.0.0:8080/subscribe' -d '{
+curl -k -X POST 'https://0.0.0.0:8081/subscribe' -d '{
 	"email": "test@email.co",
 	"password": "testotest",
 	"alias": "Gerard"
 }'
 
-curl -k -X POST 'https://0.0.0.0:8080/signin' -d '{
+curl -k -X POST 'https://0.0.0.0:8081/signin' -d '{
 	"email": "test@email.co",
 	"password": "testotest"
 }'
 
-curl -k -X POST 'https://0.0.0.0:8080/player/create' -d '{
+curl -k -X POST 'https://0.0.0.0:8081/player/create' -d '{
 	"email": "test@email.co",
 	"password": "testotest",
 
-	"templateID": "xxx",
+	"templateID": "01EDYAVPYH3WR8Z390W9FPMH45",
 	"name": "testplayer"
+}'
+
+curl -k -X POST 'https://0.0.0.0:8082/sector/random' -d '{
+	"email": "test@email.co",
+	"password": "testotest",
+
+	"dimensions":         {"x": 25, "y": 18},
+	"n_platforms":        3,
+	"platform_size":      4,
+	"platform_variance":  2,
+	"n_paths":            1,
+	"path_variance":      2,
+	"path_width":         2,
+	"path_width_variance": 2
 }'

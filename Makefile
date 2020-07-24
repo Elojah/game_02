@@ -39,6 +39,7 @@ all: auth mapper browser web
 auth:  ## Build auth binary
 	$(info $(M) building executable auth…) @
 	$Q cd cmd/$(AUTH) && $(GO) build \
+		-mod=readonly \
 		-tags release \
 		-ldflags '-X $(PACKAGE)/cmd.Version=$(VERSION)' \
 		-o ../../bin/$(PACKAGE)_$(AUTH)_$(VERSION)
@@ -48,6 +49,7 @@ auth:  ## Build auth binary
 mapper:  ## Build mapper binary
 	$(info $(M) building executable mapper…) @
 	$Q cd cmd/$(MAPPER) && $(GO) build \
+		-mod=readonly \
 		-tags release \
 		-ldflags '-X $(PACKAGE)/cmd.Version=$(VERSION)' \
 		-o ../../bin/$(PACKAGE)_$(MAPPER)_$(VERSION)
@@ -57,6 +59,7 @@ mapper:  ## Build mapper binary
 browser:  ## Build browser content
 	$(info $(M) building executable browser…) @
 	$Q cd cmd/$(BROWSER) && GOOS=js GOARCH=wasm $(GO) build \
+		-mod=readonly \
 		-tags release \
 		-ldflags '-X $(PACKAGE)/cmd.Version=$(VERSION)' \
 		-o ../../bin/$(PACKAGE)_$(BROWSER)_$(VERSION).wasm
@@ -66,6 +69,7 @@ browser:  ## Build browser content
 web: ## Build web binary
 	$(info $(M) building executable web…) @
 	$Q cd cmd/$(WEB) && $(GO) build \
+		-mod=readonly \
 		-tags release \
 		-ldflags '-X $(PACKAGE)/cmd.Version=$(VERSION)' \
 		-o ../../bin/$(PACKAGE)_$(WEB)_$(VERSION)
@@ -73,9 +77,9 @@ web: ## Build web binary
 	$Q yes | cp -Rrf cmd/$(WEB)/static bin/ # static files
 	$Q yes | cp -rf bin/$(PACKAGE)_$(BROWSER)_$(VERSION).wasm bin/static/$(PACKAGE)_$(BROWSER).wasm
 
-file-mapper:  ## Copy mapper directory into bin directory for testing and vendoring
-	$(info $(M) copy mapper directory…) @
-	$Q yes | cp -Rrf mapper bin/static/
+file-assets:  ## Copy assets directory into bin directory for testing and vendoring
+	$(info $(M) copy assets directory…) @
+	$Q yes | cp -Rrf assets bin/static/
 
 # Utils
 .PHONY: proto
