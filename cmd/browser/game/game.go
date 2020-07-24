@@ -84,11 +84,14 @@ func (g *Game) Run() error {
 	g.skeleton = skeleton
 	g.tiles = tiles
 
-	g.layers = make([][]int, len(g.Area.Tiles))
-	for i, l := range g.Area.Tiles {
-		g.layers[i] = make([]int, len(l))
-		for j, c := range l {
-			g.layers[i][j] = int(c)
+	g.layers = make([][]int, 1)
+	for _, l := range g.Area.Tiles {
+		for _, c := range l {
+			if c == space.Floor {
+				g.layers[0] = append(g.layers[0], 130)
+			} else {
+				g.layers[0] = append(g.layers[0], 33)
+			}
 		}
 	}
 	// g.layers = [][]int{
