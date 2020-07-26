@@ -7,26 +7,16 @@ import (
 	"github.com/elojah/game_02/pkg/geometry"
 )
 
-// TileKind is used for map generation.
-type TileKind uint
+type Shape uint
 
 const (
-	// Sky REQUIRED to be 0 value, don't move it
-	Sky TileKind = iota
-	Floor
-	Box
-)
-
-type FloorShape uint
-
-const (
-	Square FloorShape = iota
+	Square Shape = iota
 	Rectangle
 	Circle
 	Cross
 
 	// Keep this at the end plz, convenience hack
-	LenFloorShape
+	LenShape
 )
 
 // Area represents a game zone with multiple sectors.
@@ -73,7 +63,7 @@ func NewArea(size geometry.Vec3) (Area, error) {
 // Platform represents a floor area.
 type Platform struct {
 	Position geometry.Vec3
-	Shape    FloorShape
+	Shape    Shape
 }
 
 // GeneratePlatforms generate n platforms with variant size nd write them into a.
@@ -87,7 +77,7 @@ func (a *Area) GeneratePlatforms(n, size, variance uint64) []Platform {
 				X: uint64(rand.Int63n(int64(a.Size.X))),
 				Y: uint64(rand.Int63n(int64(a.Size.Y))),
 			},
-			Shape: FloorShape(rand.Int63n(int64(LenFloorShape - 1))),
+			Shape: Shape(rand.Int63n(int64(LenShape - 1))),
 		}
 		a.setPlatform(size, variance, platforms[i])
 	}
@@ -371,3 +361,55 @@ func (a *Area) setPath(p Path) { // nolint: gocognit
 		o = o.Orthogonal()
 	}
 }
+
+// func (a *Area) GenerateWalls() {
+// 	wallSet := map[[4]TileKind]TileKind{
+// 		{Sky, Sky, Sky, Sky}:     Wall,
+// 		{Wall, Sky, Sky, Sky}:    WallLeft,
+// 		{Sky, Wall, Sky, Sky}:    WallTop,
+// 		{Sky, Sky, Wall, Sky}:    WallRight,
+// 		{Sky, Sky, Sky, Wall}:    WallDown,
+// 		{Wall, Wall, Sky, Sky}:   WallLeftTop,
+// 		{Wall, Sky, Wall, Sky}:   WallLeftRight,
+// 		{Wall, Sky, Sky, Wall}:   WallLeftDown,
+// 		{Sky, Wall, Sky, Wall}:   WallTopRight,
+// 		{Sky, Wall, Wall, Sky}:   WallTopDown,
+// 		{Sky, Sky, Wall, Wall}:   WallRightDown,
+// 		{Wall, Wall, Wall, Sky}:  WallLeftTopRight,
+// 		{Wall, Wall, Sky, Wall}:  WallLeftTopDown,
+// 		{Wall, Sky, Wall, Wall}:  WallLeftRightDown,
+// 		{Sky, Wall, Wall, Wall}:  WallTopRightDown,
+// 		{Wall, Wall, Wall, Wall}: WallLeftTopRightDown,
+// 	}
+
+// 	toSet := func(tk TileKind) TileKind {
+// 		switch tk {
+// 		case Wall,
+// 			WallLeft,
+// 			WallTop,
+// 			WallRight,
+// 			WallDown,
+// 			WallLeftTop,
+// 			WallLeftRight,
+// 			WallLeftDown,
+// 			WallTopRight,
+// 			WallTopDown,
+// 			WallRightDown,
+// 			WallLeftTopRight,
+// 			WallLeftTopDown,
+// 			WallLeftRightDown,
+// 			WallTopRightDown,
+// 			WallLeftTopRightDown:
+// 			return Wall
+// 		default:
+// 			return Sky
+
+// 		}
+// 	}
+
+// 	for i := range a.Tiles {
+// 		for j := range a.Tiles[i] {
+
+// 		}
+// 	}
+// }
