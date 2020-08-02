@@ -42,7 +42,7 @@ func (h handler) postSectorRandom(w http.ResponseWriter, r *http.Request) {
 	_ = ctx
 
 	// Create new area with platforms and paths
-	a, _ := space.NewArea(request.Dimensions)
+	a, _ := space.NewWorld(request.Dimensions)
 	ps := a.GeneratePlatforms(request.NPlatforms, request.PlatformSize, request.PlatformVariance)
 	a.GeneratePaths(ps, request.NPaths, request.PathVariance, request.PathWidth, request.PathWidthVariance)
 

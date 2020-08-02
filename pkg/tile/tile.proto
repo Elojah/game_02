@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package tile;
+
+option (gogoproto.testgen_all)  = true;
+option (gogoproto.benchgen_all) = true;
+option (gogoproto.populate_all) = true;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+message Set {
+	bytes ID                           = 1 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+
+	string Name                        = 2;
+
+    // Tile size in x and y in pixels
+    uint64 Size                        = 3;
+    // Number of tile per line
+    uint64 X                           = 4;
+    // Number of tile per column
+    uint64 Y                           = 5;
+
+	bytes MapID                        = 6 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+}

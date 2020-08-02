@@ -48,7 +48,7 @@ func TestGenerateFloor(t *testing.T) {
 		t.Run("generatefloor"+d.name, func(t *testing.T) {
 			rand.Seed(time.Now().UTC().UnixNano())
 
-			actual, _ := space.NewArea(d.p.Size)                                                         // nolint: scopelint
+			actual, _ := space.NewWorld(d.p.Size)                                                        // nolint: scopelint
 			ps := actual.GeneratePlatforms(d.p.NPlatforms, d.p.PlatformSize, d.p.PlatformVariance)       // nolint: scopelint
 			actual.GeneratePaths(ps, d.p.NPaths, d.p.PathVariance, d.p.PathWidth, d.p.PathWidthVariance) // nolint: scopelint
 			for _, line := range actual.Tiles {

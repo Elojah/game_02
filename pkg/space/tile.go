@@ -13,35 +13,12 @@ const (
 	Floor
 	Pillar
 
-	// 0 wall around
 	Wall
-
-	// 1 wall around
-	WallLeft
-	WallTop
-	WallRight
-	WallDown
-
-	// 2 walls around
-	WallLeftTop
-	WallLeftRight
-	WallLeftDown
-	WallTopRight
-	WallTopDown
-	WallRightDown
-
-	// 3 walls around
-	WallLeftTopRight
-	WallLeftTopDown
-	WallLeftRightDown
-	WallTopRightDown
-
-	// 4 walls aounrd
-	WallLeftTopRightDown
 )
 
 type TileSet struct {
 	ID gulid.ID
 
-	Kinds map[TileKind]int
+	PixelSize uint64
+	Kinds     map[TileKind]int
 }

@@ -33,27 +33,27 @@ func (cl *Client) Close() error {
 	return nil
 }
 
-func (cl *Client) PostSectorRandom(ctx context.Context, params dto.PostSectorRandom) (space.Area, error) {
+func (cl *Client) PostSectorRandom(ctx context.Context, params dto.PostSectorRandom) (space.World, error) {
 	raw, err := json.Marshal(params)
 	if err != nil {
-		return space.Area{}, err
+		return space.World{}, err
 	}
 
 	req, err := http.NewRequest(http.MethodPost, cl.MapperURL, bytes.NewReader(raw))
 	if err != nil {
-		return space.Area{}, err
+		return space.World{}, err
 	}
 
 	req.Header.Set("Origin", "https://localhost:8080")
 
 	resp, err := cl.Do(req)
 	if err != nil {
-		return space.Area{}, err
+		return space.World{}, err
 	}
 
-	var a space.Area
+	var a space.World
 	if err := json.NewDecoder(resp.Body).Decode(&a); err != nil {
-		return space.Area{}, err
+		return space.World{}, err
 	}
 
 	return a, resp.Body.Close()

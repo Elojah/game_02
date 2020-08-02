@@ -21,7 +21,7 @@ type Game struct {
 	skeleton *ebiten.Image
 	tiles    *ebiten.Image
 	layers   [][]int
-	Area     space.Area
+	Area     space.World
 }
 
 func (g *Game) Update(screen *ebiten.Image) error {

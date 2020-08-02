@@ -19,14 +19,14 @@ const (
 	LenShape
 )
 
-// Area represents a game zone with multiple sectors.
-type Area struct {
+// World represents a game zone with multiple sectors.
+type World struct {
 	Tiles [][]TileKind
 
 	Size geometry.Vec3
 }
 
-func (a *Area) setTile(x, y int64, tk TileKind, force bool) {
+func (a *World) setTile(x, y int64, tk TileKind, force bool) {
 	// force set floor on closest border if true
 	if force && x >= 0 && x < int64(a.Size.X) && y >= 0 && y < int64(a.Size.Y) {
 		a.Tiles[x][y] = tk
@@ -46,9 +46,9 @@ func (a *Area) setTile(x, y int64, tk TileKind, force bool) {
 	}
 }
 
-// NewArea creates a new isolated area without tilemap.
-func NewArea(size geometry.Vec3) (Area, error) {
-	a := Area{
+// NewWorld creates a new isolated area without tilemap.
+func NewWorld(size geometry.Vec3) (World, error) {
+	a := World{
 		Tiles: make([][]TileKind, size.X),
 		Size:  size,
 	}
@@ -68,7 +68,7 @@ type Platform struct {
 
 // GeneratePlatforms generate n platforms with variant size nd write them into a.
 // Returns platform array.
-func (a *Area) GeneratePlatforms(n, size, variance uint64) []Platform {
+func (a *World) GeneratePlatforms(n, size, variance uint64) []Platform {
 	platforms := make([]Platform, n)
 
 	for i := range platforms {
@@ -86,7 +86,7 @@ func (a *Area) GeneratePlatforms(n, size, variance uint64) []Platform {
 }
 
 // setPlatform actually set floor tiles into area.
-func (a *Area) setPlatform(size, variance uint64, p Platform) {
+func (a *World) setPlatform(size, variance uint64, p Platform) {
 	variant := func() uint64 {
 		if variance != 0 {
 			return uint64(rand.Int63n(int64(variance)))
@@ -171,7 +171,7 @@ func (o Orientation) Orthogonal() Orientation {
 }
 
 // GeneratePaths generates random paths between platforms. MUST BE APPLIED on previous generated platforms on SAME AREA.
-func (a *Area) GeneratePaths(ps []Platform, n, variance, width, widthVariance uint64) {
+func (a *World) GeneratePaths(ps []Platform, n, variance, width, widthVariance uint64) {
 	// Need at least 2 platforms to generate a path
 	if len(ps) < 2 { // nolint: gomnd
 		return
@@ -220,7 +220,7 @@ func (a *Area) GeneratePaths(ps []Platform, n, variance, width, widthVariance ui
 
 // setPath actually set a random path between two platforms.
 // complex function, may require som refacto at some point.
-func (a *Area) setPath(p Path) { // nolint: gocognit
+func (a *World) setPath(p Path) { // nolint: gocognit
 	// local utility
 	abs := func(n int64) int64 {
 		if n > 0 {
