@@ -11,7 +11,8 @@ import (
 	"github.com/elojah/game_02/cmd/browser/http"
 	"github.com/elojah/game_02/cmd/browser/ws"
 	"github.com/elojah/game_02/pkg/geometry"
-	"github.com/elojah/game_02/pkg/space/dto"
+	"github.com/elojah/game_02/pkg/room/dto"
+	spacedto "github.com/elojah/game_02/pkg/space/dto"
 )
 
 var (
@@ -36,7 +37,7 @@ func run(prog string) {
 	// Init http client
 	client := http.Client{}
 	if err := client.Dial(http.Config{
-		MapperURL: "https://localhost:8082/sector/random",
+		CreateRoomURL: "https://localhost:8081/room",
 	}); err != nil {
 		log.Error().Err(err).Msg("failed to start http client")
 		return
@@ -45,29 +46,29 @@ func run(prog string) {
 	// TMP
 	// At this point we should retrieve current entity sector
 	// Instead we create a new one here to test creation
-	a, err := client.PostSectorRandom(ctx, dto.PostSectorRandom{
-		Dimensions: geometry.Vec3{
-			X: 25,
-			Y: 18,
+	_, err := client.CreateRoom(ctx, dto.CreateRoom{
+		CreateTileMap: spacedto.CreateTileMap{
+			Dimensions: geometry.Vec3{
+				X: 25, // nolint: gomnd
+				Y: 18, // nolint: gomnd
+			},
+			NPlatforms:        3, // nolint: gomnd
+			PlatformSize:      4, // nolint: gomnd
+			PlatformVariance:  2, // nolint: gomnd
+			NPaths:            2, // nolint: gomnd
+			PathVariance:      2, // nolint: gomnd
+			PathWidth:         2, // nolint: gomnd
+			PathWidthVariance: 2, // nolint: gomnd
 		},
-		NPlatforms:        3,
-		PlatformSize:      4,
-		PlatformVariance:  2,
-		NPaths:            1,
-		PathVariance:      2,
-		PathWidth:         2,
-		PathWidthVariance: 2,
 	})
 	if err != nil {
-		log.Error().Err(err).Msg("failed to create new area")
+		log.Error().Err(err).Msg("failed to create new room")
 		return
 	}
 	// !TMP
 
 	// Init game
-	g := &game.Game{
-		Area: a,
-	}
+	g := &game.Game{}
 	if err := g.Dial(game.Config{}); err != nil {
 		log.Error().Err(err).Msg("failed to start game")
 		return

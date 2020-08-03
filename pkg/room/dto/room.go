@@ -4,6 +4,7 @@ import (
 	"github.com/elojah/game_02/pkg/account/dto"
 	gerrors "github.com/elojah/game_02/pkg/errors"
 	"github.com/elojah/game_02/pkg/room"
+	spacedto "github.com/elojah/game_02/pkg/space/dto"
 	gulid "github.com/elojah/game_02/pkg/ulid"
 )
 
@@ -36,12 +37,18 @@ func (r ConnectRoom) Check() error {
 type CreateRoom struct {
 	dto.Auth
 
+	spacedto.CreateTileMap
+
 	Name     string `json:"name"`
 	Password string `json:"password"`
 }
 
 func (r CreateRoom) Check() error {
 	if err := r.Auth.Check(); err != nil {
+		return err
+	}
+
+	if err := r.CreateTileMap.Check(); err != nil {
 		return err
 	}
 

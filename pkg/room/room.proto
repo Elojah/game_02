@@ -15,4 +15,6 @@ message R {
 	bytes Password                     = 3 [(gogoproto.nullable) = true];
 
 	bytes Owner                        = 4 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+
+	bytes WorldID                      = 5 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
 }

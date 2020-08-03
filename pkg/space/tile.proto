@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package space;
+
+option (gogoproto.testgen_all)  = true;
+option (gogoproto.benchgen_all) = true;
+option (gogoproto.populate_all) = true;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "github.com/elojah/game_02/pkg/geometry/geometry.proto";
+
+enum Terrain {
+    Sky                                = 0;
+    Floor                              = 1;
+    Pillar                             = 2;
+    Wall                               = 3;
+}
+
+message TileSet {
+    // ID MUST be delivered by mapper API as filename.png
+    // e.g: http://url/03432IUHUI.png
+	bytes ID                          = 1 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+
+    // e.g: dungeon,desert,mountain,etc.
+   string Name                        = 2;
+
+   // Size of 1 tile in x and y in pixels
+   uint64 Size                        = 3;
+   // Number of tile per line
+   uint64 X                           = 4;
+   // Number of tile per column
+   uint64 Y                           = 5;
+
+   // Terrains key -> Terrain enum (int32 default pb type)
+   // Terrains value -> absolute index in tileset     
+   map<int32, uint64> Terrains        = 6;
+}
+
+message TileMap {
+	TileSet Set                       = 1 [(gogoproto.nullable) = false];
+
+	geometry.Vec3 Dim                 = 2 [(gogoproto.nullable) = false];
+
+    repeated Terrain Map              = 3;
+	repeated bool Collision           = 4;
+}

@@ -8,6 +8,7 @@ option (gogoproto.populate_all) = true;
 
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "github.com/elojah/game_02/pkg/geometry/geometry.proto";
+import "tile.proto";
 
 message Sector {
 	bytes ID                              = 1 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
@@ -15,7 +16,5 @@ message Sector {
 	geometry.Vec3 Dim                     = 2 [(gogoproto.nullable)   = false];
 	map<string, geometry.Vec3> Adjacents  = 3 [(gogoproto.nullable)   = false];
 
-	bytes TileSet                         = 4 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
-	repeated uint64 TileMap               = 5;
-	repeated uint64 CollisionMap          = 6;
+	space.TileMap TileMap                 = 4 [(gogoproto.nullable) = false];
 }

@@ -12,6 +12,7 @@ import (
 	gerrors "github.com/elojah/game_02/pkg/errors"
 	"github.com/elojah/game_02/pkg/room"
 	"github.com/elojah/game_02/pkg/room/dto"
+	"github.com/elojah/game_02/pkg/space"
 	gulid "github.com/elojah/game_02/pkg/ulid"
 )
 
@@ -186,6 +187,13 @@ func (h handler) createRoom(w http.ResponseWriter, r *http.Request) {
 
 		return
 	}
+
+	// #Create world tilemap
+	reqtm := request.CreateTileMap
+	tm := space.NewTileMap(reqtm.Dimensions)
+	ps := tm.GeneratePlatforms(reqtm.NPlatforms, reqtm.PlatformSize, reqtm.PlatformVariance)
+	tm.GeneratePaths(ps, reqtm.NPaths, reqtm.PathVariance, reqtm.PathWidth, reqtm.PathWidthVariance)
+	// TO__DO: associate tm to world to room
 
 	// #Write response
 	raw, err := json.Marshal(dto.RoomResp{Room: ro})

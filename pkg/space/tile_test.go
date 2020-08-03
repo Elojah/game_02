@@ -1,7 +1,6 @@
 package space_test
 
 import (
-	fmt "fmt"
 	"math/rand"
 	testing "testing"
 	time "time"
@@ -48,15 +47,15 @@ func TestGenerateFloor(t *testing.T) {
 		t.Run("generatefloor"+d.name, func(t *testing.T) {
 			rand.Seed(time.Now().UTC().UnixNano())
 
-			actual, _ := space.NewWorld(d.p.Size)                                                        // nolint: scopelint
+			actual := space.NewTileMap(d.p.Size)                                                         // nolint: scopelint
 			ps := actual.GeneratePlatforms(d.p.NPlatforms, d.p.PlatformSize, d.p.PlatformVariance)       // nolint: scopelint
 			actual.GeneratePaths(ps, d.p.NPaths, d.p.PathVariance, d.p.PathWidth, d.p.PathWidthVariance) // nolint: scopelint
-			for _, line := range actual.Tiles {
-				for _, col := range line {
-					fmt.Print(col)
-				}
-				fmt.Println("")
-			}
+			// for i := uint64(0); i < actual.Dim.Y; i++ {
+			// 	for j := uint64(0); j < actual.Dim.X; j++ {
+			// 		fmt.Print(int32(actual.Map[(i*actual.Dim.X)+j]))
+			// 	}
+			// 	fmt.Println("")
+			// }
 		})
 	}
 }

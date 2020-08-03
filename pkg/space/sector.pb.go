@@ -29,12 +29,10 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type Sector struct {
-	ID           github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,1,opt,name=ID,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"ID"`
-	Dim          geometry.Vec3                         `protobuf:"bytes,2,opt,name=Dim,proto3" json:"Dim"`
-	Adjacents    map[string]geometry.Vec3              `protobuf:"bytes,3,rep,name=Adjacents,proto3" json:"Adjacents" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
-	TileSet      github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,4,opt,name=TileSet,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"TileSet"`
-	TileMap      []uint64                              `protobuf:"varint,5,rep,packed,name=TileMap,proto3" json:"TileMap,omitempty"`
-	CollisionMap []uint64                              `protobuf:"varint,6,rep,packed,name=CollisionMap,proto3" json:"CollisionMap,omitempty"`
+	ID        github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,1,opt,name=ID,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"ID"`
+	Dim       geometry.Vec3                         `protobuf:"bytes,2,opt,name=Dim,proto3" json:"Dim"`
+	Adjacents map[string]geometry.Vec3              `protobuf:"bytes,3,rep,name=Adjacents,proto3" json:"Adjacents" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	TileMap   TileMap                               `protobuf:"bytes,4,opt,name=TileMap,proto3" json:"TileMap"`
 }
 
 func (m *Sector) Reset()      { *m = Sector{} }
@@ -83,18 +81,11 @@ func (m *Sector) GetAdjacents() map[string]geometry.Vec3 {
 	return nil
 }
 
-func (m *Sector) GetTileMap() []uint64 {
+func (m *Sector) GetTileMap() TileMap {
 	if m != nil {
 		return m.TileMap
 	}
-	return nil
-}
-
-func (m *Sector) GetCollisionMap() []uint64 {
-	if m != nil {
-		return m.CollisionMap
-	}
-	return nil
+	return TileMap{}
 }
 
 func init() {
@@ -105,32 +96,30 @@ func init() {
 func init() { proto.RegisterFile("sector.proto", fileDescriptor_d5ea2cc957d4f3d0) }
 
 var fileDescriptor_d5ea2cc957d4f3d0 = []byte{
-	// 389 bytes of a gzipped FileDescriptorProto
+	// 366 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x29, 0x4e, 0x4d, 0x2e,
 	0xc9, 0x2f, 0xd2, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x2d, 0x2e, 0x48, 0x4c, 0x4e, 0x95,
 	0xd2, 0x4d, 0xcf, 0x2c, 0xc9, 0x28, 0x4d, 0xd2, 0x4b, 0xce, 0xcf, 0xd5, 0x4f, 0xcf, 0x4f, 0xcf,
 	0xd7, 0x07, 0xcb, 0x26, 0x95, 0xa6, 0x81, 0x79, 0x60, 0x0e, 0x98, 0x05, 0xd1, 0x25, 0x65, 0x8a,
 	0xa4, 0x3c, 0x35, 0x27, 0x3f, 0x2b, 0x31, 0x43, 0x3f, 0x3d, 0x31, 0x37, 0x35, 0xde, 0xc0, 0x48,
-	0xbf, 0x20, 0x3b, 0x5d, 0x3f, 0x3d, 0x35, 0x3f, 0x37, 0xb5, 0xa4, 0xa8, 0x12, 0xce, 0x80, 0x68,
-	0x53, 0x6a, 0x63, 0xe6, 0x62, 0x0b, 0x06, 0xdb, 0x2e, 0x64, 0xcb, 0xc5, 0xe4, 0xe9, 0x22, 0xc1,
-	0xa8, 0xc0, 0xa8, 0xc1, 0xe3, 0xa4, 0x7b, 0xe2, 0x9e, 0x3c, 0xc3, 0xad, 0x7b, 0xf2, 0xaa, 0xf8,
-	0x4d, 0x2d, 0xcd, 0xc9, 0x4c, 0xd1, 0xf3, 0x74, 0x09, 0x62, 0xf2, 0x74, 0x11, 0x52, 0xe3, 0x62,
-	0x76, 0xc9, 0xcc, 0x95, 0x60, 0x52, 0x60, 0xd4, 0xe0, 0x36, 0xe2, 0xd3, 0x83, 0xdb, 0x13, 0x96,
-	0x9a, 0x6c, 0xec, 0xc4, 0x02, 0x32, 0x2f, 0x08, 0xa4, 0x40, 0xc8, 0x81, 0x8b, 0xd3, 0x31, 0x25,
-	0x2b, 0x31, 0x39, 0x35, 0xaf, 0xa4, 0x58, 0x82, 0x59, 0x81, 0x59, 0x83, 0xdb, 0x48, 0x46, 0x0f,
-	0xec, 0x65, 0x3d, 0x88, 0x43, 0xf4, 0xe0, 0xd2, 0xae, 0x79, 0x25, 0x45, 0x95, 0x50, 0xbd, 0x08,
-	0x4d, 0x42, 0xee, 0x5c, 0xec, 0x21, 0x99, 0x39, 0xa9, 0xc1, 0xa9, 0x25, 0x12, 0x2c, 0xe4, 0xb8,
-	0x16, 0xa6, 0x5b, 0x48, 0x02, 0x62, 0x90, 0x6f, 0x62, 0x81, 0x04, 0xab, 0x02, 0xb3, 0x06, 0x4b,
-	0x10, 0x8c, 0x2b, 0xa4, 0xc4, 0xc5, 0xe3, 0x9c, 0x9f, 0x93, 0x93, 0x59, 0x9c, 0x99, 0x9f, 0x07,
-	0x92, 0x66, 0x03, 0x4b, 0xa3, 0x88, 0x49, 0xf9, 0x70, 0xf1, 0xa1, 0xba, 0x54, 0x48, 0x80, 0x8b,
-	0x39, 0x3b, 0xb5, 0x12, 0x1c, 0x84, 0x9c, 0x41, 0x20, 0xa6, 0x90, 0x0a, 0x17, 0x6b, 0x59, 0x62,
-	0x4e, 0x69, 0x2a, 0xf6, 0x60, 0x09, 0x82, 0x48, 0x5a, 0x31, 0x59, 0x30, 0x3a, 0x39, 0x5c, 0x78,
-	0x28, 0xc7, 0x70, 0xe3, 0xa1, 0x1c, 0xc3, 0x87, 0x87, 0x72, 0x8c, 0x3f, 0x1e, 0xca, 0x31, 0x36,
-	0x3c, 0x92, 0x63, 0x5c, 0xf1, 0x48, 0x8e, 0x71, 0xc7, 0x23, 0x39, 0xc6, 0x03, 0x8f, 0xe4, 0x18,
-	0x4f, 0x3c, 0x92, 0x63, 0xbc, 0xf0, 0x48, 0x8e, 0xf1, 0xc1, 0x23, 0x39, 0xc6, 0x17, 0x8f, 0xe4,
-	0x18, 0x3e, 0x3c, 0x92, 0x63, 0x9c, 0xf0, 0x58, 0x8e, 0xe1, 0xc2, 0x63, 0x39, 0x86, 0x1b, 0x8f,
-	0xe5, 0x18, 0x92, 0xd8, 0xc0, 0x31, 0x6a, 0x0c, 0x08, 0x00, 0x00, 0xff, 0xff, 0x5b, 0x05, 0x0d,
-	0xdf, 0x4e, 0x02, 0x00, 0x00,
+	0xbf, 0x20, 0x3b, 0x5d, 0x3f, 0x3d, 0x35, 0x3f, 0x37, 0xb5, 0xa4, 0xa8, 0x12, 0xce, 0x80, 0x6a,
+	0xe3, 0x2a, 0xc9, 0xcc, 0x49, 0x85, 0xb0, 0x95, 0xd6, 0x33, 0x71, 0xb1, 0x05, 0x83, 0x5d, 0x22,
+	0x64, 0xcb, 0xc5, 0xe4, 0xe9, 0x22, 0xc1, 0xa8, 0xc0, 0xa8, 0xc1, 0xe3, 0xa4, 0x7b, 0xe2, 0x9e,
+	0x3c, 0xc3, 0xad, 0x7b, 0xf2, 0xaa, 0xf8, 0x6d, 0x28, 0xcd, 0xc9, 0x4c, 0xd1, 0xf3, 0x74, 0x09,
+	0x62, 0xf2, 0x74, 0x11, 0x52, 0xe3, 0x62, 0x76, 0xc9, 0xcc, 0x95, 0x60, 0x52, 0x60, 0xd4, 0xe0,
+	0x36, 0xe2, 0xd3, 0x83, 0xdb, 0x19, 0x96, 0x9a, 0x6c, 0xec, 0xc4, 0x02, 0x32, 0x2f, 0x08, 0xa4,
+	0x40, 0xc8, 0x81, 0x8b, 0xd3, 0x31, 0x25, 0x2b, 0x31, 0x39, 0x35, 0xaf, 0xa4, 0x58, 0x82, 0x59,
+	0x81, 0x59, 0x83, 0xdb, 0x48, 0x46, 0x0f, 0xec, 0x7d, 0x3d, 0x88, 0x43, 0xf4, 0xe0, 0xd2, 0xae,
+	0x79, 0x25, 0x45, 0x95, 0x50, 0xbd, 0x08, 0x4d, 0x42, 0x7a, 0x5c, 0xec, 0x21, 0x99, 0x39, 0xa9,
+	0xbe, 0x89, 0x05, 0x12, 0x2c, 0x50, 0xdb, 0x20, 0xfa, 0xa1, 0xa2, 0x50, 0x1d, 0x30, 0x45, 0x52,
+	0x3e, 0x5c, 0x7c, 0xa8, 0x46, 0x0a, 0x09, 0x70, 0x31, 0x67, 0xa7, 0x56, 0x82, 0xfd, 0xca, 0x19,
+	0x04, 0x62, 0x0a, 0xa9, 0x70, 0xb1, 0x96, 0x25, 0xe6, 0x94, 0xa6, 0x62, 0x77, 0x7f, 0x10, 0x44,
+	0xd2, 0x8a, 0xc9, 0x82, 0xd1, 0xc9, 0xe1, 0xc2, 0x43, 0x39, 0x86, 0x1b, 0x0f, 0xe5, 0x18, 0x3e,
+	0x3c, 0x94, 0x63, 0xfc, 0xf1, 0x50, 0x8e, 0xb1, 0xe1, 0x91, 0x1c, 0xe3, 0x8a, 0x47, 0x72, 0x8c,
+	0x3b, 0x1e, 0xc9, 0x31, 0x1e, 0x78, 0x24, 0xc7, 0x78, 0xe2, 0x91, 0x1c, 0xe3, 0x85, 0x47, 0x72,
+	0x8c, 0x0f, 0x1e, 0xc9, 0x31, 0xbe, 0x78, 0x24, 0xc7, 0xf0, 0xe1, 0x91, 0x1c, 0xe3, 0x84, 0xc7,
+	0x72, 0x0c, 0x17, 0x1e, 0xcb, 0x31, 0xdc, 0x78, 0x2c, 0xc7, 0x90, 0xc4, 0x06, 0x0e, 0x7a, 0x63,
+	0x40, 0x00, 0x00, 0x00, 0xff, 0xff, 0x53, 0xec, 0x60, 0x18, 0x03, 0x02, 0x00, 0x00,
 }
 
 func (this *Sector) Equal(that interface{}) bool {
@@ -168,24 +157,8 @@ func (this *Sector) Equal(that interface{}) bool {
 			return false
 		}
 	}
-	if !this.TileSet.Equal(that1.TileSet) {
+	if !this.TileMap.Equal(&that1.TileMap) {
 		return false
-	}
-	if len(this.TileMap) != len(that1.TileMap) {
-		return false
-	}
-	for i := range this.TileMap {
-		if this.TileMap[i] != that1.TileMap[i] {
-			return false
-		}
-	}
-	if len(this.CollisionMap) != len(that1.CollisionMap) {
-		return false
-	}
-	for i := range this.CollisionMap {
-		if this.CollisionMap[i] != that1.CollisionMap[i] {
-			return false
-		}
 	}
 	return true
 }
@@ -193,7 +166,7 @@ func (this *Sector) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 10)
+	s := make([]string, 0, 8)
 	s = append(s, "&space.Sector{")
 	s = append(s, "ID: "+fmt.Sprintf("%#v", this.ID)+",\n")
 	s = append(s, "Dim: "+strings.Replace(this.Dim.GoString(), `&`, ``, 1)+",\n")
@@ -210,9 +183,7 @@ func (this *Sector) GoString() string {
 	if this.Adjacents != nil {
 		s = append(s, "Adjacents: "+mapStringForAdjacents+",\n")
 	}
-	s = append(s, "TileSet: "+fmt.Sprintf("%#v", this.TileSet)+",\n")
-	s = append(s, "TileMap: "+fmt.Sprintf("%#v", this.TileMap)+",\n")
-	s = append(s, "CollisionMap: "+fmt.Sprintf("%#v", this.CollisionMap)+",\n")
+	s = append(s, "TileMap: "+strings.Replace(this.TileMap.GoString(), `&`, ``, 1)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -244,48 +215,12 @@ func (m *Sector) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.CollisionMap) > 0 {
-		dAtA2 := make([]byte, len(m.CollisionMap)*10)
-		var j1 int
-		for _, num := range m.CollisionMap {
-			for num >= 1<<7 {
-				dAtA2[j1] = uint8(uint64(num)&0x7f | 0x80)
-				num >>= 7
-				j1++
-			}
-			dAtA2[j1] = uint8(num)
-			j1++
-		}
-		i -= j1
-		copy(dAtA[i:], dAtA2[:j1])
-		i = encodeVarintSector(dAtA, i, uint64(j1))
-		i--
-		dAtA[i] = 0x32
-	}
-	if len(m.TileMap) > 0 {
-		dAtA4 := make([]byte, len(m.TileMap)*10)
-		var j3 int
-		for _, num := range m.TileMap {
-			for num >= 1<<7 {
-				dAtA4[j3] = uint8(uint64(num)&0x7f | 0x80)
-				num >>= 7
-				j3++
-			}
-			dAtA4[j3] = uint8(num)
-			j3++
-		}
-		i -= j3
-		copy(dAtA[i:], dAtA4[:j3])
-		i = encodeVarintSector(dAtA, i, uint64(j3))
-		i--
-		dAtA[i] = 0x2a
-	}
 	{
-		size := m.TileSet.Size()
-		i -= size
-		if _, err := m.TileSet.MarshalTo(dAtA[i:]); err != nil {
+		size, err := m.TileMap.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
 			return 0, err
 		}
+		i -= size
 		i = encodeVarintSector(dAtA, i, uint64(size))
 	}
 	i--
@@ -361,18 +296,8 @@ func NewPopulatedSector(r randySector, easy bool) *Sector {
 			this.Adjacents[randStringSector(r)] = *geometry.NewPopulatedVec3(r, easy)
 		}
 	}
-	v4 := github_com_elojah_game_02_pkg_ulid.NewPopulatedID(r)
-	this.TileSet = *v4
-	v5 := r.Intn(10)
-	this.TileMap = make([]uint64, v5)
-	for i := 0; i < v5; i++ {
-		this.TileMap[i] = uint64(uint64(r.Uint32()))
-	}
-	v6 := r.Intn(10)
-	this.CollisionMap = make([]uint64, v6)
-	for i := 0; i < v6; i++ {
-		this.CollisionMap[i] = uint64(uint64(r.Uint32()))
-	}
+	v4 := NewPopulatedTileMap(r, easy)
+	this.TileMap = *v4
 	if !easy && r.Intn(10) != 0 {
 	}
 	return this
@@ -397,9 +322,9 @@ func randUTF8RuneSector(r randySector) rune {
 	return rune(ru + 61)
 }
 func randStringSector(r randySector) string {
-	v7 := r.Intn(100)
-	tmps := make([]rune, v7)
-	for i := 0; i < v7; i++ {
+	v5 := r.Intn(100)
+	tmps := make([]rune, v5)
+	for i := 0; i < v5; i++ {
 		tmps[i] = randUTF8RuneSector(r)
 	}
 	return string(tmps)
@@ -421,11 +346,11 @@ func randFieldSector(dAtA []byte, r randySector, fieldNumber int, wire int) []by
 	switch wire {
 	case 0:
 		dAtA = encodeVarintPopulateSector(dAtA, uint64(key))
-		v8 := r.Int63()
+		v6 := r.Int63()
 		if r.Intn(2) == 0 {
-			v8 *= -1
+			v6 *= -1
 		}
-		dAtA = encodeVarintPopulateSector(dAtA, uint64(v8))
+		dAtA = encodeVarintPopulateSector(dAtA, uint64(v6))
 	case 1:
 		dAtA = encodeVarintPopulateSector(dAtA, uint64(key))
 		dAtA = append(dAtA, byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)))
@@ -469,22 +394,8 @@ func (m *Sector) Size() (n int) {
 			n += mapEntrySize + 1 + sovSector(uint64(mapEntrySize))
 		}
 	}
-	l = m.TileSet.Size()
+	l = m.TileMap.Size()
 	n += 1 + l + sovSector(uint64(l))
-	if len(m.TileMap) > 0 {
-		l = 0
-		for _, e := range m.TileMap {
-			l += sovSector(uint64(e))
-		}
-		n += 1 + sovSector(uint64(l)) + l
-	}
-	if len(m.CollisionMap) > 0 {
-		l = 0
-		for _, e := range m.CollisionMap {
-			l += sovSector(uint64(e))
-		}
-		n += 1 + sovSector(uint64(l)) + l
-	}
 	return n
 }
 
@@ -512,9 +423,7 @@ func (this *Sector) String() string {
 		`ID:` + fmt.Sprintf("%v", this.ID) + `,`,
 		`Dim:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.Dim), "Vec3", "geometry.Vec3", 1), `&`, ``, 1) + `,`,
 		`Adjacents:` + mapStringForAdjacents + `,`,
-		`TileSet:` + fmt.Sprintf("%v", this.TileSet) + `,`,
-		`TileMap:` + fmt.Sprintf("%v", this.TileMap) + `,`,
-		`CollisionMap:` + fmt.Sprintf("%v", this.CollisionMap) + `,`,
+		`TileMap:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.TileMap), "TileMap", "TileMap", 1), `&`, ``, 1) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -753,9 +662,9 @@ func (m *Sector) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TileSet", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field TileMap", wireType)
 			}
-			var byteLen int
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowSector
@@ -765,177 +674,25 @@ func (m *Sector) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				byteLen |= int(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			if byteLen < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthSector
 			}
-			postIndex := iNdEx + byteLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthSector
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := m.TileSet.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.TileMap.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
-		case 5:
-			if wireType == 0 {
-				var v uint64
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return ErrIntOverflowSector
-					}
-					if iNdEx >= l {
-						return io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					v |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				m.TileMap = append(m.TileMap, v)
-			} else if wireType == 2 {
-				var packedLen int
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return ErrIntOverflowSector
-					}
-					if iNdEx >= l {
-						return io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					packedLen |= int(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				if packedLen < 0 {
-					return ErrInvalidLengthSector
-				}
-				postIndex := iNdEx + packedLen
-				if postIndex < 0 {
-					return ErrInvalidLengthSector
-				}
-				if postIndex > l {
-					return io.ErrUnexpectedEOF
-				}
-				var elementCount int
-				var count int
-				for _, integer := range dAtA[iNdEx:postIndex] {
-					if integer < 128 {
-						count++
-					}
-				}
-				elementCount = count
-				if elementCount != 0 && len(m.TileMap) == 0 {
-					m.TileMap = make([]uint64, 0, elementCount)
-				}
-				for iNdEx < postIndex {
-					var v uint64
-					for shift := uint(0); ; shift += 7 {
-						if shift >= 64 {
-							return ErrIntOverflowSector
-						}
-						if iNdEx >= l {
-							return io.ErrUnexpectedEOF
-						}
-						b := dAtA[iNdEx]
-						iNdEx++
-						v |= uint64(b&0x7F) << shift
-						if b < 0x80 {
-							break
-						}
-					}
-					m.TileMap = append(m.TileMap, v)
-				}
-			} else {
-				return fmt.Errorf("proto: wrong wireType = %d for field TileMap", wireType)
-			}
-		case 6:
-			if wireType == 0 {
-				var v uint64
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return ErrIntOverflowSector
-					}
-					if iNdEx >= l {
-						return io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					v |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				m.CollisionMap = append(m.CollisionMap, v)
-			} else if wireType == 2 {
-				var packedLen int
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return ErrIntOverflowSector
-					}
-					if iNdEx >= l {
-						return io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					packedLen |= int(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				if packedLen < 0 {
-					return ErrInvalidLengthSector
-				}
-				postIndex := iNdEx + packedLen
-				if postIndex < 0 {
-					return ErrInvalidLengthSector
-				}
-				if postIndex > l {
-					return io.ErrUnexpectedEOF
-				}
-				var elementCount int
-				var count int
-				for _, integer := range dAtA[iNdEx:postIndex] {
-					if integer < 128 {
-						count++
-					}
-				}
-				elementCount = count
-				if elementCount != 0 && len(m.CollisionMap) == 0 {
-					m.CollisionMap = make([]uint64, 0, elementCount)
-				}
-				for iNdEx < postIndex {
-					var v uint64
-					for shift := uint(0); ; shift += 7 {
-						if shift >= 64 {
-							return ErrIntOverflowSector
-						}
-						if iNdEx >= l {
-							return io.ErrUnexpectedEOF
-						}
-						b := dAtA[iNdEx]
-						iNdEx++
-						v |= uint64(b&0x7F) << shift
-						if b < 0x80 {
-							break
-						}
-					}
-					m.CollisionMap = append(m.CollisionMap, v)
-				}
-			} else {
-				return fmt.Errorf("proto: wrong wireType = %d for field CollisionMap", wireType)
-			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipSector(dAtA[iNdEx:])

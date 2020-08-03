@@ -6,7 +6,7 @@ import (
 
 // Config for game object.
 type Config struct {
-	MapperURL string
+	CreateRoomURL string
 }
 
 // Dial set the config from a config namespace.
@@ -16,16 +16,16 @@ func (c *Config) Dial(fileconf interface{}) error {
 		return errors.ErrEmptyNamespace{}
 	}
 
-	cMapperURL, ok := fconf["mapper_url"]
+	cCreateRoomURL, ok := fconf["create_room_url"]
 	if !ok {
-		return errors.ErrMissingKey{Key: "mapper_url"}
+		return errors.ErrMissingKey{Key: "create_room_url"}
 	}
 
-	if c.MapperURL, ok = cMapperURL.(string); !ok {
+	if c.CreateRoomURL, ok = cCreateRoomURL.(string); !ok {
 		return errors.ErrInvalidType{
-			Key:    "mapper_url",
+			Key:    "create_room_url",
 			Expect: "string",
-			Value:  cMapperURL,
+			Value:  cCreateRoomURL,
 		}
 	}
 

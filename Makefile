@@ -97,6 +97,7 @@ proto: ## Generate .proto files
 	$Q cd pkg/player       && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. inventory.proto
 	$Q cd pkg/player/dto   && protoc -I=$(DIR)/pkg/account/dto -I=. -I=$(GOPATH)/src --gogoslick_out=Maccount.proto=$(GO_PACKAGE)/pkg/account/dto:. player.proto
 	$Q cd pkg/space        && protoc -I=$(DIR)/pkg/geometry -I=. -I=$(GOPATH)/src --gogoslick_out=Mgeometry.proto=$(GO_PACKAGE)/pkg/geometry:. coordinate.proto
+	$Q cd pkg/space        && protoc -I=$(DIR)/pkg/geometry -I=. -I=$(GOPATH)/src --gogoslick_out=Mgeometry.proto=$(GO_PACKAGE)/pkg/geometry:. tile.proto
 	$Q cd pkg/space        && protoc -I=$(DIR)/pkg/geometry -I=. -I=$(GOPATH)/src --gogoslick_out=Mgeometry.proto=$(GO_PACKAGE)/pkg/geometry:. sector.proto
 	$Q cd pkg/space        && protoc -I=$(DIR)/pkg/geometry -I=. -I=$(GOPATH)/src --gogoslick_out=Mgeometry.proto=$(GO_PACKAGE)/pkg/geometry:. world.proto
 
