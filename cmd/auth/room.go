@@ -188,12 +188,15 @@ func (h handler) createRoom(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// #Create world tilemap
+	// #Create world room
+	// Create one big tilemap
 	reqtm := request.CreateTileMap
 	tm := space.NewTileMap(reqtm.Dimensions)
-	ps := tm.GeneratePlatforms(reqtm.NPlatforms, reqtm.PlatformSize, reqtm.PlatformVariance)
-	tm.GeneratePaths(ps, reqtm.NPaths, reqtm.PathVariance, reqtm.PathWidth, reqtm.PathWidthVariance)
-	// TO__DO: associate tm to world to room
+	platforms := tm.GeneratePlatforms(reqtm.NPlatforms, reqtm.PlatformSize, reqtm.PlatformVariance)
+	tm.GeneratePaths(platforms, reqtm.NPaths, reqtm.PathVariance, reqtm.PathWidth, reqtm.PathWidthVariance)
+	// Create world from tilemap
+
+	// Associate world to room
 
 	// #Write response
 	raw, err := json.Marshal(dto.RoomResp{Room: ro})
