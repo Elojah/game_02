@@ -5,6 +5,7 @@ import (
 	"sort"
 
 	"github.com/elojah/game_02/pkg/geometry"
+	gulid "github.com/elojah/game_02/pkg/ulid"
 )
 
 type Shape int32
@@ -57,10 +58,83 @@ func (tm *TileMap) set(x, y int64, t Terrain, force bool) {
 // NewTileMap creates a new unset tilemap.
 func NewTileMap(dim geometry.Vec3) TileMap {
 	return TileMap{
-		Dim:       dim,
-		Map:       make([]Terrain, dim.X*dim.Y),
-		Collision: make([]bool, dim.X*dim.Y),
+		Dim: dim,
+		Map: make([]Terrain, dim.X*dim.Y),
+		// Collision: make([]bool, dim.X*dim.Y),
 	}
+}
+
+// rect returns map rect to create a new tilemap.
+func (tm TileMap) rect(x, y, w, h uint64) []Terrain {
+	result := make([]Terrain, 0, w*h)
+
+	// for each row
+	for i := uint64(0); i < h; i++ {
+		start := ((y + i) * tm.Dim.X) + x
+		end := start + w
+
+		if start >= uint64(len(tm.Map)) {
+			start = uint64(len(tm.Map)) - 1
+		}
+
+		if end >= uint64(len(tm.Map)) {
+			end = uint64(len(tm.Map)) - 1
+		}
+
+		result = append(result, tm.Map[start:end]...)
+	}
+
+	return result
+}
+
+// SplitSectors returns sectors from a generated tilemap.
+// dim is maximum sector size splitting.
+func (tm TileMap) SplitSectors(dim geometry.Vec3) ([]Sector, error) {
+	// TileMap splitted in one sector
+	if dim.X >= tm.Dim.X && dim.Y >= tm.Dim.Y {
+		return []Sector{{
+			ID:        gulid.NewID(),
+			Dim:       tm.Dim,
+			Adjacents: nil,
+			TileMap:   tm,
+		}}, nil
+	}
+
+	min := func(a, b uint64) uint64 {
+		if a < b {
+			return a
+		}
+
+		return b
+	}
+
+	var sectors []Sector
+
+	//                                tm.Dim.X+dim.X; -> Add an additional dim.X for extra offset
+	// e.g: 100/30 = 3 sectors of width 30 + 1 sector of width 10
+	// Width adjustment is made below inside loop
+	for i := uint64(0); (i * dim.X) < tm.Dim.X+dim.X; i++ {
+		// same adjustment +dim.Y than above comment
+		for j := uint64(0); (j * dim.Y) < tm.Dim.Y+dim.Y; j++ {
+			d := geometry.Vec3{
+				X: min(tm.Dim.X-(i*dim.X), dim.X),
+				Y: min(tm.Dim.Y-(j*dim.Y), dim.Y),
+				Z: 0,
+			}
+
+			sectors = append(sectors, Sector{
+				ID:        gulid.NewID(),
+				Dim:       d,
+				Adjacents: nil, // set later
+				TileMap: TileMap{
+					Dim: d,
+					Map: tm.rect(i*dim.X, j*dim.Y, d.X, d.Y),
+				},
+			})
+		}
+	}
+
+	return nil, nil
 }
 
 // Platform represents tm floor area.

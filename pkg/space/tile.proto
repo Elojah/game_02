@@ -42,5 +42,5 @@ message TileMap {
 	geometry.Vec3 Dim                 = 2 [(gogoproto.nullable) = false];
 
     repeated Terrain Map              = 3;
-	repeated bool Collision           = 4;
+	// repeated bool Collision           = 4;
 }
