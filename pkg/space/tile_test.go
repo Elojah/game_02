@@ -1,6 +1,7 @@
 package space_test
 
 import (
+	fmt "fmt"
 	"math/rand"
 	testing "testing"
 	time "time"
@@ -44,7 +45,7 @@ func TestGenerateFloor(t *testing.T) {
 			},
 		},
 	} {
-		t.Run("generatefloor"+d.name, func(t *testing.T) {
+		t.Run("generate_floor_"+d.name, func(t *testing.T) {
 			rand.Seed(time.Now().UTC().UnixNano())
 
 			actual := space.NewTileMap(d.p.Size)                                                         // nolint: scopelint
@@ -56,6 +57,357 @@ func TestGenerateFloor(t *testing.T) {
 			// 	}
 			// 	fmt.Println("")
 			// }
+		})
+	}
+}
+
+func TestSplitSectors(t *testing.T) {
+	type params struct {
+		tm       space.TileMap
+		dim      geometry.Vec3
+		expected []space.Sector
+	}
+
+	for _, d := range []struct {
+		name string
+		p    params
+	}{
+		{
+			name: "dimension only",
+			p: params{
+				tm: space.TileMap{
+					Dim: geometry.Vec3{
+						X: 10,
+						Y: 10,
+						Z: 1,
+					},
+					Map: []space.Terrain{
+						space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky,
+						space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky,
+						space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky,
+						space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky,
+						space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky,
+						space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky,
+						space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky,
+						space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky,
+						space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky,
+						space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky, space.Sky,
+					},
+				},
+				dim: geometry.Vec3{
+					X: 3,
+					Y: 3,
+					Z: 0,
+				},
+				expected: []space.Sector{
+					{
+						Dim: geometry.Vec3{
+							X: 3,
+							Y: 3,
+							Z: 0,
+						},
+						TileMap: space.TileMap{
+							Dim: geometry.Vec3{
+								X: 3,
+								Y: 3,
+								Z: 0,
+							},
+							Map: []space.Terrain{
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+							},
+						},
+					},
+					{
+						Dim: geometry.Vec3{
+							X: 3,
+							Y: 3,
+							Z: 0,
+						},
+						TileMap: space.TileMap{
+							Dim: geometry.Vec3{
+								X: 3,
+								Y: 3,
+								Z: 0,
+							},
+							Map: []space.Terrain{
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+							},
+						},
+					},
+					{
+						Dim: geometry.Vec3{
+							X: 3,
+							Y: 3,
+							Z: 0,
+						},
+						TileMap: space.TileMap{
+							Dim: geometry.Vec3{
+								X: 3,
+								Y: 3,
+								Z: 0,
+							},
+							Map: []space.Terrain{
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+							},
+						},
+					},
+					{
+						Dim: geometry.Vec3{
+							X: 1,
+							Y: 3,
+							Z: 0,
+						},
+						TileMap: space.TileMap{
+							Dim: geometry.Vec3{
+								X: 1,
+								Y: 3,
+								Z: 0,
+							},
+							Map: []space.Terrain{
+								space.Sky,
+								space.Sky,
+								space.Sky,
+							},
+						},
+					},
+					{
+						Dim: geometry.Vec3{
+							X: 3,
+							Y: 3,
+							Z: 0,
+						},
+						TileMap: space.TileMap{
+							Dim: geometry.Vec3{
+								X: 3,
+								Y: 3,
+								Z: 0,
+							},
+							Map: []space.Terrain{
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+							},
+						},
+					},
+					{
+						Dim: geometry.Vec3{
+							X: 3,
+							Y: 3,
+							Z: 0,
+						},
+						TileMap: space.TileMap{
+							Dim: geometry.Vec3{
+								X: 3,
+								Y: 3,
+								Z: 0,
+							},
+							Map: []space.Terrain{
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+							},
+						},
+					},
+					{
+						Dim: geometry.Vec3{
+							X: 3,
+							Y: 3,
+							Z: 0,
+						},
+						TileMap: space.TileMap{
+							Dim: geometry.Vec3{
+								X: 3,
+								Y: 3,
+								Z: 0,
+							},
+							Map: []space.Terrain{
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+							},
+						},
+					},
+					{
+						Dim: geometry.Vec3{
+							X: 1,
+							Y: 3,
+							Z: 0,
+						},
+						TileMap: space.TileMap{
+							Dim: geometry.Vec3{
+								X: 1,
+								Y: 3,
+								Z: 0,
+							},
+							Map: []space.Terrain{
+								space.Sky,
+								space.Sky,
+								space.Sky,
+							},
+						},
+					},
+					{
+						Dim: geometry.Vec3{
+							X: 3,
+							Y: 3,
+							Z: 0,
+						},
+						TileMap: space.TileMap{
+							Dim: geometry.Vec3{
+								X: 3,
+								Y: 3,
+								Z: 0,
+							},
+							Map: []space.Terrain{
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+							},
+						},
+					},
+					{
+						Dim: geometry.Vec3{
+							X: 3,
+							Y: 3,
+							Z: 0,
+						},
+						TileMap: space.TileMap{
+							Dim: geometry.Vec3{
+								X: 3,
+								Y: 3,
+								Z: 0,
+							},
+							Map: []space.Terrain{
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+							},
+						},
+					},
+					{
+						Dim: geometry.Vec3{
+							X: 3,
+							Y: 3,
+							Z: 0,
+						},
+						TileMap: space.TileMap{
+							Dim: geometry.Vec3{
+								X: 3,
+								Y: 3,
+								Z: 0,
+							},
+							Map: []space.Terrain{
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+							},
+						},
+					},
+					{
+						Dim: geometry.Vec3{
+							X: 1,
+							Y: 3,
+							Z: 0,
+						},
+						TileMap: space.TileMap{
+							Dim: geometry.Vec3{
+								X: 1,
+								Y: 3,
+								Z: 0,
+							},
+							Map: []space.Terrain{
+								space.Sky,
+								space.Sky,
+								space.Sky,
+							},
+						},
+					},
+					{
+						Dim: geometry.Vec3{
+							X: 3,
+							Y: 1,
+							Z: 0,
+						},
+						TileMap: space.TileMap{
+							Dim: geometry.Vec3{
+								X: 3,
+								Y: 1,
+								Z: 0,
+							},
+							Map: []space.Terrain{
+								space.Sky, space.Sky, space.Sky,
+							},
+						},
+					},
+					{
+						Dim: geometry.Vec3{
+							X: 3,
+							Y: 1,
+							Z: 0,
+						},
+						TileMap: space.TileMap{
+							Dim: geometry.Vec3{
+								X: 3,
+								Y: 1,
+								Z: 0,
+							},
+							Map: []space.Terrain{
+								space.Sky, space.Sky, space.Sky,
+							},
+						},
+					},
+					{
+						Dim: geometry.Vec3{
+							X: 3,
+							Y: 1,
+							Z: 0,
+						},
+						TileMap: space.TileMap{
+							Dim: geometry.Vec3{
+								X: 3,
+								Y: 1,
+								Z: 0,
+							},
+							Map: []space.Terrain{
+								space.Sky, space.Sky, space.Sky,
+							},
+						},
+					},
+					{
+						Dim: geometry.Vec3{
+							X: 1,
+							Y: 1,
+							Z: 0,
+						},
+						TileMap: space.TileMap{
+							Dim: geometry.Vec3{
+								X: 1,
+								Y: 1,
+								Z: 0,
+							},
+							Map: []space.Terrain{
+								space.Sky,
+							},
+						},
+					},
+				},
+			},
+		},
+	} {
+		t.Run("split_sectors_"+d.name, func(t *testing.T) {
+			actual := d.p.tm.SplitSectors(d.p.dim) // nolint: scopelint
+			fmt.Println(actual)
+			if len(actual) != len(d.p.expected) { // nolint: scopelint
+				t.Errorf("different lengths. actual %d expected %d", len(actual), len(d.p.expected)) // nolint: scopelint
+				return
+			}
+			// if
 		})
 	}
 }

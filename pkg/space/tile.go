@@ -73,6 +73,9 @@ func (tm TileMap) rect(x, y, w, h uint64) []Terrain {
 		start := ((y + i) * tm.Dim.X) + x
 		end := start + w
 
+		// dont panic here, put last valid value (random result)
+		// assertion by test here to dodge random possible panics
+		// SO KEEP TESTS VALID FOR THIS PART
 		if start >= uint64(len(tm.Map)) {
 			start = uint64(len(tm.Map)) - 1
 		}
@@ -89,7 +92,7 @@ func (tm TileMap) rect(x, y, w, h uint64) []Terrain {
 
 // SplitSectors returns sectors from a generated tilemap.
 // dim is maximum sector size splitting.
-func (tm TileMap) SplitSectors(dim geometry.Vec3) ([]Sector, error) {
+func (tm TileMap) SplitSectors(dim geometry.Vec3) []Sector {
 	// TileMap splitted in one sector
 	if dim.X >= tm.Dim.X && dim.Y >= tm.Dim.Y {
 		return []Sector{{
@@ -97,7 +100,7 @@ func (tm TileMap) SplitSectors(dim geometry.Vec3) ([]Sector, error) {
 			Dim:       tm.Dim,
 			Adjacents: nil,
 			TileMap:   tm,
-		}}, nil
+		}}
 	}
 
 	min := func(a, b uint64) uint64 {
@@ -110,12 +113,8 @@ func (tm TileMap) SplitSectors(dim geometry.Vec3) ([]Sector, error) {
 
 	var sectors []Sector
 
-	//                                tm.Dim.X+dim.X; -> Add an additional dim.X for extra offset
-	// e.g: 100/30 = 3 sectors of width 30 + 1 sector of width 10
-	// Width adjustment is made below inside loop
-	for i := uint64(0); (i * dim.X) < tm.Dim.X+dim.X; i++ {
-		// same adjustment +dim.Y than above comment
-		for j := uint64(0); (j * dim.Y) < tm.Dim.Y+dim.Y; j++ {
+	for i := uint64(0); (i * dim.X) < tm.Dim.X; i++ {
+		for j := uint64(0); (j * dim.Y) < tm.Dim.Y; j++ {
 			d := geometry.Vec3{
 				X: min(tm.Dim.X-(i*dim.X), dim.X),
 				Y: min(tm.Dim.Y-(j*dim.Y), dim.Y),
@@ -134,7 +133,7 @@ func (tm TileMap) SplitSectors(dim geometry.Vec3) ([]Sector, error) {
 		}
 	}
 
-	return nil, nil
+	return sectors
 }
 
 // Platform represents tm floor area.
