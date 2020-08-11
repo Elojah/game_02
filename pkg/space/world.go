@@ -12,7 +12,7 @@ func NewWorld(tm TileMap, sectorDim geometry.Vec3) (World, error) {
 		return World{
 			ID:      gulid.NewID(),
 			Dim:     tm.Dim,
-			Sectors: map[string]uint64{},
+			Sectors: Sectors(tm.SectorBreaks(sectorDim)).IDsMap(),
 		}, nil
 	}
 

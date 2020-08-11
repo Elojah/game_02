@@ -414,7 +414,7 @@ func TestSplitSectors(t *testing.T) {
 		},
 	} {
 		t.Run("split_sectors_"+d.name, func(t *testing.T) {
-			actual := d.p.tm.SplitSectors(d.p.dim) // nolint: scopelint
+			actual := d.p.tm.SectorBreaks(d.p.dim) // nolint: scopelint
 			if len(actual) != len(d.p.expected) {  // nolint: scopelint
 				t.Errorf("different lengths. actual %d expected %d", len(actual), len(d.p.expected)) // nolint: scopelint
 				return
@@ -432,7 +432,6 @@ func TestSplitSectors(t *testing.T) {
 					)
 					return
 				}
-
 			}
 		})
 	}

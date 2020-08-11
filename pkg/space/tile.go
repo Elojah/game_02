@@ -91,9 +91,9 @@ func (tm TileMap) rect(x, y, w, h uint64) []Terrain {
 	return result
 }
 
-// SplitSectors returns sectors from a generated tilemap.
+// SectorBreaks returns sectors from a generated tilemap.
 // dim is maximum sector size splitting.
-func (tm TileMap) SplitSectors(dim geometry.Vec3) []Sector {
+func (tm TileMap) SectorBreaks(dim geometry.Vec3) []Sector {
 	// TileMap splitted in one sector
 	if dim.X >= tm.Dim.X && dim.Y >= tm.Dim.Y {
 		return []Sector{{

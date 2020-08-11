@@ -18,3 +18,16 @@ type StoreSector interface {
 	FetchSector(context.Context, FilterSector) (Sector, error)
 	DeleteSector(context.Context, FilterSector) error
 }
+
+type Sectors []Sector
+
+// IDsMap return IDs in a convenient format to assign world.sectors.
+func (ss Sectors) IDsMap() map[string]uint64 {
+	result := make(map[string]uint64, len(ss))
+
+	for i, s := range ss {
+		result[s.ID.String()] = uint64(i)
+	}
+
+	return result
+}
