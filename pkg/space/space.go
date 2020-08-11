@@ -4,4 +4,5 @@ package space
 type App interface {
 	StoreCoordinate
 	StoreSector
+	StoreWorld
 }

@@ -174,7 +174,7 @@ func (h handler) createRoom(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// #Create room
+	// #Precreate room
 	ro := room.R{
 		ID:       gulid.NewID(),
 		Name:     request.Name,
@@ -199,11 +199,17 @@ func (h handler) createRoom(w http.ResponseWriter, r *http.Request) {
 
 	// Create world with sectors
 	world := space.NewWorld(reqtm.Dimensions, sectors)
+	if err := h.space.UpsertWorld(ctx, world); err != nil {
+		logger.Error().Err(err).Msg("failed to create world")
+		http.Error(w, "failed to create world", http.StatusInternalServerError)
+
+		return
+	}
 
 	// Associate world to room
 	ro.WorldID = world.ID
 
-	// Confirm room creation
+	// Create room
 	if err := h.room.Upsert(ctx, ro); err != nil {
 		logger.Error().Err(err).Msg("failed to create room")
 		http.Error(w, fmt.Sprintf("failed to create room: %v", err), http.StatusInternalServerError)
