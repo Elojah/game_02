@@ -143,7 +143,7 @@ type Platform struct {
 	Shape    Shape
 }
 
-// GeneratePlatforms generate n platforms with variant size nd write them into tm.
+// GeneratePlatforms generate n platforms with variant size and write them into tm.
 // Returns platform array.
 func (tm *TileMap) GeneratePlatforms(n, size, variance uint64) []Platform {
 	platforms := make([]Platform, n)

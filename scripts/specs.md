@@ -8,7 +8,8 @@ _______________
 
 - [~] client UI login + room (gopherjs + vecty) -> UI
 - [x] room REST
-- [ ] client gameworld (webGL) -> Tiles API ->
+- [ ] world creation: create domain tileset with upsert/fetch
+- [ ] client gameworld -> Tiles API ->
 
 - GetTileFromPosition()
 -> {position: X/Y}
