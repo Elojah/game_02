@@ -29,8 +29,8 @@ func (s *Store) UpsertSector(ctx context.Context, sec space.Sector) error {
 	return nil
 }
 
-// UpsertSectors implementation for sector in redis.
-func (s *Store) UpsertSectors(ctx context.Context, secs []space.Sector) error {
+// UpsertManySector implementation for sector in redis.
+func (s *Store) UpsertManySector(ctx context.Context, secs []space.Sector) error {
 	params := make(map[string][]byte, len(secs))
 
 	for _, sec := range secs {

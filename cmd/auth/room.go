@@ -190,7 +190,7 @@ func (h handler) createRoom(w http.ResponseWriter, r *http.Request) {
 
 	// Create sectors from tilemap
 	sectors := tm.SectorBreaks(request.SectorDimensions)
-	if err := h.space.UpsertSectors(ctx, sectors); err != nil {
+	if err := h.space.UpsertManySector(ctx, sectors); err != nil {
 		logger.Error().Err(err).Msg("failed to create sectors")
 		http.Error(w, "failed to create sectors", http.StatusInternalServerError)
 
