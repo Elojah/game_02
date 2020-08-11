@@ -9,6 +9,7 @@ import (
 	"github.com/elojah/game_02/pkg/lobby"
 	"github.com/elojah/game_02/pkg/player"
 	"github.com/elojah/game_02/pkg/room"
+	"github.com/elojah/game_02/pkg/space"
 	"github.com/gorilla/mux"
 	"github.com/rs/zerolog/log"
 )
@@ -21,6 +22,7 @@ type handler struct {
 	room    room.App
 	entity  entity.App
 	player  player.App
+	space   space.App
 }
 
 // Dial starts the auth server.

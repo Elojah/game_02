@@ -5,16 +5,11 @@ import (
 	gulid "github.com/elojah/game_02/pkg/ulid"
 )
 
-// NewWorld returns a World from a generated tilemap.
-// sectorDim is maximum sector size splitting.
-func NewWorld(tm TileMap, sectorDim geometry.Vec3) (World, error) {
-	if sectorDim.X >= tm.Dim.X && sectorDim.Y >= tm.Dim.Y {
-		return World{
-			ID:      gulid.NewID(),
-			Dim:     tm.Dim,
-			Sectors: Sectors(tm.SectorBreaks(sectorDim)).IDsMap(),
-		}, nil
+// NewWorld returns a World with associated sectors.
+func NewWorld(dim geometry.Vec3, sectors []Sector) World {
+	return World{
+		ID:      gulid.NewID(),
+		Dim:     dim,
+		Sectors: Sectors(sectors).IDsMap(),
 	}
-
-	return World{}, nil
 }

@@ -181,22 +181,35 @@ func (h handler) createRoom(w http.ResponseWriter, r *http.Request) {
 		Password: password,
 		Owner:    ac.ID,
 	}
+
+	// Create one big tilemap
+	reqtm := request.CreateTileMap
+	tm := space.NewTileMap(reqtm.Dimensions)
+	platforms := tm.GeneratePlatforms(reqtm.NPlatforms, reqtm.PlatformSize, reqtm.PlatformVariance)
+	tm.GeneratePaths(platforms, reqtm.NPaths, reqtm.PathVariance, reqtm.PathWidth, reqtm.PathWidthVariance)
+
+	// Create sectors from tilemap
+	sectors := tm.SectorBreaks(request.SectorDimensions)
+	if err := h.space.UpsertSectors(ctx, sectors); err != nil {
+		logger.Error().Err(err).Msg("failed to create sectors")
+		http.Error(w, "failed to create sectors", http.StatusInternalServerError)
+
+		return
+	}
+
+	// Create world with sectors
+	world := space.NewWorld(reqtm.Dimensions, sectors)
+
+	// Associate world to room
+	ro.WorldID = world.ID
+
+	// Confirm room creation
 	if err := h.room.Upsert(ctx, ro); err != nil {
 		logger.Error().Err(err).Msg("failed to create room")
 		http.Error(w, fmt.Sprintf("failed to create room: %v", err), http.StatusInternalServerError)
 
 		return
 	}
-
-	// #Create world room
-	// Create one big tilemap
-	reqtm := request.CreateTileMap
-	tm := space.NewTileMap(reqtm.Dimensions)
-	platforms := tm.GeneratePlatforms(reqtm.NPlatforms, reqtm.PlatformSize, reqtm.PlatformVariance)
-	tm.GeneratePaths(platforms, reqtm.NPaths, reqtm.PathVariance, reqtm.PathWidth, reqtm.PathWidthVariance)
-	// Create world from tilemap
-
-	// Associate world to room
 
 	// #Write response
 	raw, err := json.Marshal(dto.RoomResp{Room: ro})

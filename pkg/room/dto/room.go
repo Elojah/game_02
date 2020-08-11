@@ -1,8 +1,11 @@
 package dto
 
 import (
+	"strconv"
+
 	"github.com/elojah/game_02/pkg/account/dto"
 	gerrors "github.com/elojah/game_02/pkg/errors"
+	"github.com/elojah/game_02/pkg/geometry"
 	"github.com/elojah/game_02/pkg/room"
 	spacedto "github.com/elojah/game_02/pkg/space/dto"
 	gulid "github.com/elojah/game_02/pkg/ulid"
@@ -41,6 +44,8 @@ type CreateRoom struct {
 
 	Name     string `json:"name"`
 	Password string `json:"password"`
+
+	SectorDimensions geometry.Vec3 `json:"sector_dimensions"`
 }
 
 func (r CreateRoom) Check() error {
@@ -57,6 +62,22 @@ func (r CreateRoom) Check() error {
 			Key:   "name",
 			Value: r.Name,
 			Rules: []string{"must not be empty"},
+		}
+	}
+
+	if r.SectorDimensions.X < 100 || r.SectorDimensions.X > 1000 {
+		return gerrors.ErrInvalidRequest{
+			Key:   "sector_dimensions.x",
+			Value: strconv.FormatUint(r.SectorDimensions.X, 10),
+			Rules: []string{"must be between 100 and 1000"},
+		}
+	}
+
+	if r.SectorDimensions.Y < 100 || r.SectorDimensions.Y > 1000 {
+		return gerrors.ErrInvalidRequest{
+			Key:   "sector_dimensions.x",
+			Value: strconv.FormatUint(r.SectorDimensions.Y, 10),
+			Rules: []string{"must be between 100 and 1000"},
 		}
 	}
 

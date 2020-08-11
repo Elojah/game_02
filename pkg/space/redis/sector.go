@@ -29,6 +29,26 @@ func (s *Store) UpsertSector(ctx context.Context, sec space.Sector) error {
 	return nil
 }
 
+// UpsertSectors implementation for sector in redis.
+func (s *Store) UpsertSectors(ctx context.Context, secs []space.Sector) error {
+	params := make(map[string][]byte, len(secs))
+
+	for _, sec := range secs {
+		raw, err := sec.Marshal()
+		if err != nil {
+			return err
+		}
+
+		params[sec.ID.String()] = raw
+	}
+
+	if err := s.MSet(params).Err(); err != nil {
+		return fmt.Errorf("upsert %d sectors: %w", len(secs), err)
+	}
+
+	return nil
+}
+
 // FetchSector implementation for sector in redis.
 func (s *Store) FetchSector(ctx context.Context, filter space.FilterSector) (space.Sector, error) {
 	val, err := s.Get(sectorKey + filter.ID.String()).Result()
