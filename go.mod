@@ -3,6 +3,7 @@ module github.com/elojah/game_02
 go 1.14
 
 require (
+	github.com/davecgh/go-spew v1.1.1
 	github.com/elojah/buntdb v0.0.0-20200613054902-e9ea35a75448
 	github.com/elojah/redis v0.0.0-20190313141158-8ee7ee230476
 	github.com/elojah/services v0.0.0-20190313141140-599efb6ce8c5

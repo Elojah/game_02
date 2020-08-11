@@ -1,7 +1,6 @@
 package space_test
 
 import (
-	fmt "fmt"
 	"math/rand"
 	testing "testing"
 	time "time"
@@ -99,6 +98,20 @@ func TestSplitSectors(t *testing.T) {
 					Y: 3,
 					Z: 0,
 				},
+				/*
+					0          10
+					____________
+					|  |  |  | |
+					|  |  |  | |
+					|__|__|__|_|
+					|  |  |  | |
+					|  |  |  | |
+					|__|__|__|_|
+					|  |  |  | |
+					|  |  |  | |
+					|__|__|__|_|
+					|__|__|__|_| 10
+				*/
 				expected: []space.Sector{
 					{
 						Dim: geometry.Vec3{
@@ -159,177 +172,6 @@ func TestSplitSectors(t *testing.T) {
 					},
 					{
 						Dim: geometry.Vec3{
-							X: 3,
-							Y: 1,
-							Z: 0,
-						},
-						TileMap: space.TileMap{
-							Dim: geometry.Vec3{
-								X: 3,
-								Y: 1,
-								Z: 0,
-							},
-							Map: []space.Terrain{
-								space.Sky,
-								space.Sky,
-								space.Sky,
-							},
-						},
-					},
-					{
-						Dim: geometry.Vec3{
-							X: 3,
-							Y: 3,
-							Z: 0,
-						},
-						TileMap: space.TileMap{
-							Dim: geometry.Vec3{
-								X: 3,
-								Y: 3,
-								Z: 0,
-							},
-							Map: []space.Terrain{
-								space.Sky, space.Sky, space.Sky,
-								space.Sky, space.Sky, space.Sky,
-								space.Sky, space.Sky, space.Sky,
-							},
-						},
-					},
-					{
-						Dim: geometry.Vec3{
-							X: 3,
-							Y: 3,
-							Z: 0,
-						},
-						TileMap: space.TileMap{
-							Dim: geometry.Vec3{
-								X: 3,
-								Y: 3,
-								Z: 0,
-							},
-							Map: []space.Terrain{
-								space.Sky, space.Sky, space.Sky,
-								space.Sky, space.Sky, space.Sky,
-								space.Sky, space.Sky, space.Sky,
-							},
-						},
-					},
-					{
-						Dim: geometry.Vec3{
-							X: 3,
-							Y: 3,
-							Z: 0,
-						},
-						TileMap: space.TileMap{
-							Dim: geometry.Vec3{
-								X: 3,
-								Y: 3,
-								Z: 0,
-							},
-							Map: []space.Terrain{
-								space.Sky, space.Sky, space.Sky,
-								space.Sky, space.Sky, space.Sky,
-								space.Sky, space.Sky, space.Sky,
-							},
-						},
-					},
-					{
-						Dim: geometry.Vec3{
-							X: 3,
-							Y: 1,
-							Z: 0,
-						},
-						TileMap: space.TileMap{
-							Dim: geometry.Vec3{
-								X: 3,
-								Y: 1,
-								Z: 0,
-							},
-							Map: []space.Terrain{
-								space.Sky,
-								space.Sky,
-								space.Sky,
-							},
-						},
-					},
-					{
-						Dim: geometry.Vec3{
-							X: 3,
-							Y: 3,
-							Z: 0,
-						},
-						TileMap: space.TileMap{
-							Dim: geometry.Vec3{
-								X: 3,
-								Y: 3,
-								Z: 0,
-							},
-							Map: []space.Terrain{
-								space.Sky, space.Sky, space.Sky,
-								space.Sky, space.Sky, space.Sky,
-								space.Sky, space.Sky, space.Sky,
-							},
-						},
-					},
-					{
-						Dim: geometry.Vec3{
-							X: 3,
-							Y: 3,
-							Z: 0,
-						},
-						TileMap: space.TileMap{
-							Dim: geometry.Vec3{
-								X: 3,
-								Y: 3,
-								Z: 0,
-							},
-							Map: []space.Terrain{
-								space.Sky, space.Sky, space.Sky,
-								space.Sky, space.Sky, space.Sky,
-								space.Sky, space.Sky, space.Sky,
-							},
-						},
-					},
-					{
-						Dim: geometry.Vec3{
-							X: 3,
-							Y: 3,
-							Z: 0,
-						},
-						TileMap: space.TileMap{
-							Dim: geometry.Vec3{
-								X: 3,
-								Y: 3,
-								Z: 0,
-							},
-							Map: []space.Terrain{
-								space.Sky, space.Sky, space.Sky,
-								space.Sky, space.Sky, space.Sky,
-								space.Sky, space.Sky, space.Sky,
-							},
-						},
-					},
-					{
-						Dim: geometry.Vec3{
-							X: 3,
-							Y: 1,
-							Z: 0,
-						},
-						TileMap: space.TileMap{
-							Dim: geometry.Vec3{
-								X: 3,
-								Y: 1,
-								Z: 0,
-							},
-							Map: []space.Terrain{
-								space.Sky,
-								space.Sky,
-								space.Sky,
-							},
-						},
-					},
-					{
-						Dim: geometry.Vec3{
 							X: 1,
 							Y: 3,
 							Z: 0,
@@ -341,6 +183,65 @@ func TestSplitSectors(t *testing.T) {
 								Z: 0,
 							},
 							Map: []space.Terrain{
+								space.Sky,
+								space.Sky,
+								space.Sky,
+							},
+						},
+					},
+					{
+						Dim: geometry.Vec3{
+							X: 3,
+							Y: 3,
+							Z: 0,
+						},
+						TileMap: space.TileMap{
+							Dim: geometry.Vec3{
+								X: 3,
+								Y: 3,
+								Z: 0,
+							},
+							Map: []space.Terrain{
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+							},
+						},
+					},
+					{
+						Dim: geometry.Vec3{
+							X: 3,
+							Y: 3,
+							Z: 0,
+						},
+						TileMap: space.TileMap{
+							Dim: geometry.Vec3{
+								X: 3,
+								Y: 3,
+								Z: 0,
+							},
+							Map: []space.Terrain{
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+							},
+						},
+					},
+					{
+						Dim: geometry.Vec3{
+							X: 3,
+							Y: 3,
+							Z: 0,
+						},
+						TileMap: space.TileMap{
+							Dim: geometry.Vec3{
+								X: 3,
+								Y: 3,
+								Z: 0,
+							},
+							Map: []space.Terrain{
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
 								space.Sky, space.Sky, space.Sky,
 							},
 						},
@@ -358,6 +259,65 @@ func TestSplitSectors(t *testing.T) {
 								Z: 0,
 							},
 							Map: []space.Terrain{
+								space.Sky,
+								space.Sky,
+								space.Sky,
+							},
+						},
+					},
+					{
+						Dim: geometry.Vec3{
+							X: 3,
+							Y: 3,
+							Z: 0,
+						},
+						TileMap: space.TileMap{
+							Dim: geometry.Vec3{
+								X: 3,
+								Y: 3,
+								Z: 0,
+							},
+							Map: []space.Terrain{
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+							},
+						},
+					},
+					{
+						Dim: geometry.Vec3{
+							X: 3,
+							Y: 3,
+							Z: 0,
+						},
+						TileMap: space.TileMap{
+							Dim: geometry.Vec3{
+								X: 3,
+								Y: 3,
+								Z: 0,
+							},
+							Map: []space.Terrain{
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
+							},
+						},
+					},
+					{
+						Dim: geometry.Vec3{
+							X: 3,
+							Y: 3,
+							Z: 0,
+						},
+						TileMap: space.TileMap{
+							Dim: geometry.Vec3{
+								X: 3,
+								Y: 3,
+								Z: 0,
+							},
+							Map: []space.Terrain{
+								space.Sky, space.Sky, space.Sky,
+								space.Sky, space.Sky, space.Sky,
 								space.Sky, space.Sky, space.Sky,
 							},
 						},
@@ -372,6 +332,59 @@ func TestSplitSectors(t *testing.T) {
 							Dim: geometry.Vec3{
 								X: 1,
 								Y: 3,
+								Z: 0,
+							},
+							Map: []space.Terrain{
+								space.Sky,
+								space.Sky,
+								space.Sky,
+							},
+						},
+					},
+					{
+						Dim: geometry.Vec3{
+							X: 3,
+							Y: 1,
+							Z: 0,
+						},
+						TileMap: space.TileMap{
+							Dim: geometry.Vec3{
+								X: 3,
+								Y: 1,
+								Z: 0,
+							},
+							Map: []space.Terrain{
+								space.Sky, space.Sky, space.Sky,
+							},
+						},
+					},
+					{
+						Dim: geometry.Vec3{
+							X: 3,
+							Y: 1,
+							Z: 0,
+						},
+						TileMap: space.TileMap{
+							Dim: geometry.Vec3{
+								X: 3,
+								Y: 1,
+								Z: 0,
+							},
+							Map: []space.Terrain{
+								space.Sky, space.Sky, space.Sky,
+							},
+						},
+					},
+					{
+						Dim: geometry.Vec3{
+							X: 3,
+							Y: 1,
+							Z: 0,
+						},
+						TileMap: space.TileMap{
+							Dim: geometry.Vec3{
+								X: 3,
+								Y: 1,
 								Z: 0,
 							},
 							Map: []space.Terrain{
@@ -402,8 +415,7 @@ func TestSplitSectors(t *testing.T) {
 	} {
 		t.Run("split_sectors_"+d.name, func(t *testing.T) {
 			actual := d.p.tm.SplitSectors(d.p.dim) // nolint: scopelint
-			fmt.Println(actual)
-			if len(actual) != len(d.p.expected) { // nolint: scopelint
+			if len(actual) != len(d.p.expected) {  // nolint: scopelint
 				t.Errorf("different lengths. actual %d expected %d", len(actual), len(d.p.expected)) // nolint: scopelint
 				return
 			}

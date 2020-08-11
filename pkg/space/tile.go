@@ -73,15 +73,16 @@ func (tm TileMap) rect(x, y, w, h uint64) []Terrain {
 		start := ((y + i) * tm.Dim.X) + x
 		end := start + w
 
-		// dont panic here, put last valid value (random result)
-		// assertion by test here to dodge random possible panics
-		// SO KEEP TESTS VALID FOR THIS PART
-		if start >= uint64(len(tm.Map)) {
-			start = uint64(len(tm.Map)) - 1
+		// Should never happen in any flow, guard security only
+		// dont panic here, put last valid value (=>random result)
+		// assertion by test here
+		// THIS PART MUST STAY TEST COVERED
+		if start > uint64(len(tm.Map)) {
+			return nil
 		}
 
-		if end >= uint64(len(tm.Map)) {
-			end = uint64(len(tm.Map)) - 1
+		if end > uint64(len(tm.Map)) {
+			return nil
 		}
 
 		result = append(result, tm.Map[start:end]...)
@@ -113,11 +114,11 @@ func (tm TileMap) SplitSectors(dim geometry.Vec3) []Sector {
 
 	var sectors []Sector
 
-	for i := uint64(0); (i * dim.X) < tm.Dim.X; i++ {
-		for j := uint64(0); (j * dim.Y) < tm.Dim.Y; j++ {
+	for i := uint64(0); (i * dim.Y) < tm.Dim.Y; i++ {
+		for j := uint64(0); (j * dim.X) < tm.Dim.X; j++ {
 			d := geometry.Vec3{
-				X: min(tm.Dim.X-(i*dim.X), dim.X),
-				Y: min(tm.Dim.Y-(j*dim.Y), dim.Y),
+				X: min(tm.Dim.X-(j*dim.X), dim.X),
+				Y: min(tm.Dim.Y-(i*dim.Y), dim.Y),
 				Z: 0,
 			}
 
@@ -127,7 +128,7 @@ func (tm TileMap) SplitSectors(dim geometry.Vec3) []Sector {
 				Adjacents: nil, // set later
 				TileMap: TileMap{
 					Dim: d,
-					Map: tm.rect(i*dim.X, j*dim.Y, d.X, d.Y),
+					Map: tm.rect(j*dim.X, i*dim.Y, d.X, d.Y),
 				},
 			})
 		}
