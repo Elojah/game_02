@@ -7,6 +7,7 @@ import (
 
 var _ space.StoreSector = (*Store)(nil)
 var _ space.StoreWorld = (*Store)(nil)
+var _ space.StoreTileSet = (*Store)(nil)
 
 // Store for space in redis.
 type Store struct {

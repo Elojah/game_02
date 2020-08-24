@@ -6,4 +6,5 @@ type A struct {
 	space.StoreCoordinate
 	space.StoreSector
 	space.StoreWorld
+	space.StoreTileSet
 }

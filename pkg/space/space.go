@@ -5,4 +5,5 @@ type App interface {
 	StoreCoordinate
 	StoreSector
 	StoreWorld
+	StoreTileSet
 }

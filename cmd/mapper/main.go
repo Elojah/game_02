@@ -18,6 +18,8 @@ import (
 	entityredis "github.com/elojah/game_02/pkg/entity/redis"
 	playerapp "github.com/elojah/game_02/pkg/player/app"
 	playerredis "github.com/elojah/game_02/pkg/player/redis"
+	spaceapp "github.com/elojah/game_02/pkg/space/app"
+	spaceredis "github.com/elojah/game_02/pkg/space/redis"
 )
 
 var (
@@ -52,12 +54,18 @@ func run(prog string, filename string) {
 	entityApp := entityapp.A{Store: &entityStore, StoreTemplate: &entityStore}
 	playerStore := playerredis.Store{Service: rd}
 	playerApp := playerapp.A{Store: &playerStore, StoreSpawn: &playerStore}
+	spaceStore := spaceredis.Store{Service: rd}
+	spaceApp := spaceapp.A{
+		StoreSector:  &spaceStore,
+		StoreTileSet: &spaceStore,
+	}
 
 	// handler (https server)
 	h := &handler{
 		account: &accountApp,
 		entity:  &entityApp,
 		player:  &playerApp,
+		space:   &spaceApp,
 	}
 
 	hl := h.NewLauncher(Namespaces{
