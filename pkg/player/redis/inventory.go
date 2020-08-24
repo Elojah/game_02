@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/go-redis/redis"
+	"github.com/go-redis/redis/v8"
 
 	gerrors "github.com/elojah/game_02/pkg/errors"
 	"github.com/elojah/game_02/pkg/player"
@@ -22,7 +22,7 @@ func (s *Store) UpsertInventory(ctx context.Context, inv player.Inventory) error
 		return err
 	}
 
-	if err := s.Set(inventoryKey+inv.ID.String(), raw, 0).Err(); err != nil {
+	if err := s.Set(ctx, inventoryKey+inv.ID.String(), raw, 0).Err(); err != nil {
 		return fmt.Errorf("upsert inventory %s: %w", inv.ID.String(), err)
 	}
 
@@ -31,7 +31,7 @@ func (s *Store) UpsertInventory(ctx context.Context, inv player.Inventory) error
 
 // Fetch implementation for player in redis.
 func (s *Store) FetchInventory(ctx context.Context, filter player.FilterInventory) (player.Inventory, error) {
-	val, err := s.Get(inventoryKey + filter.ID.String()).Result()
+	val, err := s.Get(ctx, inventoryKey+filter.ID.String()).Result()
 	if err != nil {
 		if !errors.Is(err, redis.Nil) {
 			return player.Inventory{}, fmt.Errorf("fetch inventory %s: %w", filter.ID.String(), err)
@@ -54,7 +54,7 @@ func (s *Store) FetchInventory(ctx context.Context, filter player.FilterInventor
 
 // Delete implementation for player in redis.
 func (s *Store) DeleteInventory(ctx context.Context, filter player.FilterInventory) error {
-	if err := s.Del(inventoryKey + filter.ID.String()).Err(); err != nil {
+	if err := s.Del(ctx, inventoryKey+filter.ID.String()).Err(); err != nil {
 		return fmt.Errorf("remove inventory %s: %w", filter.ID.String(), err)
 	}
 

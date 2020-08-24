@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/go-redis/redis"
+	"github.com/go-redis/redis/v8"
 
 	gerrors "github.com/elojah/game_02/pkg/errors"
 	"github.com/elojah/game_02/pkg/room"
@@ -22,7 +22,7 @@ func (s *Store) Upsert(ctx context.Context, r room.R) error {
 		return err
 	}
 
-	if err := s.Set(roomKey+r.ID.String(), raw, 0).Err(); err != nil {
+	if err := s.Set(ctx, roomKey+r.ID.String(), raw, 0).Err(); err != nil {
 		return fmt.Errorf("upsert room %s: %w", r.ID, err)
 	}
 
@@ -31,7 +31,7 @@ func (s *Store) Upsert(ctx context.Context, r room.R) error {
 
 // Fetch implementation for room in redis.
 func (s *Store) Fetch(ctx context.Context, filter room.Filter) (room.R, error) {
-	val, err := s.Get(roomKey + filter.ID.String()).Result()
+	val, err := s.Get(ctx, roomKey+filter.ID.String()).Result()
 	if err != nil {
 		if !errors.Is(err, redis.Nil) {
 			return room.R{}, fmt.Errorf("fetch room %s: %w", filter.ID.String(), err)
@@ -54,7 +54,7 @@ func (s *Store) Fetch(ctx context.Context, filter room.Filter) (room.R, error) {
 
 // Delete implementation for room in redis.
 func (s *Store) Delete(ctx context.Context, filter room.Filter) error {
-	if err := s.Del(roomKey + filter.ID.String()).Err(); err != nil {
+	if err := s.Del(ctx, roomKey+filter.ID.String()).Err(); err != nil {
 		return fmt.Errorf("remove room %s: %w", filter.ID, err)
 	}
 

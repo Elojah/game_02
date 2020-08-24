@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/go-redis/redis"
+	"github.com/go-redis/redis/v8"
 
 	gerrors "github.com/elojah/game_02/pkg/errors"
 	"github.com/elojah/game_02/pkg/space"
@@ -22,7 +22,7 @@ func (s *Store) UpsertWorld(ctx context.Context, world space.World) error {
 		return err
 	}
 
-	if err := s.Set(worldKey+world.ID.String(), raw, 0).Err(); err != nil {
+	if err := s.Set(ctx, worldKey+world.ID.String(), raw, 0).Err(); err != nil {
 		return fmt.Errorf("upsert world %s: %w", world.ID.String(), err)
 	}
 
@@ -31,7 +31,7 @@ func (s *Store) UpsertWorld(ctx context.Context, world space.World) error {
 
 // FetchWorld implementation for world in redis.
 func (s *Store) FetchWorld(ctx context.Context, filter space.FilterWorld) (space.World, error) {
-	val, err := s.Get(worldKey + filter.ID.String()).Result()
+	val, err := s.Get(ctx, worldKey+filter.ID.String()).Result()
 	if err != nil {
 		if !errors.Is(err, redis.Nil) {
 			return space.World{}, fmt.Errorf("fetch world %s: %w", filter.ID.String(), err)
@@ -54,7 +54,7 @@ func (s *Store) FetchWorld(ctx context.Context, filter space.FilterWorld) (space
 
 // DeleteWorld implementation for world in redis.
 func (s *Store) DeleteWorld(ctx context.Context, filter space.FilterWorld) error {
-	if err := s.Del(worldKey + filter.ID.String()).Err(); err != nil {
+	if err := s.Del(ctx, worldKey+filter.ID.String()).Err(); err != nil {
 		return fmt.Errorf("remove world %s: %w", filter.ID.String(), err)
 	}
 

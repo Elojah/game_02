@@ -53,7 +53,6 @@ func (s *Store) FetchManyCoordinate(
 		return tx.Intersects(s.IndexName, rect.String(), func(key, val string) bool {
 			min, max := buntdb.IndexRect(val)
 			entityID := fetchEntityID(key)
-			fmt.Println("intersects min, max:", min, max)
 			result[entityID] = space.Coordinate{
 				Position: geometry.Vec3{
 					X: uint64(min[0]),
@@ -81,7 +80,6 @@ func (s *Store) DeleteCoordinate(ctx context.Context, filter space.FilterCoordin
 			return fmt.Errorf("remove coordinate %s: %w", filter.EntityID.String(), err)
 		}
 		min, max := buntdb.IndexRect(val)
-		fmt.Println("delete min, max:", min, max)
 		result = space.Coordinate{
 			Position: geometry.Vec3{
 				X: uint64(min[0]),

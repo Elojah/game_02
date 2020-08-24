@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/go-redis/redis"
+	"github.com/go-redis/redis/v8"
 
 	gerrors "github.com/elojah/game_02/pkg/errors"
 	"github.com/elojah/game_02/pkg/lobby"
@@ -22,7 +22,7 @@ func (s *Store) Upsert(ctx context.Context, l lobby.L) error {
 		return err
 	}
 
-	if err := s.Set(lobbyKey+l.ID.String(), raw, 0).Err(); err != nil {
+	if err := s.Set(ctx, lobbyKey+l.ID.String(), raw, 0).Err(); err != nil {
 		return fmt.Errorf("upsert lobby %s: %w", l.ID, err)
 	}
 
@@ -31,7 +31,7 @@ func (s *Store) Upsert(ctx context.Context, l lobby.L) error {
 
 // Fetch implementation for lobby in redis.
 func (s *Store) Fetch(ctx context.Context, filter lobby.Filter) (lobby.L, error) {
-	val, err := s.Get(lobbyKey + filter.ID.String()).Result()
+	val, err := s.Get(ctx, lobbyKey+filter.ID.String()).Result()
 	if err != nil {
 		if !errors.Is(err, redis.Nil) {
 			return lobby.L{}, fmt.Errorf("fetch lobby %s: %w", filter.ID.String(), err)
@@ -54,7 +54,7 @@ func (s *Store) Fetch(ctx context.Context, filter lobby.Filter) (lobby.L, error)
 
 // FetchAll implementation for lobby in redis.
 func (s *Store) FetchAll(ctx context.Context) ([]lobby.L, error) {
-	keys, err := s.Keys(lobbyKey + "*").Result()
+	keys, err := s.Keys(ctx, lobbyKey+"*").Result()
 	if err != nil {
 		if !errors.Is(err, redis.Nil) {
 			return nil, fmt.Errorf("fetch all lobby: %w", err)
@@ -69,7 +69,7 @@ func (s *Store) FetchAll(ctx context.Context) ([]lobby.L, error) {
 	ls := make([]lobby.L, len(keys))
 
 	for i, key := range keys {
-		val, err := s.Get(key).Result()
+		val, err := s.Get(ctx, key).Result()
 		if err != nil {
 			return nil, fmt.Errorf("fetch lobby %s: %w", key, err)
 		}
@@ -84,7 +84,7 @@ func (s *Store) FetchAll(ctx context.Context) ([]lobby.L, error) {
 
 // Delete implementation for lobby in redis.
 func (s *Store) Delete(ctx context.Context, filter lobby.Filter) error {
-	if err := s.Del(lobbyKey + filter.ID.String()).Err(); err != nil {
+	if err := s.Del(ctx, lobbyKey+filter.ID.String()).Err(); err != nil {
 		return fmt.Errorf("remove lobby %s: %w", filter.ID, err)
 	}
 

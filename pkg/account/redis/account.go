@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/go-redis/redis"
+	"github.com/go-redis/redis/v8"
 
 	"github.com/elojah/game_02/pkg/account"
 	gerrors "github.com/elojah/game_02/pkg/errors"
@@ -22,7 +22,7 @@ func (s *Store) Upsert(ctx context.Context, a account.A) error {
 		return err
 	}
 
-	if err := s.Set(accountKey+a.Email, raw, 0).Err(); err != nil {
+	if err := s.Set(ctx, accountKey+a.Email, raw, 0).Err(); err != nil {
 		return fmt.Errorf("upsert account %s: %w", a.Alias, err)
 	}
 
@@ -31,7 +31,7 @@ func (s *Store) Upsert(ctx context.Context, a account.A) error {
 
 // Fetch implementation for account in redis.
 func (s *Store) Fetch(ctx context.Context, filter account.Filter) (account.A, error) {
-	val, err := s.Get(accountKey + filter.Email).Result()
+	val, err := s.Get(ctx, accountKey+filter.Email).Result()
 	if err != nil {
 		if !errors.Is(err, redis.Nil) {
 			return account.A{}, fmt.Errorf("fetch account %s: %w", filter.Email, err)
@@ -54,7 +54,7 @@ func (s *Store) Fetch(ctx context.Context, filter account.Filter) (account.A, er
 
 // Delete implementation for account in redis.
 func (s *Store) Delete(ctx context.Context, filter account.Filter) error {
-	if err := s.Del(accountKey + filter.Email).Err(); err != nil {
+	if err := s.Del(ctx, accountKey+filter.Email).Err(); err != nil {
 		return fmt.Errorf("remove account %s: %w", filter.Email, err)
 	}
 

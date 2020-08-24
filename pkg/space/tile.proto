@@ -32,7 +32,7 @@ message TileSet {
    uint64 Y                           = 5;
 
    // Terrains key -> Terrain enum (int32 default pb type)
-   // Terrains value -> absolute index in tileset     
+   // Terrains value -> absolute index in tileset
    map<int32, uint64> Terrains        = 6;
 }
 
