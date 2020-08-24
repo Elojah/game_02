@@ -1,8 +1,10 @@
 package dto
 
 import (
+	"github.com/elojah/game_02/pkg/account/dto"
 	"github.com/elojah/game_02/pkg/errors"
 	"github.com/elojah/game_02/pkg/geometry"
+	gulid "github.com/elojah/game_02/pkg/ulid"
 )
 
 // CreateTileMap request required in create room route.
@@ -61,6 +63,25 @@ func (r CreateTileMap) Check() error {
 			Max:   maxDimension,
 			Value: int(r.PathWidth),
 		}
+	}
+
+	return nil
+}
+
+// GetTileSet request format for tileset route.
+type GetTileSet struct {
+	dto.Auth
+
+	ID string `json:"id"`
+}
+
+func (r GetTileSet) Check() error {
+	if err := r.Auth.Check(); err != nil {
+		return err
+	}
+
+	if _, err := gulid.Parse(r.ID); err != nil {
+		return err
 	}
 
 	return nil

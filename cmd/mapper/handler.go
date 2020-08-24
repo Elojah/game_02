@@ -26,6 +26,7 @@ func (h *handler) Dial(c Config) error {
 	mux := mux.NewRouter()
 
 	mux.HandleFunc("/sector", h.getSector)
+	mux.HandleFunc("/tileset", h.getTileSet)
 
 	h.srv = &http.Server{
 		Addr:    c.Address,

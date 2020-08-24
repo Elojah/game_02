@@ -14,7 +14,7 @@ import (
 	gulid "github.com/elojah/game_02/pkg/ulid"
 )
 
-func (h handler) getSector(w http.ResponseWriter, r *http.Request) {
+func (h handler) getTileSet(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 		// continue
@@ -27,7 +27,7 @@ func (h handler) getSector(w http.ResponseWriter, r *http.Request) {
 	logger := log.With().Str("route", r.URL.EscapedPath()).Str("method", r.Method).Str("address", r.RemoteAddr).Logger()
 
 	// #Request processing
-	var request dto.GetSector
+	var request dto.GetTileSet
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		logger.Error().Err(err).Msg("invalid payload")
 		http.Error(w, fmt.Sprintf("invalid payload: %v", err), http.StatusBadRequest)
@@ -42,20 +42,20 @@ func (h handler) getSector(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	sectorID := gulid.MustParse(request.ID)
+	tilesetID := gulid.MustParse(request.ID)
 
-	// #Fetch sector
-	s, err := h.space.FetchSector(ctx, space.FilterSector{ID: sectorID})
+	// #Fetch tileset
+	s, err := h.space.FetchTileSet(ctx, space.FilterTileSet{ID: tilesetID})
 	if err != nil {
 		if errors.As(err, &gerrors.ErrNotFound{}) {
-			logger.Error().Err(err).Msg("invalid space sector")
-			http.Error(w, "invalid space sector", http.StatusBadRequest)
+			logger.Error().Err(err).Msg("invalid space tileset")
+			http.Error(w, "invalid space tileset", http.StatusBadRequest)
 
 			return
 		}
 
-		logger.Error().Err(err).Msg("failed to fetch space sector")
-		http.Error(w, fmt.Sprintf("failed to fetch space sector: %v", err), http.StatusInternalServerError)
+		logger.Error().Err(err).Msg("failed to fetch space tileset")
+		http.Error(w, fmt.Sprintf("failed to fetch space tileset: %v", err), http.StatusInternalServerError)
 
 		return
 	}
