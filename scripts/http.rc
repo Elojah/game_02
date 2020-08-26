@@ -21,6 +21,7 @@ curl -k -X POST 'https://0.0.0.0:8082/sector/random' -d '{
 	"email": "test@email.co",
 	"password": "testotest",
 
+	"tile_set_id":        "",
 	"dimensions":         {"x": 25, "y": 18},
 	"n_platforms":        3,
 	"platform_size":      4,

@@ -16,8 +16,8 @@ func (e ErrNotFound) Error() string {
 	return fmt.Sprintf("resource %s not found for %s", e.Resource, e.Index)
 }
 
-// ErrInvalidRequest is raised when an input field is not valid.
-type ErrInvalidRequest struct {
+// ErrInvalidKey is raised when an input field is not valid.
+type ErrInvalidKey struct {
 	Key   string
 	Value string
 
@@ -25,7 +25,7 @@ type ErrInvalidRequest struct {
 }
 
 // Error implementation for ErrInvalidRequest.
-func (e ErrInvalidRequest) Error() string {
+func (e ErrInvalidKey) Error() string {
 	var b strings.Builder
 
 	b.WriteString(fmt.Sprintf("invalid %s (%s):", e.Key, e.Value))

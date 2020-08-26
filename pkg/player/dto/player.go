@@ -25,7 +25,7 @@ func (r CreatePlayer) Check() error {
 	}
 
 	if len(r.Name) == 0 {
-		return gerrors.ErrInvalidRequest{
+		return gerrors.ErrInvalidKey{
 			Key:   "name",
 			Value: r.Name,
 			Rules: []string{"must not be empty"},

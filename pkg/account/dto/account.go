@@ -35,7 +35,7 @@ func (r Subscribe) Check() error {
 		strings.IndexFunc(r.Alias, func(r rune) bool {
 			return (r < 'A' || r > 'z') && (r < '0' || r > '9') && (r != '_')
 		}) != -1 {
-		return gerrors.ErrInvalidRequest{
+		return gerrors.ErrInvalidKey{
 			Key:   "alias",
 			Value: r.Alias,
 			Rules: []string{
@@ -47,7 +47,7 @@ func (r Subscribe) Check() error {
 
 	// Email check
 	if len(r.Email) == 0 || !emailValidation.MatchString(r.Email) {
-		return gerrors.ErrInvalidRequest{
+		return gerrors.ErrInvalidKey{
 			Key:   "email",
 			Value: r.Email,
 			Rules: []string{
@@ -58,7 +58,7 @@ func (r Subscribe) Check() error {
 
 	// Password check
 	if len(r.Password) == 0 {
-		return gerrors.ErrInvalidRequest{
+		return gerrors.ErrInvalidKey{
 			Key:   "password",
 			Value: r.Password,
 			Rules: []string{
@@ -80,7 +80,7 @@ type Signin struct {
 func (r Signin) Check() error {
 	// Email check
 	if len(r.Email) == 0 || !emailValidation.MatchString(r.Email) {
-		return gerrors.ErrInvalidRequest{
+		return gerrors.ErrInvalidKey{
 			Key:   "email",
 			Value: r.Email,
 			Rules: []string{
@@ -91,7 +91,7 @@ func (r Signin) Check() error {
 
 	// Password check
 	if len(r.Password) == 0 {
-		return gerrors.ErrInvalidRequest{
+		return gerrors.ErrInvalidKey{
 			Key:   "password",
 			Value: r.Password,
 			Rules: []string{
@@ -118,7 +118,7 @@ type Signout struct {
 func (r Signout) Check() error {
 	// Email check
 	if len(r.Email) == 0 || !emailValidation.MatchString(r.Email) {
-		return gerrors.ErrInvalidRequest{
+		return gerrors.ErrInvalidKey{
 			Key:   "email",
 			Value: r.Email,
 			Rules: []string{
@@ -129,7 +129,7 @@ func (r Signout) Check() error {
 
 	// Password check
 	if len(r.Token) == 0 {
-		return gerrors.ErrInvalidRequest{
+		return gerrors.ErrInvalidKey{
 			Key:   "token",
 			Value: r.Token,
 			Rules: []string{
@@ -151,7 +151,7 @@ type Unsubscribe struct {
 func (r Unsubscribe) Check() error {
 	// Email check
 	if len(r.Email) == 0 || !emailValidation.MatchString(r.Email) {
-		return gerrors.ErrInvalidRequest{
+		return gerrors.ErrInvalidKey{
 			Key:   "email",
 			Value: r.Email,
 			Rules: []string{
@@ -162,7 +162,7 @@ func (r Unsubscribe) Check() error {
 
 	// Password check
 	if len(r.Password) == 0 {
-		return gerrors.ErrInvalidRequest{
+		return gerrors.ErrInvalidKey{
 			Key:   "password",
 			Value: r.Password,
 			Rules: []string{

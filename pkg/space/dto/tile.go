@@ -1,9 +1,13 @@
 package dto
 
 import (
+	"fmt"
+	"strconv"
+
 	"github.com/elojah/game_02/pkg/account/dto"
 	"github.com/elojah/game_02/pkg/errors"
 	"github.com/elojah/game_02/pkg/geometry"
+	"github.com/elojah/game_02/pkg/space"
 	gulid "github.com/elojah/game_02/pkg/ulid"
 )
 
@@ -82,6 +86,73 @@ func (r GetTileSet) Check() error {
 
 	if _, err := gulid.Parse(r.ID); err != nil {
 		return err
+	}
+
+	return nil
+}
+
+// CreateTileSet request format for tileset route.
+type CreateTileSet struct {
+	dto.Auth
+
+	ImageID string `json:"image_id"`
+	space.TileSet
+}
+
+func (r CreateTileSet) Check() error {
+	if err := r.Auth.Check(); err != nil {
+		return err
+	}
+
+	if _, err := gulid.Parse(r.ImageID); err != nil {
+		return err
+	}
+
+	if r.Name == "" {
+		return errors.ErrMissingKey{
+			Key: "name",
+		}
+	}
+
+	if !(r.Size_ > 0) {
+		return errors.ErrInvalidKey{
+			Key:   "size",
+			Value: strconv.FormatUint(r.Size_, 10),
+			Rules: []string{"must be > 0"},
+		}
+	}
+
+	if !(r.X > 0) {
+		return errors.ErrInvalidKey{
+			Key:   "x",
+			Value: strconv.FormatUint(r.X, 10),
+			Rules: []string{"must be > 0"},
+		}
+	}
+
+	if !(r.Y > 0) {
+		return errors.ErrInvalidKey{
+			Key:   "y",
+			Value: strconv.FormatUint(r.Y, 10),
+			Rules: []string{"must be > 0"},
+		}
+	}
+
+	if len(r.Terrains) == 0 {
+		return errors.ErrMissingKey{
+			Key: "terrains",
+		}
+	}
+
+	for i, t := range space.Terrains {
+		if _, ok := r.Terrains[space.Sky] {
+			return errors.ErrInvalidKey{
+				Key: "terrains",
+				Value: "nil",
+				Rules: []string{fmt.Sprintf("must contain key %d (%s)", i, space.Terrain_name[i])},
+			}
+		}
+	
 	}
 
 	return nil

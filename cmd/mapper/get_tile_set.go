@@ -45,7 +45,7 @@ func (h handler) getTileSet(w http.ResponseWriter, r *http.Request) {
 	tilesetID := gulid.MustParse(request.ID)
 
 	// #Fetch tileset
-	s, err := h.space.FetchTileSet(ctx, space.FilterTileSet{ID: tilesetID})
+	ts, err := h.space.FetchTileSet(ctx, space.FilterTileSet{ID: tilesetID})
 	if err != nil {
 		if errors.As(err, &gerrors.ErrNotFound{}) {
 			logger.Error().Err(err).Msg("invalid space tileset")
@@ -61,7 +61,7 @@ func (h handler) getTileSet(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// #Write response
-	raw, err := json.Marshal(s)
+	raw, err := json.Marshal(ts)
 	if err != nil {
 		logger.Error().Err(err).Msg("failed to marshal response")
 		http.Error(w, "failed to marshal response", http.StatusInternalServerError)

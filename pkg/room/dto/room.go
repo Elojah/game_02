@@ -58,7 +58,7 @@ func (r CreateRoom) Check() error {
 	}
 
 	if len(r.Name) == 0 {
-		return gerrors.ErrInvalidRequest{
+		return gerrors.ErrInvalidKey{
 			Key:   "name",
 			Value: r.Name,
 			Rules: []string{"must not be empty"},
@@ -66,7 +66,7 @@ func (r CreateRoom) Check() error {
 	}
 
 	if r.SectorDimensions.X < 100 || r.SectorDimensions.X > 1000 {
-		return gerrors.ErrInvalidRequest{
+		return gerrors.ErrInvalidKey{
 			Key:   "sector_dimensions.x",
 			Value: strconv.FormatUint(r.SectorDimensions.X, 10),
 			Rules: []string{"must be between 100 and 1000"},
@@ -74,7 +74,7 @@ func (r CreateRoom) Check() error {
 	}
 
 	if r.SectorDimensions.Y < 100 || r.SectorDimensions.Y > 1000 {
-		return gerrors.ErrInvalidRequest{
+		return gerrors.ErrInvalidKey{
 			Key:   "sector_dimensions.x",
 			Value: strconv.FormatUint(r.SectorDimensions.Y, 10),
 			Rules: []string{"must be between 100 and 1000"},
