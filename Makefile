@@ -24,6 +24,7 @@ GOFMT       = gofmt
 
 AUTH        = auth
 MAPPER      = mapper
+TOOL        = tool
 BROWSER     = browser
 WEB         = web
 
@@ -33,7 +34,7 @@ M         = $(shell printf "\033[0;35m▶\033[0m")
 
 .PHONY: all
 
-all: auth mapper browser web
+all: auth mapper browser web tool
 
 .PHONY: auth
 auth:  ## Build auth binary
@@ -54,6 +55,16 @@ mapper:  ## Build mapper binary
 		-ldflags '-X $(PACKAGE)/cmd.Version=$(VERSION)' \
 		-o ../../bin/$(PACKAGE)_$(MAPPER)_$(VERSION)
 	$Q cp bin/$(PACKAGE)_$(MAPPER)_$(VERSION) bin/$(PACKAGE)_$(MAPPER)
+
+.PHONY: tool
+tool:  ## Build tool binary
+	$(info $(M) building executable tool…) @
+	$Q cd cmd/$(TOOL) && $(GO) build \
+		-mod=readonly \
+		-tags release \
+		-ldflags '-X $(PACKAGE)/cmd.Version=$(VERSION)' \
+		-o ../../bin/$(PACKAGE)_$(TOOL)_$(VERSION)
+	$Q cp bin/$(PACKAGE)_$(TOOL)_$(VERSION) bin/$(PACKAGE)_$(TOOL)
 
 .PHONY: browser
 browser:  ## Build browser content

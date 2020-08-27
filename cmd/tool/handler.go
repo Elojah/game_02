@@ -25,8 +25,7 @@ type handler struct {
 func (h *handler) Dial(c Config) error {
 	mux := mux.NewRouter()
 
-	mux.HandleFunc("/sector", h.getSector)
-	mux.HandleFunc("/tileset", h.getTileSet)
+	mux.HandleFunc("/tileset", h.createTileSet)
 
 	h.srv = &http.Server{
 		Addr:    c.Address,

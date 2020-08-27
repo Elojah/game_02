@@ -144,15 +144,15 @@ func (r CreateTileSet) Check() error {
 		}
 	}
 
-	for i, t := range space.Terrains {
-		if _, ok := r.Terrains[space.Sky] {
+	for key, name := range space.Terrain_name {
+		if _, ok := r.Terrains[key]; !ok {
 			return errors.ErrInvalidKey{
-				Key: "terrains",
+				Key:   "terrains",
 				Value: "nil",
-				Rules: []string{fmt.Sprintf("must contain key %d (%s)", i, space.Terrain_name[i])},
+				Rules: []string{fmt.Sprintf("must contain key %d (%s)", key, name)},
 			}
 		}
-	
+
 	}
 
 	return nil

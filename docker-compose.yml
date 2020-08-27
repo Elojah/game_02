@@ -65,3 +65,19 @@ services:
     links:
       - redis
       - redis-lru
+
+  # Tool
+  tool:
+    build:
+      context: .
+      dockerfile: docker/tool/Dockerfile
+    volumes:
+      - ./config/server.crt:/app/server.crt
+      - ./config/server.key:/app/server.key
+    expose:
+      - 8083
+    ports:
+      - 8083:8083
+    links:
+      - redis
+      - redis-lru
