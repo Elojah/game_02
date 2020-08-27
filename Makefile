@@ -131,7 +131,7 @@ check: vendor lint test
 .PHONY: lint
 lint: ## Check code respect linter rules
 	$(info $(M) running $(GOLINT)…)
-	$Q $(GOLINT) run --deadline=5m
+	$Q $(GOLINT) run --modules-download-mode=readonly --deadline=5m
 
 # Test
 .PHONY: test

@@ -152,7 +152,6 @@ func (r CreateTileSet) Check() error {
 				Rules: []string{fmt.Sprintf("must contain key %d (%s)", key, name)},
 			}
 		}
-
 	}
 
 	return nil
