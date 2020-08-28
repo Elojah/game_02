@@ -19,7 +19,7 @@ curl -k -X POST 'https://0.0.0.0:8081/player/create' -d '{
 
 curl -k -X POST 'https://0.0.0.0:8083/tileset' -d '{
 	"email":              "test@email.co",
-	"token":              "01EGQPK88XRQRMX76NTVT0Q090",
+	"token":              "01EGT2CFRNA735PY0NETCSY58M",
 
 	"id":                 "01EGQPK88XRQRMX76NTVT0Q090",
 	"name":               "test_dungeon",
@@ -31,14 +31,9 @@ curl -k -X POST 'https://0.0.0.0:8083/tileset' -d '{
 
 curl -k -X GET 'https://0.0.0.0:8082/tileset' -d '{
 	"email":              "test@email.co",
-	"token":              "01EGQPK88XRQRMX76NTVT0Q090",
+	"token":              "01EGT2CFRNA735PY0NETCSY58M",
 
-	"id":                 "01EGQPK88XRQRMX76NTVT0Q090",
-	"name":               "test_dungeon",
-	"size":               32,
-	"x":                  5,
-	"y":                  1,
-	"terrains":           {"0": 0, "1": 1, "2": 2, "3": 3, "4": 4}
+	"id":                 "01EGQPK88XRQRMX76NTVT0Q090"
 }'
 
 curl -k -X POST 'https://0.0.0.0:8082/sector/random' -d '{
