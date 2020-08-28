@@ -11,6 +11,7 @@ require (
 	github.com/gorilla/mux v1.8.0
 	github.com/hajimehoshi/ebiten v1.11.7
 	github.com/oklog/ulid v1.3.1
+	github.com/pborman/getopt/v2 v2.1.0 // indirect
 	github.com/rs/zerolog v1.19.0
 	github.com/tidwall/buntdb v1.1.2
 	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a

@@ -42,6 +42,20 @@ func (h handler) getTileSet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if _, err := h.account.Authorize(ctx, request.Email, request.Token); err != nil {
+		if errors.As(err, &gerrors.ErrInvalidCredentials{}) {
+			logger.Error().Err(err).Msg("invalid credentials")
+			http.Error(w, "invalid credentials", http.StatusBadRequest)
+
+			return
+		}
+
+		logger.Error().Err(err).Msg("failed to authenticate")
+		http.Error(w, fmt.Sprintf("failed to authenticate: %v", err), http.StatusInternalServerError)
+
+		return
+	}
+
 	tilesetID := gulid.MustParse(request.ID)
 
 	// #Fetch tileset

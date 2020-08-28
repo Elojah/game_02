@@ -2,11 +2,13 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 
 	"github.com/rs/zerolog/log"
 
+	gerrors "github.com/elojah/game_02/pkg/errors"
 	"github.com/elojah/game_02/pkg/space/dto"
 	gulid "github.com/elojah/game_02/pkg/ulid"
 )
@@ -39,8 +41,22 @@ func (h handler) createTileSet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if _, err := h.account.Authorize(ctx, request.Email, request.Token); err != nil {
+		if errors.As(err, &gerrors.ErrInvalidCredentials{}) {
+			logger.Error().Err(err).Msg("invalid credentials")
+			http.Error(w, "invalid credentials", http.StatusBadRequest)
+
+			return
+		}
+
+		logger.Error().Err(err).Msg("failed to authenticate")
+		http.Error(w, fmt.Sprintf("failed to authenticate: %v", err), http.StatusInternalServerError)
+
+		return
+	}
+
 	ts := request.TileSet
-	ts.ID = gulid.MustParse(request.ImageID)
+	ts.ID = gulid.MustParse(request.ID)
 
 	// #Upsert tileset
 	if err := h.space.UpsertTileSet(ctx, ts); err != nil {

@@ -95,7 +95,7 @@ func (r GetTileSet) Check() error {
 type CreateTileSet struct {
 	dto.Auth
 
-	ImageID string `json:"image_id"`
+	ID string `json:"id"`
 	space.TileSet
 }
 
@@ -104,7 +104,7 @@ func (r CreateTileSet) Check() error {
 		return err
 	}
 
-	if _, err := gulid.Parse(r.ImageID); err != nil {
+	if _, err := gulid.Parse(r.ID); err != nil {
 		return err
 	}
 

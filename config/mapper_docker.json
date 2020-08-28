@@ -10,7 +10,7 @@
 		"db": 0
 	},
 	"mapper": {
-		"address": "0.0.0.0:8081",
+		"address": "0.0.0.0:8082",
 		"cert": "server.crt",
 		"key": "server.key"
 	}

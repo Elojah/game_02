@@ -19,7 +19,7 @@ enum Terrain {
 message TileSet {
     // ID MUST be delivered by mapper API as filename.png
     // e.g: http://url/03432IUHUI.png
-	bytes ID                          = 1 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+	bytes ID                          = 1 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.jsontag) = "-", (gogoproto.nullable) = false];
 
     // e.g: dungeon,desert,mountain,etc.
    string Name                        = 2;
