@@ -77,7 +77,7 @@ browser:  ## Build browser content
 	$Q yes | cp -rf bin/$(PACKAGE)_$(BROWSER)_$(VERSION).wasm bin/$(PACKAGE)_$(BROWSER).wasm
 
 .PHONY: web
-web: ## Build web binary
+web: browser ## Build web binary
 	$(info $(M) building executable web…) @
 	$Q cd cmd/$(WEB) && $(GO) build \
 		-mod=readonly \

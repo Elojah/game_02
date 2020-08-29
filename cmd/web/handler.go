@@ -25,9 +25,6 @@ func (h *handler) Dial(c Config) error {
 
 	mux.PathPrefix("/").Handler(http.FileServer(http.Dir(c.StaticDir)))
 
-	// This simple line may need her whole entire service instead, we deliver through web for quick&dirty™ here
-	mux.PathPrefix("/assets").Handler(http.FileServer(http.Dir(c.StaticDir)))
-
 	h.srv = &http.Server{
 		Addr:    c.Address,
 		Handler: mux,
