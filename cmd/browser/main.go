@@ -7,12 +7,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
-	"github.com/elojah/game_02/cmd/browser/game"
-	"github.com/elojah/game_02/cmd/browser/http"
-	"github.com/elojah/game_02/cmd/browser/ws"
-	"github.com/elojah/game_02/pkg/geometry"
-	"github.com/elojah/game_02/pkg/room/dto"
-	spacedto "github.com/elojah/game_02/pkg/space/dto"
+	"github.com/elojah/game_02/cmd/menu"
 )
 
 var (
@@ -26,50 +21,59 @@ func run(prog string) {
 	ctx := context.Background()
 
 	// Init websocket
-	socket := &ws.Socket{}
-	if err := socket.Dial(ws.Config{
-		URL: "https://localhost:8080/player/connect",
-	}); err != nil {
-		log.Error().Err(err).Msg("failed to start websocket")
-		return
-	}
+	// socket := &ws.Socket{}
+	// if err := socket.Dial(ws.Config{
+	// 	URL: "https://localhost:8080/player/connect",
+	// }); err != nil {
+	// 	log.Error().Err(err).Msg("failed to start websocket")
+	// 	return
+	// }
 
 	// Init http client
-	client := http.Client{}
-	if err := client.Dial(http.Config{
-		CreateRoomURL: "https://localhost:8081/room",
-	}); err != nil {
-		log.Error().Err(err).Msg("failed to start http client")
-		return
-	}
+	// client := http.Client{}
+	// if err := client.Dial(http.Config{
+	// 	CreateRoomURL: "https://localhost:8081/room",
+	// }); err != nil {
+	// 	log.Error().Err(err).Msg("failed to start http client")
+	// 	return
+	// }
 
 	// TMP
 	// At this point we should retrieve current entity sector
 	// Instead we create a new one here to test creation
-	_, err := client.CreateRoom(ctx, dto.CreateRoom{
-		CreateTileMap: spacedto.CreateTileMap{
-			Dimensions: geometry.Vec3{
-				X: 25, // nolint: gomnd
-				Y: 18, // nolint: gomnd
-			},
-			NPlatforms:        3, // nolint: gomnd
-			PlatformSize:      4, // nolint: gomnd
-			PlatformVariance:  2, // nolint: gomnd
-			NPaths:            2, // nolint: gomnd
-			PathVariance:      2, // nolint: gomnd
-			PathWidth:         2, // nolint: gomnd
-			PathWidthVariance: 2, // nolint: gomnd
-		},
-	})
-	if err != nil {
-		log.Error().Err(err).Msg("failed to create new room")
-		return
-	}
+	// _, err := client.CreateRoom(ctx, dto.CreateRoom{
+	// 	CreateTileMap: spacedto.CreateTileMap{
+	// 		Dimensions: geometry.Vec3{
+	// 			X: 25, // nolint: gomnd
+	// 			Y: 18, // nolint: gomnd
+	// 		},
+	// 		NPlatforms:        3, // nolint: gomnd
+	// 		PlatformSize:      4, // nolint: gomnd
+	// 		PlatformVariance:  2, // nolint: gomnd
+	// 		NPaths:            2, // nolint: gomnd
+	// 		PathVariance:      2, // nolint: gomnd
+	// 		PathWidth:         2, // nolint: gomnd
+	// 		PathWidthVariance: 2, // nolint: gomnd
+	// 	},
+	// })
+	// if err != nil {
+	// 	log.Error().Err(err).Msg("failed to create new room")
+	// 	return
+	// }
 	// !TMP
 
 	// Init game
-	g := &game.Game{}
-	if err := g.Dial(game.Config{}); err != nil {
+
+	// g := &game.Game{}
+	// if err := g.Dial(game.Config{}); err != nil {
+	// 	log.Error().Err(err).Msg("failed to start game")
+	// 	return
+	// }
+
+	m := &menu.M{}
+	_ = ctx
+
+	if err := m.Dial(menu.Config{}); err != nil {
 		log.Error().Err(err).Msg("failed to start game")
 		return
 	}
@@ -77,23 +81,25 @@ func run(prog string) {
 	log.Info().Msg("browser up")
 
 	defer func() {
-		if err := socket.Close(); err != nil {
-			log.Error().Err(err).Msg("failed to close socket")
-		}
-
-		if err := g.Close(); err != nil {
+		// if err := socket.Close(); err != nil {
+		// 	log.Error().Err(err).Msg("failed to close socket")
+		// }
+		// if err := g.Close(); err != nil {
+		// 	log.Error().Err(err).Msg("failed to close game")
+		// }
+		if err := m.Close(); err != nil {
 			log.Error().Err(err).Msg("failed to close game")
 		}
 	}()
 
-	if err := socket.Login(ctx, "testPlayerID", "testToken"); err != nil {
-		log.Error().Err(err).Msg("failed to run game")
+	// if err := socket.Login(ctx, "testPlayerID", "testToken"); err != nil {
+	// 	log.Error().Err(err).Msg("failed to run game")
 
-		return
-	}
+	// 	return
+	// }
 
-	if err := g.Run(); err != nil {
-		log.Error().Err(err).Msg("failed to run game")
+	if err := m.Run(); err != nil {
+		log.Error().Err(err).Msg("failed to run menu")
 
 		return
 	}

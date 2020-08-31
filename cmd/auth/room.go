@@ -174,7 +174,7 @@ func (h handler) createRoom(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// #Precreate room
+	// #Pre-assign room
 	ro := room.R{
 		ID:       gulid.NewID(),
 		Name:     request.Name,
