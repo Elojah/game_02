@@ -21,13 +21,6 @@ func (r Auth) Check() error {
 	return nil
 }
 
-// Subscribe request type for subscribe route.
-type Subscribe struct {
-	Alias    string `json:"alias"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
 // Check returns if subscription request is valid.
 func (r Subscribe) Check() error {
 	// Alias check
@@ -70,12 +63,6 @@ func (r Subscribe) Check() error {
 	return nil
 }
 
-// Signin request type for signin route.
-type Signin struct {
-	Email    string
-	Password string
-}
-
 // Check returns if subscription request is valid.
 func (r Signin) Check() error {
 	// Email check
@@ -103,17 +90,6 @@ func (r Signin) Check() error {
 	return nil
 }
 
-// SigninResp response type for signin route.
-type SigninResp struct {
-	Token string `json:"token"`
-}
-
-// Signout request type for signin route.
-type Signout struct {
-	Email string `json:"email"`
-	Token string `json:"token"`
-}
-
 // Check returns if subscription request is valid.
 func (r Signout) Check() error {
 	// Email check
@@ -139,12 +115,6 @@ func (r Signout) Check() error {
 	}
 
 	return nil
-}
-
-// Unsubscribe request type for unsubscribe route.
-type Unsubscribe struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
 }
 
 // Check returns if unsubscription request is valid.

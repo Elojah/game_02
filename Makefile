@@ -111,6 +111,7 @@ proto: ## Generate .proto files
 	$Q cd pkg/space        && protoc -I=$(DIR)/pkg/geometry -I=. -I=$(GOPATH)/src --gogoslick_out=Mgeometry.proto=$(GO_PACKAGE)/pkg/geometry:. tile.proto
 	$Q cd pkg/space        && protoc -I=$(DIR)/pkg/geometry -I=. -I=$(GOPATH)/src --gogoslick_out=Mgeometry.proto=$(GO_PACKAGE)/pkg/geometry:. sector.proto
 	$Q cd pkg/space        && protoc -I=$(DIR)/pkg/geometry -I=. -I=$(GOPATH)/src --gogoslick_out=Mgeometry.proto=$(GO_PACKAGE)/pkg/geometry:. world.proto
+	$Q cd cmd/auth/grpc    && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=Mgoogle/protobuf/empty.proto=github.com/gogo/protobuf/types,plugins=grpc:. auth.proto
 
 # Vendoring
 .PHONY: vendor

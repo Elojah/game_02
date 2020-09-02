@@ -5,9 +5,11 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"google.golang.org/grpc"
 
 	"github.com/elojah/buntdb"
 	"github.com/elojah/redis"
@@ -89,6 +91,14 @@ func run(prog string, filename string) {
 	}
 
 	log.Info().Msg("auth up")
+
+	// TEST GRPC
+	s := grpc.NewServer(
+		grpc.ConnectionTimeout(2*time.Second),
+		grpc.NumStreamWorkers(1000),
+		grpc.MaxSendMsgSize(32*1000),
+	)
+	// !TEST GRPC
 
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, syscall.SIGHUP, syscall.SIGINT, syscall.SIGKILL)

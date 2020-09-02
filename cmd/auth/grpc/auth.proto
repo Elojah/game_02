@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package grpc;
+
+option (gogoproto.testgen_all)  = true;
+option (gogoproto.benchgen_all) = true;
+option (gogoproto.populate_all) = true;
+option (gogoproto.goproto_registration) = true;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "github.com/elojah/game_02/pkg/account/dto/account.proto";
+import "github.com/elojah/game_02/pkg/room/dto/room.proto";
+import "github.com/elojah/game_02/pkg/lobby/lobby.proto";
+import "github.com/elojah/game_02/pkg/room/room.proto";
+
+import "google/protobuf/empty.proto";
+
+service Auth {
+    rpc Subscribe(dto.Subscribe) returns (google.protobuf.Empty);
+    rpc Unsubscribe(dto.Unsubscribe) returns (google.protobuf.Empty);
+    rpc Signin(dto.Signin) returns (dto.SigninResp);
+    rpc Signout(dto.Signout) returns (google.protobuf.Empty);
+
+    rpc ListLobbies(dto.Auth) returns (stream lobby.L);
+    // rpc CreateRoom(dto) returns (room.R);
+}

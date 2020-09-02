@@ -8,7 +8,38 @@ option (gogoproto.populate_all) = true;
 
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 
+// Auth common struct used to authenticate.
 message Auth {
 	string Email                       = 1 [(gogoproto.jsontag) = "email"];
 	string Token                       = 2 [(gogoproto.jsontag) = "token"];
+}
+
+// Subscribe request type for subscribe route.
+message Subscribe {
+    string Alias                       = 1;
+    string Email                       = 2;
+    string Password                    = 3;
+}
+
+// Signin request type for signin route.
+message Signin {
+     string Email                      = 1;
+     string Password                   = 2;
+}
+
+// SigninResp response type for signin route.
+message SigninResp {
+    string Token                       = 1;
+}
+
+// Signout request type for signin route.
+message Signout {
+    string Email                       = 1;
+    string Token                       = 2;
+}
+
+// Unsubscribe request type for unsubscribe route.
+message Unsubscribe {
+    string Email                       = 1;
+    string Password                    = 2;
 }
