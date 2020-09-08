@@ -1,19 +1,26 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
 
+	"github.com/gogo/protobuf/types"
 	"github.com/rs/zerolog/log"
 	"golang.org/x/crypto/bcrypt"
+	"google.golang.org/grpc"
 
 	"github.com/elojah/game_02/pkg/account"
 	"github.com/elojah/game_02/pkg/account/dto"
 	gerrors "github.com/elojah/game_02/pkg/errors"
 	gulid "github.com/elojah/game_02/pkg/ulid"
 )
+
+func (h handler) Subscribe(ctx context.Context, in *dto.Subscribe, opts ...grpc.CallOption) (*types.Empty, error) {
+	return &types.Empty{}, nil
+}
 
 func (h handler) subscribe(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {

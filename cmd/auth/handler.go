@@ -29,17 +29,17 @@ type handler struct {
 func (h *handler) Dial(c Config) error {
 	mux := mux.NewRouter()
 
-	mux.HandleFunc("/subscribe", h.subscribe)
-	mux.HandleFunc("/unsubscribe", h.unsubscribe)
+	// mux.HandleFunc("/subscribe", h.subscribe)
+	// mux.HandleFunc("/unsubscribe", h.unsubscribe)
 
-	mux.HandleFunc("/signin", h.signin)
-	mux.HandleFunc("/signout", h.signout)
+	// mux.HandleFunc("/signin", h.signin)
+	// mux.HandleFunc("/signout", h.signout)
 
-	mux.HandleFunc("/lobby/all", h.lobbies)
-	mux.HandleFunc("/room/connect", h.connectRoom)
-	mux.HandleFunc("/room/create", h.createRoom)
+	// mux.HandleFunc("/lobby/all", h.lobbies)
+	// mux.HandleFunc("/room/connect", h.connectRoom)
+	// mux.HandleFunc("/room/create", h.createRoom)
 
-	mux.HandleFunc("/player/create", h.createPlayer)
+	// mux.HandleFunc("/player/create", h.createPlayer)
 	// mux.HandleFunc("/player/list", h.listPlayer)
 	// mux.HandleFunc("/player/del", h.delPlayer)
 

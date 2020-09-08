@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net"
 	"os"
 	"os/signal"
 	"syscall"
@@ -10,11 +11,14 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 
 	"github.com/elojah/buntdb"
 	"github.com/elojah/redis"
 	"github.com/elojah/services"
+	"github.com/gogo/grpc-example/insecure"
 
+	authgrpc "github.com/elojah/game_02/cmd/auth/grpc"
 	accountapp "github.com/elojah/game_02/pkg/account/app"
 	accountredis "github.com/elojah/game_02/pkg/account/redis"
 	entityapp "github.com/elojah/game_02/pkg/entity/app"
@@ -94,10 +98,22 @@ func run(prog string, filename string) {
 
 	// TEST GRPC
 	s := grpc.NewServer(
+		grpc.Creds(credentials.NewServerTLSFromCert(&insecure.Cert)),
 		grpc.ConnectionTimeout(2*time.Second),
 		grpc.NumStreamWorkers(1000),
 		grpc.MaxSendMsgSize(32*1000),
 	)
+
+	_ = func() error {
+		lis, err := net.Listen("tcp", "localhost:8080")
+		if err != nil {
+			return err
+		}
+		s.Serve(lis)
+		return nil
+	}()
+
+	authgrpc.RegisterAuthServer(s, impl{})
 	// !TEST GRPC
 
 	c := make(chan os.Signal, 1)
