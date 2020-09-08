@@ -94,23 +94,30 @@ file-assets:  ## Copy assets directory into bin directory for testing and vendor
 
 # Utils
 .PHONY: proto
-proto: ## Generate .proto files
+proto: ## Regenerate protobuf files
 	$(info $(M) running protobuf…) @
+	$(info $(M) generate domain…) @
 	$Q cd pkg/geometry     && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. geometry.proto
 	$Q cd pkg/room         && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. room.proto
 	$Q cd pkg/account      && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. account.proto
-	$Q cd pkg/account/dto  && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. account.proto
 	$Q cd pkg/item         && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. item.proto
-	$Q cd pkg/entity       && protoc -I=$(DIR)/pkg/geometry -I=. -I=$(GOPATH)/src --gogoslick_out=Mgeometry.proto=$(GO_PACKAGE)/pkg/geometry:. entity.proto
+	$Q cd pkg/entity       && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. entity.proto
 	$Q cd pkg/entity       && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. template.proto
-	$Q cd pkg/lobby        && protoc -I=$(DIR)/pkg/room -I=. -I=$(GOPATH)/src --gogoslick_out=Mroom.proto=$(GO_PACKAGE)/pkg/room:. lobby.proto
-	$Q cd pkg/player       && protoc -I=$(DIR)/pkg/geometry -I=. -I=$(GOPATH)/src --gogoslick_out=Mgeometry.proto=$(GO_PACKAGE)/pkg/geometry:. spawn.proto
+	$Q cd pkg/lobby        && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. lobby.proto
+	$Q cd pkg/player       && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. player.proto
+	$Q cd pkg/player       && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. spawn.proto
 	$Q cd pkg/player       && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. inventory.proto
-	$Q cd pkg/player/dto   && protoc -I=$(DIR)/pkg/account/dto -I=. -I=$(GOPATH)/src --gogoslick_out=Maccount.proto=$(GO_PACKAGE)/pkg/account/dto:. player.proto
-	$Q cd pkg/space        && protoc -I=$(DIR)/pkg/geometry -I=. -I=$(GOPATH)/src --gogoslick_out=Mgeometry.proto=$(GO_PACKAGE)/pkg/geometry:. coordinate.proto
-	$Q cd pkg/space        && protoc -I=$(DIR)/pkg/geometry -I=. -I=$(GOPATH)/src --gogoslick_out=Mgeometry.proto=$(GO_PACKAGE)/pkg/geometry:. tile.proto
-	$Q cd pkg/space        && protoc -I=$(DIR)/pkg/geometry -I=. -I=$(GOPATH)/src --gogoslick_out=Mgeometry.proto=$(GO_PACKAGE)/pkg/geometry:. sector.proto
-	$Q cd pkg/space        && protoc -I=$(DIR)/pkg/geometry -I=. -I=$(GOPATH)/src --gogoslick_out=Mgeometry.proto=$(GO_PACKAGE)/pkg/geometry:. world.proto
+	$Q cd pkg/space        && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. coordinate.proto
+	$Q cd pkg/space        && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. tile.proto
+	$Q cd pkg/space        && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. sector.proto
+	$Q cd pkg/space        && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. world.proto
+	$(info $(M) generate dto…) @
+	$Q cd pkg/account/dto  && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. account.proto
+	$Q cd pkg/player/dto   && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. player.proto
+	$Q cd pkg/space/dto    && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. tile.proto
+	$Q cd pkg/space/dto    && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. sector.proto
+	$Q cd pkg/room/dto     && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. room.proto
+	$(info $(M) generate services…) @
 	$Q cd cmd/auth/grpc    && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=Mgoogle/protobuf/empty.proto=github.com/gogo/protobuf/types,plugins=grpc:. auth.proto
 
 # Vendoring

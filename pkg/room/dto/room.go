@@ -3,57 +3,15 @@ package dto
 import (
 	"strconv"
 
-	"github.com/elojah/game_02/pkg/account/dto"
 	gerrors "github.com/elojah/game_02/pkg/errors"
-	"github.com/elojah/game_02/pkg/geometry"
-	"github.com/elojah/game_02/pkg/room"
-	spacedto "github.com/elojah/game_02/pkg/space/dto"
-	gulid "github.com/elojah/game_02/pkg/ulid"
 )
 
-// RoomResp response format for room route.
-type RoomResp struct {
-	Room room.R `json:"room"`
-}
-
-// ConnectRoom request format for room route.
-type ConnectRoom struct {
-	dto.Auth
-
-	ID       string `json:"id"`
-	Password string `json:"password"`
-}
-
-func (r ConnectRoom) Check() error {
-	if err := r.Auth.Check(); err != nil {
-		return err
-	}
-
-	if _, err := gulid.Parse(r.ID); err != nil {
-		return err
-	}
-
+func (r Connect) Check() error {
 	return nil
 }
 
-// CreateRoom request format for room route.
-type CreateRoom struct {
-	dto.Auth
-
-	spacedto.CreateTileMap
-
-	Name     string `json:"name"`
-	Password string `json:"password"`
-
-	SectorDimensions geometry.Vec3 `json:"sector_dimensions"`
-}
-
-func (r CreateRoom) Check() error {
-	if err := r.Auth.Check(); err != nil {
-		return err
-	}
-
-	if err := r.CreateTileMap.Check(); err != nil {
+func (r Create) Check() error {
+	if err := r.Map.Check(); err != nil {
 		return err
 	}
 

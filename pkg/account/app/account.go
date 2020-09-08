@@ -16,14 +16,26 @@ var _ account.App = (*A)(nil)
 // A application layer for account.
 type A struct {
 	account.Store
+	account.StoreEmail
 }
 
 func (a *A) Login(ctx context.Context, email string, password string) (account.A, error) {
 	// #Check if account exist
-	ac, err := a.Fetch(ctx, account.Filter{Email: email})
+	id, err := a.FetchEmail(ctx, account.FilterEmail{Email: email})
 	if err != nil {
 		if errors.As(err, &gerrors.ErrNotFound{}) {
 			return account.A{}, &gerrors.ErrInvalidCredentials{}
+		}
+
+		return account.A{}, err
+	}
+
+	ac, err := a.Fetch(ctx, account.Filter{ID: id})
+	if err != nil {
+		if errors.As(err, &gerrors.ErrNotFound{}) {
+			return account.A{}, &gerrors.ErrInternalLogic{
+				Logic: "account email valid but account not found",
+			}
 		}
 
 		return account.A{}, err
@@ -35,7 +47,7 @@ func (a *A) Login(ctx context.Context, email string, password string) (account.A
 	}
 
 	// #Generate token
-	id := gulid.NewID()
+	id = gulid.NewID()
 	ac.Token = &id
 
 	// #Clean previous data
@@ -49,17 +61,10 @@ func (a *A) Login(ctx context.Context, email string, password string) (account.A
 	return ac, nil
 }
 
-func (a *A) Logout(ctx context.Context, email string, token string) (account.A, error) {
+func (a *A) Logout(ctx context.Context, id gulid.ID, token gulid.ID) (account.A, error) {
 	// #Check if account exist
-	ac, err := a.Fetch(ctx, account.Filter{Email: email})
+	ac, err := a.Fetch(ctx, account.Filter{ID: id})
 	if err != nil {
-		if errors.As(err, &gerrors.ErrNotFound{}) {
-			return account.A{}, &gerrors.ErrNotFound{
-				Resource: "account",
-				Index:    email,
-			}
-		}
-
 		return account.A{}, err
 	}
 
@@ -75,9 +80,9 @@ func (a *A) Logout(ctx context.Context, email string, token string) (account.A, 
 	return ac, nil
 }
 
-func (a *A) Authorize(ctx context.Context, email string, token string) (account.A, error) {
+func (a *A) Authorize(ctx context.Context, id gulid.ID, token gulid.ID) (account.A, error) {
 	// #Check if account exist
-	ac, err := a.Fetch(ctx, account.Filter{Email: email})
+	ac, err := a.Fetch(ctx, account.Filter{ID: id})
 	if err != nil {
 		if errors.As(err, &gerrors.ErrNotFound{}) {
 			return account.A{}, &gerrors.ErrInvalidCredentials{}
@@ -87,7 +92,7 @@ func (a *A) Authorize(ctx context.Context, email string, token string) (account.
 	}
 
 	// #Check token validity
-	if ac.Token.Compare(gulid.MustParse(token)) != 0 {
+	if ac.Token.Compare(token) != 0 {
 		return account.A{}, &gerrors.ErrInvalidToken{}
 	}
 

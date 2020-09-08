@@ -6,6 +6,7 @@ import (
 )
 
 var _ account.Store = (*Store)(nil)
+var _ account.StoreEmail = (*Store)(nil)
 
 // Store for account in redis.
 type Store struct {

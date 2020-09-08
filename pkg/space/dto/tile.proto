@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package dto;
+
+option (gogoproto.testgen_all)  = true;
+option (gogoproto.benchgen_all) = true;
+option (gogoproto.populate_all) = true;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "github.com/elojah/game_02/pkg/geometry/geometry.proto";
+import "github.com/elojah/game_02/pkg/account/dto/account.proto";
+import "github.com/elojah/game_02/pkg/space/tile.proto";
+
+message CreateMap {
+	geometry.Vec3 Dimensions         = 1;
+	uint64 NPlatforms                = 2;
+	uint64 PlatformSize              = 3;
+	uint64 PlatformVariance          = 4;
+	uint64 NPaths                    = 5;
+	uint64 PathVariance              = 6;
+	uint64 PathWidth                 = 7;
+	uint64 PathWidthVariance         = 8;
+}
+
+message CreateSet {
+	dto.Auth Auth                    = 1 [(gogoproto.nullable) = false];
+ 
+	bytes ID                         = 2 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+	space.TileSet Set                = 3 [(gogoproto.nullable) = false];
+}
+
+message ReadSet {
+	dto.Auth Auth                    = 1 [(gogoproto.nullable) = false];
+
+    bytes ID                         = 2 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+}

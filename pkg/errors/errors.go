@@ -67,3 +67,14 @@ type ErrInvalidNumericalRange struct {
 func (e ErrInvalidNumericalRange) Error() string {
 	return fmt.Sprintf("key %s must be between %d and %d. current value: %d", e.Key, e.Min, e.Max, e.Value)
 }
+
+// ErrInternalLogic is raised when an internal logic is not respected.
+// Don't use it for everything plz.
+type ErrInternalLogic struct {
+	Logic string
+}
+
+// Error implementation for ErrInternalLogic.
+func (e ErrInternalLogic) Error() string {
+	return e.Logic
+}

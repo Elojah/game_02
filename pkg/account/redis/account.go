@@ -31,22 +31,22 @@ func (s *Store) Upsert(ctx context.Context, a account.A) error {
 
 // Fetch implementation for account in redis.
 func (s *Store) Fetch(ctx context.Context, filter account.Filter) (account.A, error) {
-	val, err := s.Get(ctx, accountKey+filter.Email).Result()
+	val, err := s.Get(ctx, accountKey+filter.ID.String()).Result()
 	if err != nil {
 		if !errors.Is(err, redis.Nil) {
-			return account.A{}, fmt.Errorf("fetch account %s: %w", filter.Email, err)
+			return account.A{}, fmt.Errorf("fetch account %s: %w", filter.ID.String(), err)
 		}
 
 		return account.A{}, fmt.Errorf(
 			"fetch account %s: %w",
-			filter.Email,
-			gerrors.ErrNotFound{Resource: accountKey, Index: filter.Email},
+			filter.ID.String(),
+			gerrors.ErrNotFound{Resource: accountKey, Index: filter.ID.String()},
 		)
 	}
 
 	var a account.A
 	if err := a.Unmarshal([]byte(val)); err != nil {
-		return account.A{}, fmt.Errorf("fetch account %s: %w", filter.Email, err)
+		return account.A{}, fmt.Errorf("fetch account %s: %w", filter.ID.String(), err)
 	}
 
 	return a, nil
@@ -54,8 +54,8 @@ func (s *Store) Fetch(ctx context.Context, filter account.Filter) (account.A, er
 
 // Delete implementation for account in redis.
 func (s *Store) Delete(ctx context.Context, filter account.Filter) error {
-	if err := s.Del(ctx, accountKey+filter.Email).Err(); err != nil {
-		return fmt.Errorf("remove account %s: %w", filter.Email, err)
+	if err := s.Del(ctx, accountKey+filter.ID.String()).Err(); err != nil {
+		return fmt.Errorf("remove account %s: %w", filter.ID.String(), err)
 	}
 
 	return nil

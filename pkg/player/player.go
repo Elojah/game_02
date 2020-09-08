@@ -3,15 +3,8 @@ package player
 import (
 	"context"
 
-	"github.com/elojah/game_02/pkg/entity"
 	gulid "github.com/elojah/game_02/pkg/ulid"
 )
-
-// P is a player character.
-type P struct {
-	entity.E
-	Account gulid.ID
-}
 
 // Filter object for P domain.
 type Filter struct {

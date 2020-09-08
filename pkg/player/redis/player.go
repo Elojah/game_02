@@ -22,8 +22,8 @@ func (s *Store) Upsert(ctx context.Context, p player.P) error {
 		return err
 	}
 
-	if err := s.Set(ctx, playerKey+p.Account.String()+":"+p.ID.String(), raw, 0).Err(); err != nil {
-		return fmt.Errorf("upsert player %s: %w", p.ID.String(), err)
+	if err := s.Set(ctx, playerKey+p.Account.String()+":"+p.Entity.ID.String(), raw, 0).Err(); err != nil {
+		return fmt.Errorf("upsert player %s: %w", p.Entity.ID.String(), err)
 	}
 
 	return nil
@@ -80,7 +80,7 @@ func (s *Store) FetchMany(ctx context.Context, filter player.Filter) (map[string
 			return nil, fmt.Errorf("fetch player %s: %w", key, err)
 		}
 
-		ps[tmp.ID.String()] = tmp
+		ps[tmp.Entity.ID.String()] = tmp
 	}
 
 	return ps, nil

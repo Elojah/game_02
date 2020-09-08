@@ -8,19 +8,22 @@ option (gogoproto.populate_all) = true;
 option (gogoproto.goproto_registration) = true;
 
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/protobuf/empty.proto";
+
+import "github.com/elojah/game_02/pkg/lobby/lobby.proto";
+import "github.com/elojah/game_02/pkg/player/player.proto";
+import "github.com/elojah/game_02/pkg/room/room.proto";
 import "github.com/elojah/game_02/pkg/account/dto/account.proto";
 import "github.com/elojah/game_02/pkg/room/dto/room.proto";
-import "github.com/elojah/game_02/pkg/lobby/lobby.proto";
-import "github.com/elojah/game_02/pkg/room/room.proto";
-
-import "google/protobuf/empty.proto";
 
 service Auth {
     rpc Subscribe(dto.Subscribe) returns (google.protobuf.Empty);
     rpc Unsubscribe(dto.Unsubscribe) returns (google.protobuf.Empty);
-    rpc Signin(dto.Signin) returns (dto.SigninResp);
-    rpc Signout(dto.Signout) returns (google.protobuf.Empty);
+    rpc Signin(dto.Signin) returns (dto.Token);
+    rpc Signout(dto.Auth) returns (google.protobuf.Empty);
 
     rpc ListLobbies(dto.Auth) returns (stream lobby.L);
-    // rpc CreateRoom(dto) returns (room.R);
+    rpc CreateRoom(dto.Create) returns (room.R);
+    rpc ConnectRoom(dto.Connect) returns (room.R);
+    rpc CreatePlayer(dto.Create) returns (player.P);
 }
