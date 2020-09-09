@@ -1,13 +1,12 @@
 package main
 
 import (
-	"github.com/elojah/game_02/cmd/browser/ws"
 	"github.com/elojah/game_02/pkg/errors"
 )
 
 // Config for game object.
 type Config struct {
-	ws.Config
+	URL string
 }
 
 // Dial set the config from a config namespace.

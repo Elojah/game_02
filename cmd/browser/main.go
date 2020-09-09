@@ -4,10 +4,9 @@ import (
 	"context"
 	"os"
 
+	"github.com/elojah/game_02/cmd/browser/menu"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-
-	"github.com/elojah/game_02/cmd/menu"
 )
 
 var (
@@ -67,6 +66,22 @@ func run(prog string) {
 	// g := &game.Game{}
 	// if err := g.Dial(game.Config{}); err != nil {
 	// 	log.Error().Err(err).Msg("failed to start game")
+	// 	return
+	// }
+
+	// conn, err := grpc.DialContext(
+	// 	ctx,
+	// 	"localhost:8042",
+	// 	grpc.WithTransportCredentials(credentials.NewClientTLSFromCert(insecure.CertPool, "")),
+	// )
+	// if err != nil {
+	// 	log.Error().Err(err).Msg("failed to init grpc conn")
+	// 	return
+	// }
+	// client := authgrpc.NewAuthClient(conn)
+	// _, err = client.Subscribe(ctx, &dto.Subscribe{})
+	// if err != nil {
+	// 	log.Error().Err(err).Msg("failed to subscribe")
 	// 	return
 	// }
 

@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"net"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
+	"github.com/gorilla/mux"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
@@ -17,6 +17,7 @@ import (
 	"github.com/elojah/redis"
 	"github.com/elojah/services"
 	"github.com/gogo/grpc-example/insecure"
+	"github.com/improbable-eng/grpc-web/go/grpcweb"
 
 	authgrpc "github.com/elojah/game_02/cmd/auth/grpc"
 	accountapp "github.com/elojah/game_02/pkg/account/app"
@@ -77,6 +78,7 @@ func run(prog string, filename string) {
 
 	// handler (https server)
 	h := &handler{
+		mux:     mux.NewRouter(),
 		account: &accountApp,
 		entity:  &entityApp,
 		lobby:   &lobbyApp,
@@ -89,13 +91,6 @@ func run(prog string, filename string) {
 	}, "auth")
 	launchers.Add(hl)
 
-	if err := launchers.Up(filename); err != nil {
-		log.Error().Err(err).Str("filename", filename).Msg("failed to start")
-		return
-	}
-
-	log.Info().Msg("auth up")
-
 	// TEST GRPC
 	s := grpc.NewServer(
 		grpc.Creds(credentials.NewServerTLSFromCert(&insecure.Cert)),
@@ -104,17 +99,16 @@ func run(prog string, filename string) {
 		grpc.MaxSendMsgSize(32*1000),
 	)
 
-	_ = func() error {
-		lis, err := net.Listen("tcp", "localhost:8080")
-		if err != nil {
-			return err
-		}
-		s.Serve(lis)
-		return nil
-	}()
-
 	authgrpc.RegisterAuthServer(s, impl{})
+	ws := grpcweb.WrapServer(s)
 	// !TEST GRPC
+
+	if err := launchers.Up(filename); err != nil {
+		log.Error().Err(err).Str("filename", filename).Msg("failed to start")
+		return
+	}
+
+	log.Info().Msg("auth up")
 
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, syscall.SIGHUP, syscall.SIGINT, syscall.SIGKILL)

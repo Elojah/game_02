@@ -16,6 +16,7 @@ import (
 
 type handler struct {
 	srv *http.Server
+	mux *mux.Router
 
 	account account.App
 	lobby   lobby.App
@@ -27,25 +28,24 @@ type handler struct {
 
 // Dial starts the auth server.
 func (h *handler) Dial(c Config) error {
-	mux := mux.NewRouter()
 
-	// mux.HandleFunc("/subscribe", h.subscribe)
-	// mux.HandleFunc("/unsubscribe", h.unsubscribe)
+	h.mux.HandleFunc("/", h.subscribe)
+	// h.mux.HandleFunc("/unsubscribe", h.unsubscribe)
 
-	// mux.HandleFunc("/signin", h.signin)
-	// mux.HandleFunc("/signout", h.signout)
+	// h.mux.HandleFunc("/signin", h.signin)
+	// h.mux.HandleFunc("/signout", h.signout)
 
-	// mux.HandleFunc("/lobby/all", h.lobbies)
-	// mux.HandleFunc("/room/connect", h.connectRoom)
-	// mux.HandleFunc("/room/create", h.createRoom)
+	// h.mux.HandleFunc("/lobby/all", h.lobbies)
+	// h.mux.HandleFunc("/room/connect", h.connectRoom)
+	// h.mux.HandleFunc("/room/create", h.createRoom)
 
-	// mux.HandleFunc("/player/create", h.createPlayer)
-	// mux.HandleFunc("/player/list", h.listPlayer)
-	// mux.HandleFunc("/player/del", h.delPlayer)
+	// h.mux.HandleFunc("/player/create", h.createPlayer)
+	// h.mux.HandleFunc("/player/list", h.listPlayer)
+	// h.mux.HandleFunc("/player/del", h.delPlayer)
 
 	h.srv = &http.Server{
 		Addr:    c.Address,
-		Handler: mux,
+		Handler: h.mux,
 	}
 
 	go func() {
