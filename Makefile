@@ -34,7 +34,6 @@ WEB         = web
 
 # Browser helpers
 PROTOC_GEN_TS     = $(DIR)/cmd/$(BROWSER)/node_modules/.bin/protoc-gen-ts
-BROWSER_PROTO_DIR = $(DIR)/cmd/$(BROWSER)/proto
 
 .PHONY: all
 
@@ -96,28 +95,28 @@ file-assets:  ## Copy assets directory into bin directory for testing and vendor
 proto: ## Regenerate protobuf files
 	$(info $(M) running protobuf…) @
 	$(info $(M) generate domain…) @
-	$Q cd pkg/geometry     && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=service=grpc-web:$(BROWSER_PROTO_DIR) geometry.proto
-	$Q cd pkg/room         && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=service=grpc-web:$(BROWSER_PROTO_DIR) room.proto
-	$Q cd pkg/account      && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=service=grpc-web:$(BROWSER_PROTO_DIR) account.proto
-	$Q cd pkg/item         && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=service=grpc-web:$(BROWSER_PROTO_DIR) item.proto
-	$Q cd pkg/entity       && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=service=grpc-web:$(BROWSER_PROTO_DIR) entity.proto
-	$Q cd pkg/entity       && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=service=grpc-web:$(BROWSER_PROTO_DIR) template.proto
-	$Q cd pkg/lobby        && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=service=grpc-web:$(BROWSER_PROTO_DIR) lobby.proto
-	$Q cd pkg/player       && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=service=grpc-web:$(BROWSER_PROTO_DIR) player.proto
-	$Q cd pkg/player       && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=service=grpc-web:$(BROWSER_PROTO_DIR) spawn.proto
-	$Q cd pkg/player       && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=service=grpc-web:$(BROWSER_PROTO_DIR) inventory.proto
-	$Q cd pkg/space        && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=service=grpc-web:$(BROWSER_PROTO_DIR) coordinate.proto
-	$Q cd pkg/space        && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=service=grpc-web:$(BROWSER_PROTO_DIR) tile.proto
-	$Q cd pkg/space        && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=service=grpc-web:$(BROWSER_PROTO_DIR) sector.proto
-	$Q cd pkg/space        && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=service=grpc-web:$(BROWSER_PROTO_DIR) world.proto
+	$Q cd pkg/geometry     && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=. geometry.proto
+	$Q cd pkg/room         && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=. room.proto
+	$Q cd pkg/account      && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=. account.proto
+	$Q cd pkg/item         && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=. item.proto
+	$Q cd pkg/entity       && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=. entity.proto
+	$Q cd pkg/entity       && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=. template.proto
+	$Q cd pkg/lobby        && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=. lobby.proto
+	$Q cd pkg/player       && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=. player.proto
+	$Q cd pkg/player       && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=. spawn.proto
+	$Q cd pkg/player       && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=. inventory.proto
+	$Q cd pkg/space        && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=. coordinate.proto
+	$Q cd pkg/space        && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=. tile.proto
+	$Q cd pkg/space        && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=. sector.proto
+	$Q cd pkg/space        && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=. world.proto
 	$(info $(M) generate dto…) @
-	$Q cd pkg/account/dto  && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=service=grpc-web:$(BROWSER_PROTO_DIR) account.proto
-	$Q cd pkg/player/dto   && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=service=grpc-web:$(BROWSER_PROTO_DIR) player.proto
-	$Q cd pkg/space/dto    && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=service=grpc-web:$(BROWSER_PROTO_DIR) tile.proto
-	$Q cd pkg/space/dto    && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=service=grpc-web:$(BROWSER_PROTO_DIR) sector.proto
-	$Q cd pkg/room/dto     && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=service=grpc-web:$(BROWSER_PROTO_DIR) room.proto
+	$Q cd pkg/account/dto  && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=. account.proto
+	$Q cd pkg/player/dto   && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=. player.proto
+	$Q cd pkg/space/dto    && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=. tile.proto
+	$Q cd pkg/space/dto    && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=. sector.proto
+	$Q cd pkg/room/dto     && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=. room.proto
 	$(info $(M) generate services…) @
-	$Q cd cmd/$(AUTH)/grpc && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=Mgoogle/protobuf/empty.proto=github.com/gogo/protobuf/types,plugins=grpc:. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=service=grpc-web:$(BROWSER_PROTO_DIR) auth.proto
+	$Q cd cmd/$(AUTH)/grpc && protoc -I=. -I=$(GOPATH)/src --gogoslick_out=Mgoogle/protobuf/empty.proto=github.com/gogo/protobuf/types,plugins=grpc:. --plugin=protoc-gen-ts=$(PROTOC_GEN_TS) --ts_out=service=grpc-web:. auth.proto
 
 # Vendoring
 .PHONY: vendor

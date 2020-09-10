@@ -1,5 +1,6 @@
 # Project specific
 bin/
+cmd/browser/node_modules/
 
 # Binaries for programs and plugins
 *.exe

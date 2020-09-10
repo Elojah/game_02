@@ -1,30 +1,29 @@
 import {grpc} from "@improbable-eng/grpc-web";
-import {Auth} from "../proto/auth_pb_service";
-// import {QueryBooksRequest, Book, GetBookRequest} from "../../auth/grpc/auth_pb";
+import {Auth} from "../../../cmd/auth/grpc/auth_pb_service";
+import {Subscribe} from "../../../pkg/account/dto/account_pb";
 
-// declare const USE_TLS: boolean;
-// const host = USE_TLS ? "https://localhost:9091" : "http://localhost:9090";
+function subscribe() {
+  const sub = new Subscribe();
+  sub.setAlias("test_grpcweb")
+  sub.setEmail("test_grpcweb@test.gg")
+  sub.setPassword("password")
+  grpc.unary(Auth.Subscribe, {
+    request: sub,
+    host: "https://localhost:8080",
+    onEnd: res => {
+      const { status, statusMessage, headers, message, trailers } = res;
+      console.log("subscribe.onEnd.status", status, statusMessage);
+      console.log("subscribe.onEnd.headers", headers);
+      if (status === grpc.Code.OK && message) {
+        console.log("subscribe.onEnd.message", message.toObject());
+      }
+      console.log("subscribe.onEnd.trailers", trailers);
+    //   queryBooks();
+    }
+  });
+}
 
-// function getBook() {
-//   const getBookRequest = new GetBookRequest();
-//   getBookRequest.setIsbn(60929871);
-//   grpc.unary(BookService.GetBook, {
-//     request: getBookRequest,
-//     host: host,
-//     onEnd: res => {
-//       const { status, statusMessage, headers, message, trailers } = res;
-//       console.log("getBook.onEnd.status", status, statusMessage);
-//       console.log("getBook.onEnd.headers", headers);
-//       if (status === grpc.Code.OK && message) {
-//         console.log("getBook.onEnd.message", message.toObject());
-//       }
-//       console.log("getBook.onEnd.trailers", trailers);
-//       queryBooks();
-//     }
-//   });
-// }
-
-// getBook();
+subscribe();
 
 // function queryBooks() {
 //   const queryBooksRequest = new QueryBooksRequest();

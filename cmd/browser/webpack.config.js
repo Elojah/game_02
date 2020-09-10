@@ -1,3 +1,5 @@
+// var TsConfigPathsPlugin = require('awesome-typescript-loader').TsConfigPathsPlugin;
+
 const webpack = require('webpack');
 const path = require('path');
 
@@ -21,6 +23,9 @@ module.exports = {
   },
   resolve: {
     extensions: [".ts", ".js"]
+    // plugins: [
+    //     new TsConfigPathsPlugin(/* { tsconfig, compiler } */)
+    // ],
   },
   plugins: [
     new webpack.DefinePlugin({
