@@ -95,12 +95,13 @@ func run(prog string, filename string) {
 	s := grpc.NewServer(
 		grpc.Creds(credentials.NewServerTLSFromCert(&insecure.Cert)),
 		grpc.ConnectionTimeout(2*time.Second),
-		grpc.NumStreamWorkers(1000),
+		grpc.NumStreamWorkers(100),
 		grpc.MaxSendMsgSize(32*1000),
 	)
 
 	authgrpc.RegisterAuthServer(s, impl{})
 	ws := grpcweb.WrapServer(s)
+	h.mux.HandleFunc("/", ws.ServeHTTP)
 	// !TEST GRPC
 
 	if err := launchers.Up(filename); err != nil {

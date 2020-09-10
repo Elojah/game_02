@@ -29,7 +29,7 @@ type handler struct {
 // Dial starts the auth server.
 func (h *handler) Dial(c Config) error {
 
-	h.mux.HandleFunc("/", h.subscribe)
+	// h.mux.HandleFunc("/subscribe", h.subscribe)
 	// h.mux.HandleFunc("/unsubscribe", h.unsubscribe)
 
 	// h.mux.HandleFunc("/signin", h.signin)
