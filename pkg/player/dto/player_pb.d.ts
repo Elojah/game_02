@@ -1,9 +1,9 @@
 // package: dto
-// file: player.proto
+// file: github.com/elojah/game_02/pkg/player/dto/player.proto
 
 import * as jspb from "google-protobuf";
-import * as github_com_gogo_protobuf_gogoproto_gogo_pb from "./github.com/gogo/protobuf/gogoproto/gogo_pb";
-import * as github_com_elojah_game_02_pkg_account_dto_account_pb from "./github.com/elojah/game_02/pkg/account/dto/account_pb";
+import * as github_com_gogo_protobuf_gogoproto_gogo_pb from "../../../../../../github.com/gogo/protobuf/gogoproto/gogo_pb";
+import * as github_com_elojah_game_02_pkg_account_dto_account_pb from "../../../../../../github.com/elojah/game_02/pkg/account/dto/account_pb";
 
 export class Connect extends jspb.Message {
   hasAuth(): boolean;

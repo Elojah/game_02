@@ -1,8 +1,8 @@
 // package: room
-// file: room.proto
+// file: github.com/elojah/game_02/pkg/room/room.proto
 
 import * as jspb from "google-protobuf";
-import * as github_com_gogo_protobuf_gogoproto_gogo_pb from "./github.com/gogo/protobuf/gogoproto/gogo_pb";
+import * as github_com_gogo_protobuf_gogoproto_gogo_pb from "../../../../../github.com/gogo/protobuf/gogoproto/gogo_pb";
 
 export class R extends jspb.Message {
   getId(): Uint8Array | string;

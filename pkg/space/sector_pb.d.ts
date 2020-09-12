@@ -1,10 +1,10 @@
 // package: space
-// file: sector.proto
+// file: github.com/elojah/game_02/pkg/space/sector.proto
 
 import * as jspb from "google-protobuf";
-import * as github_com_gogo_protobuf_gogoproto_gogo_pb from "./github.com/gogo/protobuf/gogoproto/gogo_pb";
-import * as github_com_elojah_game_02_pkg_geometry_geometry_pb from "./github.com/elojah/game_02/pkg/geometry/geometry_pb";
-import * as tile_pb from "./tile_pb";
+import * as github_com_gogo_protobuf_gogoproto_gogo_pb from "../../../../../github.com/gogo/protobuf/gogoproto/gogo_pb";
+import * as github_com_elojah_game_02_pkg_geometry_geometry_pb from "../../../../../github.com/elojah/game_02/pkg/geometry/geometry_pb";
+import * as github_com_elojah_game_02_pkg_space_tile_pb from "../../../../../github.com/elojah/game_02/pkg/space/tile_pb";
 
 export class Sector extends jspb.Message {
   getId(): Uint8Array | string;
@@ -21,8 +21,8 @@ export class Sector extends jspb.Message {
   clearAdjacentsMap(): void;
   hasTilemap(): boolean;
   clearTilemap(): void;
-  getTilemap(): tile_pb.TileMap | undefined;
-  setTilemap(value?: tile_pb.TileMap): void;
+  getTilemap(): github_com_elojah_game_02_pkg_space_tile_pb.TileMap | undefined;
+  setTilemap(value?: github_com_elojah_game_02_pkg_space_tile_pb.TileMap): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Sector.AsObject;
@@ -39,7 +39,7 @@ export namespace Sector {
     id: Uint8Array | string,
     dim?: github_com_elojah_game_02_pkg_geometry_geometry_pb.Vec3.AsObject,
     adjacentsMap: Array<[string, github_com_elojah_game_02_pkg_geometry_geometry_pb.Vec3.AsObject]>,
-    tilemap?: tile_pb.TileMap.AsObject,
+    tilemap?: github_com_elojah_game_02_pkg_space_tile_pb.TileMap.AsObject,
   }
 }
 

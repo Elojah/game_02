@@ -1,13 +1,13 @@
 // package: grpc
-// file: auth.proto
+// file: github.com/elojah/game_02/cmd/auth/grpc/auth.proto
 
-var auth_pb = require("./auth_pb");
+var github_com_elojah_game_02_cmd_auth_grpc_auth_pb = require("../../../../../../github.com/elojah/game_02/cmd/auth/grpc/auth_pb");
 var google_protobuf_empty_pb = require("google-protobuf/google/protobuf/empty_pb");
-var github_com_elojah_game_02_pkg_lobby_lobby_pb = require("./github.com/elojah/game_02/pkg/lobby/lobby_pb");
-var github_com_elojah_game_02_pkg_player_player_pb = require("./github.com/elojah/game_02/pkg/player/player_pb");
-var github_com_elojah_game_02_pkg_room_room_pb = require("./github.com/elojah/game_02/pkg/room/room_pb");
-var github_com_elojah_game_02_pkg_account_dto_account_pb = require("./github.com/elojah/game_02/pkg/account/dto/account_pb");
-var github_com_elojah_game_02_pkg_room_dto_room_pb = require("./github.com/elojah/game_02/pkg/room/dto/room_pb");
+var github_com_elojah_game_02_pkg_lobby_lobby_pb = require("../../../../../../github.com/elojah/game_02/pkg/lobby/lobby_pb");
+var github_com_elojah_game_02_pkg_player_player_pb = require("../../../../../../github.com/elojah/game_02/pkg/player/player_pb");
+var github_com_elojah_game_02_pkg_room_room_pb = require("../../../../../../github.com/elojah/game_02/pkg/room/room_pb");
+var github_com_elojah_game_02_pkg_account_dto_account_pb = require("../../../../../../github.com/elojah/game_02/pkg/account/dto/account_pb");
+var github_com_elojah_game_02_pkg_room_dto_room_pb = require("../../../../../../github.com/elojah/game_02/pkg/room/dto/room_pb");
 var grpc = require("@improbable-eng/grpc-web").grpc;
 
 var Auth = (function () {

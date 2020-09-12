@@ -1,9 +1,9 @@
 // package: entity
-// file: entity.proto
+// file: github.com/elojah/game_02/pkg/entity/entity.proto
 
 import * as jspb from "google-protobuf";
-import * as github_com_gogo_protobuf_gogoproto_gogo_pb from "./github.com/gogo/protobuf/gogoproto/gogo_pb";
-import * as github_com_elojah_game_02_pkg_geometry_geometry_pb from "./github.com/elojah/game_02/pkg/geometry/geometry_pb";
+import * as github_com_gogo_protobuf_gogoproto_gogo_pb from "../../../../../github.com/gogo/protobuf/gogoproto/gogo_pb";
+import * as github_com_elojah_game_02_pkg_geometry_geometry_pb from "../../../../../github.com/elojah/game_02/pkg/geometry/geometry_pb";
 
 export class Cast extends jspb.Message {
   getAbilityid(): Uint8Array | string;

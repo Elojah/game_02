@@ -1,11 +1,11 @@
 // package: dto
-// file: tile.proto
+// file: github.com/elojah/game_02/pkg/space/dto/tile.proto
 
 import * as jspb from "google-protobuf";
-import * as github_com_gogo_protobuf_gogoproto_gogo_pb from "./github.com/gogo/protobuf/gogoproto/gogo_pb";
-import * as github_com_elojah_game_02_pkg_geometry_geometry_pb from "./github.com/elojah/game_02/pkg/geometry/geometry_pb";
-import * as github_com_elojah_game_02_pkg_account_dto_account_pb from "./github.com/elojah/game_02/pkg/account/dto/account_pb";
-import * as github_com_elojah_game_02_pkg_space_tile_pb from "./github.com/elojah/game_02/pkg/space/tile_pb";
+import * as github_com_gogo_protobuf_gogoproto_gogo_pb from "../../../../../../github.com/gogo/protobuf/gogoproto/gogo_pb";
+import * as github_com_elojah_game_02_pkg_geometry_geometry_pb from "../../../../../../github.com/elojah/game_02/pkg/geometry/geometry_pb";
+import * as github_com_elojah_game_02_pkg_account_dto_account_pb from "../../../../../../github.com/elojah/game_02/pkg/account/dto/account_pb";
+import * as github_com_elojah_game_02_pkg_space_tile_pb from "../../../../../../github.com/elojah/game_02/pkg/space/tile_pb";
 
 export class CreateMap extends jspb.Message {
   hasDimensions(): boolean;

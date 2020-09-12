@@ -1,8 +1,8 @@
 // package: item
-// file: item.proto
+// file: github.com/elojah/game_02/pkg/item/item.proto
 
 import * as jspb from "google-protobuf";
-import * as github_com_gogo_protobuf_gogoproto_gogo_pb from "./github.com/gogo/protobuf/gogoproto/gogo_pb";
+import * as github_com_gogo_protobuf_gogoproto_gogo_pb from "../../../../../github.com/gogo/protobuf/gogoproto/gogo_pb";
 
 export class Orb extends jspb.Message {
   getAbilityid(): Uint8Array | string;

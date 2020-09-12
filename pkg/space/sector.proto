@@ -8,7 +8,7 @@ option (gogoproto.populate_all) = true;
 
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "github.com/elojah/game_02/pkg/geometry/geometry.proto";
-import "tile.proto";
+import "github.com/elojah/game_02/pkg/space/tile.proto";
 
 message Sector {
 	bytes ID                              = 1 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
