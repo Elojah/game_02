@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/gogo/protobuf/types"
 
@@ -15,6 +16,7 @@ import (
 type impl struct{}
 
 func (h impl) Subscribe(context.Context, *accountdto.Subscribe) (*types.Empty, error) {
+	fmt.Println("subscribe !!!")
 	return &types.Empty{}, nil
 }
 

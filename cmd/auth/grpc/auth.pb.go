@@ -4,16 +4,20 @@
 package grpc
 
 import (
+	context "context"
 	fmt "fmt"
-	_ "github.com/elojah/game_02/pkg/account/dto"
-	_ "github.com/elojah/game_02/pkg/lobby"
-	_ "github.com/elojah/game_02/pkg/player"
-	_ "github.com/elojah/game_02/pkg/room"
-	_ "github.com/elojah/game_02/pkg/room/dto"
+	dto "github.com/elojah/game_02/pkg/account/dto"
+	lobby "github.com/elojah/game_02/pkg/lobby"
+	player "github.com/elojah/game_02/pkg/player"
+	room "github.com/elojah/game_02/pkg/room"
+	dto1 "github.com/elojah/game_02/pkg/room/dto"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/gogo/protobuf/proto"
+	types "github.com/gogo/protobuf/types"
 	golang_proto "github.com/golang/protobuf/proto"
-	_ "github.com/golang/protobuf/ptypes/empty"
+	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -65,4 +69,364 @@ var fileDescriptor_8d96c525a8957fde = []byte{
 	0x0b, 0xe4, 0x8f, 0x85, 0x60, 0x69, 0x81, 0x7c, 0xeb, 0x20, 0xb8, 0xed, 0x80, 0x2c, 0x3a, 0x08,
 	0xee, 0x3a, 0x08, 0xe4, 0xa1, 0xfb, 0xdb, 0xb3, 0x7f, 0x01, 0x00, 0x00, 0xff, 0xff, 0x46, 0xcd,
 	0x5d, 0xbe, 0x33, 0x03, 0x00, 0x00,
+}
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConn
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion4
+
+// AuthClient is the client API for Auth service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type AuthClient interface {
+	Subscribe(ctx context.Context, in *dto.Subscribe, opts ...grpc.CallOption) (*types.Empty, error)
+	Unsubscribe(ctx context.Context, in *dto.Unsubscribe, opts ...grpc.CallOption) (*types.Empty, error)
+	Signin(ctx context.Context, in *dto.Signin, opts ...grpc.CallOption) (*dto.Token, error)
+	Signout(ctx context.Context, in *dto.Auth, opts ...grpc.CallOption) (*types.Empty, error)
+	ListLobbies(ctx context.Context, in *dto.Auth, opts ...grpc.CallOption) (Auth_ListLobbiesClient, error)
+	CreateRoom(ctx context.Context, in *dto1.Create, opts ...grpc.CallOption) (*room.R, error)
+	ConnectRoom(ctx context.Context, in *dto1.Connect, opts ...grpc.CallOption) (*room.R, error)
+	CreatePlayer(ctx context.Context, in *dto1.Create, opts ...grpc.CallOption) (*player.P, error)
+}
+
+type authClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewAuthClient(cc *grpc.ClientConn) AuthClient {
+	return &authClient{cc}
+}
+
+func (c *authClient) Subscribe(ctx context.Context, in *dto.Subscribe, opts ...grpc.CallOption) (*types.Empty, error) {
+	out := new(types.Empty)
+	err := c.cc.Invoke(ctx, "/grpc.Auth/Subscribe", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authClient) Unsubscribe(ctx context.Context, in *dto.Unsubscribe, opts ...grpc.CallOption) (*types.Empty, error) {
+	out := new(types.Empty)
+	err := c.cc.Invoke(ctx, "/grpc.Auth/Unsubscribe", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authClient) Signin(ctx context.Context, in *dto.Signin, opts ...grpc.CallOption) (*dto.Token, error) {
+	out := new(dto.Token)
+	err := c.cc.Invoke(ctx, "/grpc.Auth/Signin", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authClient) Signout(ctx context.Context, in *dto.Auth, opts ...grpc.CallOption) (*types.Empty, error) {
+	out := new(types.Empty)
+	err := c.cc.Invoke(ctx, "/grpc.Auth/Signout", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authClient) ListLobbies(ctx context.Context, in *dto.Auth, opts ...grpc.CallOption) (Auth_ListLobbiesClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_Auth_serviceDesc.Streams[0], "/grpc.Auth/ListLobbies", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &authListLobbiesClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type Auth_ListLobbiesClient interface {
+	Recv() (*lobby.L, error)
+	grpc.ClientStream
+}
+
+type authListLobbiesClient struct {
+	grpc.ClientStream
+}
+
+func (x *authListLobbiesClient) Recv() (*lobby.L, error) {
+	m := new(lobby.L)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *authClient) CreateRoom(ctx context.Context, in *dto1.Create, opts ...grpc.CallOption) (*room.R, error) {
+	out := new(room.R)
+	err := c.cc.Invoke(ctx, "/grpc.Auth/CreateRoom", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authClient) ConnectRoom(ctx context.Context, in *dto1.Connect, opts ...grpc.CallOption) (*room.R, error) {
+	out := new(room.R)
+	err := c.cc.Invoke(ctx, "/grpc.Auth/ConnectRoom", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authClient) CreatePlayer(ctx context.Context, in *dto1.Create, opts ...grpc.CallOption) (*player.P, error) {
+	out := new(player.P)
+	err := c.cc.Invoke(ctx, "/grpc.Auth/CreatePlayer", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// AuthServer is the server API for Auth service.
+type AuthServer interface {
+	Subscribe(context.Context, *dto.Subscribe) (*types.Empty, error)
+	Unsubscribe(context.Context, *dto.Unsubscribe) (*types.Empty, error)
+	Signin(context.Context, *dto.Signin) (*dto.Token, error)
+	Signout(context.Context, *dto.Auth) (*types.Empty, error)
+	ListLobbies(*dto.Auth, Auth_ListLobbiesServer) error
+	CreateRoom(context.Context, *dto1.Create) (*room.R, error)
+	ConnectRoom(context.Context, *dto1.Connect) (*room.R, error)
+	CreatePlayer(context.Context, *dto1.Create) (*player.P, error)
+}
+
+// UnimplementedAuthServer can be embedded to have forward compatible implementations.
+type UnimplementedAuthServer struct {
+}
+
+func (*UnimplementedAuthServer) Subscribe(ctx context.Context, req *dto.Subscribe) (*types.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Subscribe not implemented")
+}
+func (*UnimplementedAuthServer) Unsubscribe(ctx context.Context, req *dto.Unsubscribe) (*types.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Unsubscribe not implemented")
+}
+func (*UnimplementedAuthServer) Signin(ctx context.Context, req *dto.Signin) (*dto.Token, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Signin not implemented")
+}
+func (*UnimplementedAuthServer) Signout(ctx context.Context, req *dto.Auth) (*types.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Signout not implemented")
+}
+func (*UnimplementedAuthServer) ListLobbies(req *dto.Auth, srv Auth_ListLobbiesServer) error {
+	return status.Errorf(codes.Unimplemented, "method ListLobbies not implemented")
+}
+func (*UnimplementedAuthServer) CreateRoom(ctx context.Context, req *dto1.Create) (*room.R, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateRoom not implemented")
+}
+func (*UnimplementedAuthServer) ConnectRoom(ctx context.Context, req *dto1.Connect) (*room.R, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ConnectRoom not implemented")
+}
+func (*UnimplementedAuthServer) CreatePlayer(ctx context.Context, req *dto1.Create) (*player.P, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreatePlayer not implemented")
+}
+
+func RegisterAuthServer(s *grpc.Server, srv AuthServer) {
+	s.RegisterService(&_Auth_serviceDesc, srv)
+}
+
+func _Auth_Subscribe_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(dto.Subscribe)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).Subscribe(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc.Auth/Subscribe",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).Subscribe(ctx, req.(*dto.Subscribe))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Auth_Unsubscribe_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(dto.Unsubscribe)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).Unsubscribe(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc.Auth/Unsubscribe",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).Unsubscribe(ctx, req.(*dto.Unsubscribe))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Auth_Signin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(dto.Signin)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).Signin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc.Auth/Signin",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).Signin(ctx, req.(*dto.Signin))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Auth_Signout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(dto.Auth)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).Signout(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc.Auth/Signout",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).Signout(ctx, req.(*dto.Auth))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Auth_ListLobbies_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(dto.Auth)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(AuthServer).ListLobbies(m, &authListLobbiesServer{stream})
+}
+
+type Auth_ListLobbiesServer interface {
+	Send(*lobby.L) error
+	grpc.ServerStream
+}
+
+type authListLobbiesServer struct {
+	grpc.ServerStream
+}
+
+func (x *authListLobbiesServer) Send(m *lobby.L) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _Auth_CreateRoom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(dto1.Create)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).CreateRoom(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc.Auth/CreateRoom",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).CreateRoom(ctx, req.(*dto1.Create))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Auth_ConnectRoom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(dto1.Connect)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).ConnectRoom(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc.Auth/ConnectRoom",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).ConnectRoom(ctx, req.(*dto1.Connect))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Auth_CreatePlayer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(dto1.Create)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).CreatePlayer(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc.Auth/CreatePlayer",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).CreatePlayer(ctx, req.(*dto1.Create))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _Auth_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "grpc.Auth",
+	HandlerType: (*AuthServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Subscribe",
+			Handler:    _Auth_Subscribe_Handler,
+		},
+		{
+			MethodName: "Unsubscribe",
+			Handler:    _Auth_Unsubscribe_Handler,
+		},
+		{
+			MethodName: "Signin",
+			Handler:    _Auth_Signin_Handler,
+		},
+		{
+			MethodName: "Signout",
+			Handler:    _Auth_Signout_Handler,
+		},
+		{
+			MethodName: "CreateRoom",
+			Handler:    _Auth_CreateRoom_Handler,
+		},
+		{
+			MethodName: "ConnectRoom",
+			Handler:    _Auth_ConnectRoom_Handler,
+		},
+		{
+			MethodName: "CreatePlayer",
+			Handler:    _Auth_CreatePlayer_Handler,
+		},
+	},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "ListLobbies",
+			Handler:       _Auth_ListLobbies_Handler,
+			ServerStreams: true,
+		},
+	},
+	Metadata: "github.com/elojah/game_02/cmd/auth/grpc/auth.proto",
 }

@@ -10,13 +10,12 @@ import (
 	"github.com/elojah/game_02/pkg/player"
 	"github.com/elojah/game_02/pkg/room"
 	"github.com/elojah/game_02/pkg/space"
-	"github.com/gorilla/mux"
 	"github.com/rs/zerolog/log"
 )
 
 type handler struct {
+	http.Handler
 	srv *http.Server
-	mux *mux.Router
 
 	account account.App
 	lobby   lobby.App
@@ -45,7 +44,7 @@ func (h *handler) Dial(c Config) error {
 
 	h.srv = &http.Server{
 		Addr:    c.Address,
-		Handler: h.mux,
+		Handler: h.Handler,
 	}
 
 	go func() {

@@ -7,7 +7,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/gorilla/mux"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
@@ -78,7 +77,6 @@ func run(prog string, filename string) {
 
 	// handler (https server)
 	h := &handler{
-		mux:     mux.NewRouter(),
 		account: &accountApp,
 		entity:  &entityApp,
 		lobby:   &lobbyApp,
@@ -100,8 +98,10 @@ func run(prog string, filename string) {
 	)
 
 	authgrpc.RegisterAuthServer(s, impl{})
-	ws := grpcweb.WrapServer(s)
-	h.mux.HandleFunc("/", ws.ServeHTTP)
+	ws := grpcweb.WrapServer(s,
+		grpcweb.WithOriginFunc(func(origin string) bool { return true }),
+	)
+	h.Handler = ws
 	// !TEST GRPC
 
 	if err := launchers.Up(filename); err != nil {

@@ -9,7 +9,7 @@ function subscribe() {
   sub.setPassword("password")
   grpc.unary(Auth.Subscribe, {
     request: sub,
-    host: "https://localhost:8080",
+    host: "https://localhost:8081",
     onEnd: res => {
       const { status, statusMessage, headers, message, trailers } = res;
       console.log("subscribe.onEnd.status", status, statusMessage);
