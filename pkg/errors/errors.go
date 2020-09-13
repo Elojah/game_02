@@ -38,6 +38,14 @@ func (e ErrInvalidKey) Error() string {
 	return b.String()
 }
 
+// ErrNullRequest is raised when a request is null and shouldn't.
+type ErrNullRequest struct{}
+
+// Error implementation for ErrNullRequest.
+func (e ErrNullRequest) Error() string {
+	return "null request"
+}
+
 // ErrInvalidCredentials is raised when invalid credentials are provided.
 type ErrInvalidCredentials struct{}
 

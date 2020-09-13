@@ -1,6 +1,6 @@
 import {grpc} from "@improbable-eng/grpc-web";
-import {Auth} from "../../../cmd/auth/grpc/auth_pb_service";
-import {Subscribe} from "../../../pkg/account/dto/account_pb";
+import {Auth} from "@cmd/auth/grpc/auth_pb_service";
+import {Subscribe} from "@pkg/account/dto/account_pb";
 
 function subscribe() {
   const sub = new Subscribe();

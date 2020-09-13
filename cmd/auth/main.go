@@ -65,7 +65,7 @@ func run(prog string, filename string) {
 
 	// Stores and applicatives
 	accountStore := accountredis.Store{Service: rd}
-	accountApp := accountapp.A{Store: &accountStore}
+	accountApp := accountapp.A{Store: &accountStore, StoreEmail: &accountStore}
 	entityStore := entityredis.Store{Service: rd}
 	entityApp := entityapp.A{Store: &entityStore, StoreTemplate: &entityStore}
 	lobbyStore := lobbyredis.Store{Service: rd}
@@ -97,7 +97,7 @@ func run(prog string, filename string) {
 		grpc.MaxSendMsgSize(32*1000),
 	)
 
-	authgrpc.RegisterAuthServer(s, impl{})
+	authgrpc.RegisterAuthServer(s, h)
 	ws := grpcweb.WrapServer(s,
 		grpcweb.WithOriginFunc(func(origin string) bool { return true }),
 	)

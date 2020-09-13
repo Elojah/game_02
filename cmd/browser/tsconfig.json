@@ -9,6 +9,11 @@
       "strictNullChecks": true,
       "stripInternal": true,
       "noFallthroughCasesInSwitch": true,
-      "noEmitOnError": true
+      "noEmitOnError": true,
+      "baseUrl": "./",
+      "paths": {
+        "@cmd/*": ["../../cmd/*"],
+        "@pkg/*": ["../../pkg/*"]
+      }
     }
 }
