@@ -4,13 +4,14 @@ import (
 	"context"
 	"errors"
 
-	"github.com/elojah/game_02/pkg/account"
-	"github.com/elojah/game_02/pkg/account/dto"
-	gerrors "github.com/elojah/game_02/pkg/errors"
 	"github.com/gogo/protobuf/types"
 	"github.com/gogo/status"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc/codes"
+
+	"github.com/elojah/game_02/pkg/account"
+	"github.com/elojah/game_02/pkg/account/dto"
+	gerrors "github.com/elojah/game_02/pkg/errors"
 )
 
 func (h handler) Unsubscribe(ctx context.Context, request *dto.Auth) (*types.Empty, error) {
