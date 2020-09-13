@@ -4,7 +4,6 @@ DATE      ?= $(shell date +%FT%T%z)
 VERSION   ?= $(shell echo $(shell cat $(PWD)/.version)-$(shell git describe --tags --always))
 DIR        = $(strip $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))))
 
-
 # Terminal visual
 V         = 0
 Q         = $(if $(filter 1,$V),,@)
@@ -121,6 +120,7 @@ proto: ## Regenerate protobuf files
 	$Q $(GEN_PB) $(GO_PACKAGE)/pkg/room/dto/room.proto
 	$(info $(M) generate services…) @
 	$Q $(GEN_PB_SERVICE) $(GO_PACKAGE)/cmd/$(AUTH)/grpc/auth.proto
+	$Q sed -i '/goog.object.extend/d' cmd/$(AUTH)/grpc/auth_pb.js
 
 # Vendoring
 .PHONY: vendor

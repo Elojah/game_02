@@ -124,42 +124,6 @@ func (m *Subscribe) GetPassword() string {
 	return ""
 }
 
-type Token struct {
-	Token github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,1,opt,name=Token,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"Token"`
-}
-
-func (m *Token) Reset()      { *m = Token{} }
-func (*Token) ProtoMessage() {}
-func (*Token) Descriptor() ([]byte, []int) {
-	return fileDescriptor_ecb14c79935b7cc1, []int{2}
-}
-func (m *Token) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *Token) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_Token.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *Token) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Token.Merge(m, src)
-}
-func (m *Token) XXX_Size() int {
-	return m.Size()
-}
-func (m *Token) XXX_DiscardUnknown() {
-	xxx_messageInfo_Token.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_Token proto.InternalMessageInfo
-
 // Signin request type for signin route.
 type Signin struct {
 	Email    string `protobuf:"bytes,1,opt,name=Email,proto3" json:"Email,omitempty"`
@@ -169,7 +133,7 @@ type Signin struct {
 func (m *Signin) Reset()      { *m = Signin{} }
 func (*Signin) ProtoMessage() {}
 func (*Signin) Descriptor() ([]byte, []int) {
-	return fileDescriptor_ecb14c79935b7cc1, []int{3}
+	return fileDescriptor_ecb14c79935b7cc1, []int{2}
 }
 func (m *Signin) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -212,64 +176,10 @@ func (m *Signin) GetPassword() string {
 	return ""
 }
 
-// Unsubscribe request type for unsubscribe route.
-type Unsubscribe struct {
-	Email    string `protobuf:"bytes,1,opt,name=Email,proto3" json:"Email,omitempty"`
-	Password string `protobuf:"bytes,2,opt,name=Password,proto3" json:"Password,omitempty"`
-}
-
-func (m *Unsubscribe) Reset()      { *m = Unsubscribe{} }
-func (*Unsubscribe) ProtoMessage() {}
-func (*Unsubscribe) Descriptor() ([]byte, []int) {
-	return fileDescriptor_ecb14c79935b7cc1, []int{4}
-}
-func (m *Unsubscribe) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *Unsubscribe) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_Unsubscribe.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *Unsubscribe) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Unsubscribe.Merge(m, src)
-}
-func (m *Unsubscribe) XXX_Size() int {
-	return m.Size()
-}
-func (m *Unsubscribe) XXX_DiscardUnknown() {
-	xxx_messageInfo_Unsubscribe.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_Unsubscribe proto.InternalMessageInfo
-
-func (m *Unsubscribe) GetEmail() string {
-	if m != nil {
-		return m.Email
-	}
-	return ""
-}
-
-func (m *Unsubscribe) GetPassword() string {
-	if m != nil {
-		return m.Password
-	}
-	return ""
-}
-
 func init() {
 	proto.RegisterType((*Auth)(nil), "dto.Auth")
 	proto.RegisterType((*Subscribe)(nil), "dto.Subscribe")
-	proto.RegisterType((*Token)(nil), "dto.Token")
 	proto.RegisterType((*Signin)(nil), "dto.Signin")
-	proto.RegisterType((*Unsubscribe)(nil), "dto.Unsubscribe")
 }
 
 func init() {
@@ -277,7 +187,7 @@ func init() {
 }
 
 var fileDescriptor_ecb14c79935b7cc1 = []byte{
-	// 334 bytes of a gzipped FileDescriptorProto
+	// 314 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x32, 0x4f, 0xcf, 0x2c, 0xc9,
 	0x28, 0x4d, 0xd2, 0x4b, 0xce, 0xcf, 0xd5, 0x4f, 0xcd, 0xc9, 0xcf, 0x4a, 0xcc, 0xd0, 0x4f, 0x4f,
 	0xcc, 0x4d, 0x8d, 0x37, 0x30, 0xd2, 0x2f, 0xc8, 0x4e, 0xd7, 0x4f, 0x4c, 0x4e, 0xce, 0x2f, 0xcd,
@@ -290,15 +200,14 @@ var fileDescriptor_ecb14c79935b7cc1 = []byte{
 	0xc7, 0x04, 0x88, 0x5e, 0xa5, 0x60, 0x2e, 0xce, 0xe0, 0xd2, 0xa4, 0xe2, 0xe4, 0xa2, 0xcc, 0xa4,
 	0x54, 0x21, 0x11, 0x2e, 0x56, 0xc7, 0x9c, 0xcc, 0xc4, 0x62, 0xb0, 0x9b, 0x38, 0x83, 0x20, 0x1c,
 	0x90, 0xa8, 0x6b, 0x6e, 0x62, 0x66, 0x0e, 0xd8, 0x1e, 0xce, 0x20, 0x08, 0x47, 0x48, 0x8a, 0x8b,
-	0x23, 0x20, 0xb1, 0xb8, 0xb8, 0x3c, 0xbf, 0x28, 0x45, 0x82, 0x19, 0x2c, 0x01, 0xe7, 0x2b, 0xf9,
-	0x40, 0x5d, 0x86, 0x70, 0x22, 0x23, 0x05, 0x4e, 0xb4, 0xe2, 0x62, 0x0b, 0xce, 0x4c, 0xcf, 0xcb,
-	0xcc, 0x43, 0xb8, 0x84, 0x11, 0x97, 0x4b, 0x98, 0xd0, 0x5c, 0x62, 0xcf, 0xc5, 0x1d, 0x9a, 0x57,
-	0x8c, 0xec, 0x41, 0xd2, 0x0c, 0x70, 0x72, 0xb8, 0xf0, 0x50, 0x8e, 0xe1, 0xc6, 0x43, 0x39, 0x86,
-	0x0f, 0x0f, 0xe5, 0x18, 0x7f, 0x3c, 0x94, 0x63, 0x6c, 0x78, 0x24, 0xc7, 0xb8, 0xe2, 0x91, 0x1c,
-	0xe3, 0x8e, 0x47, 0x72, 0x8c, 0x07, 0x1e, 0xc9, 0x31, 0x9e, 0x78, 0x24, 0xc7, 0x78, 0xe1, 0x91,
-	0x1c, 0xe3, 0x83, 0x47, 0x72, 0x8c, 0x2f, 0x1e, 0xc9, 0x31, 0x7c, 0x78, 0x24, 0xc7, 0x38, 0xe1,
-	0xb1, 0x1c, 0xc3, 0x85, 0xc7, 0x72, 0x0c, 0x37, 0x1e, 0xcb, 0x31, 0x24, 0xb1, 0x81, 0x63, 0xdd,
-	0x18, 0x10, 0x00, 0x00, 0xff, 0xff, 0x5f, 0x1f, 0x39, 0x2b, 0x64, 0x02, 0x00, 0x00,
+	0x23, 0x20, 0xb1, 0xb8, 0xb8, 0x3c, 0xbf, 0x28, 0x45, 0x82, 0x19, 0x2c, 0x01, 0xe7, 0x2b, 0x59,
+	0x71, 0xb1, 0x05, 0x67, 0xa6, 0xe7, 0x65, 0xe6, 0x21, 0xf4, 0x32, 0xe2, 0xd2, 0xcb, 0x84, 0xaa,
+	0xd7, 0xc9, 0xe1, 0xc2, 0x43, 0x39, 0x86, 0x1b, 0x0f, 0xe5, 0x18, 0x3e, 0x3c, 0x94, 0x63, 0xfc,
+	0xf1, 0x50, 0x8e, 0xb1, 0xe1, 0x91, 0x1c, 0xe3, 0x8a, 0x47, 0x72, 0x8c, 0x3b, 0x1e, 0xc9, 0x31,
+	0x1e, 0x78, 0x24, 0xc7, 0x78, 0xe2, 0x91, 0x1c, 0xe3, 0x85, 0x47, 0x72, 0x8c, 0x0f, 0x1e, 0xc9,
+	0x31, 0xbe, 0x78, 0x24, 0xc7, 0xf0, 0xe1, 0x91, 0x1c, 0xe3, 0x84, 0xc7, 0x72, 0x0c, 0x17, 0x1e,
+	0xcb, 0x31, 0xdc, 0x78, 0x2c, 0xc7, 0x90, 0xc4, 0x06, 0x0e, 0x66, 0x63, 0x40, 0x00, 0x00, 0x00,
+	0xff, 0xff, 0xee, 0x16, 0x44, 0xf1, 0xd5, 0x01, 0x00, 0x00,
 }
 
 func (this *Auth) Equal(that interface{}) bool {
@@ -358,30 +267,6 @@ func (this *Subscribe) Equal(that interface{}) bool {
 	}
 	return true
 }
-func (this *Token) Equal(that interface{}) bool {
-	if that == nil {
-		return this == nil
-	}
-
-	that1, ok := that.(*Token)
-	if !ok {
-		that2, ok := that.(Token)
-		if ok {
-			that1 = &that2
-		} else {
-			return false
-		}
-	}
-	if that1 == nil {
-		return this == nil
-	} else if this == nil {
-		return false
-	}
-	if !this.Token.Equal(that1.Token) {
-		return false
-	}
-	return true
-}
 func (this *Signin) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
@@ -390,33 +275,6 @@ func (this *Signin) Equal(that interface{}) bool {
 	that1, ok := that.(*Signin)
 	if !ok {
 		that2, ok := that.(Signin)
-		if ok {
-			that1 = &that2
-		} else {
-			return false
-		}
-	}
-	if that1 == nil {
-		return this == nil
-	} else if this == nil {
-		return false
-	}
-	if this.Email != that1.Email {
-		return false
-	}
-	if this.Password != that1.Password {
-		return false
-	}
-	return true
-}
-func (this *Unsubscribe) Equal(that interface{}) bool {
-	if that == nil {
-		return this == nil
-	}
-
-	that1, ok := that.(*Unsubscribe)
-	if !ok {
-		that2, ok := that.(Unsubscribe)
 		if ok {
 			that1 = &that2
 		} else {
@@ -459,33 +317,12 @@ func (this *Subscribe) GoString() string {
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
-func (this *Token) GoString() string {
-	if this == nil {
-		return "nil"
-	}
-	s := make([]string, 0, 5)
-	s = append(s, "&dto.Token{")
-	s = append(s, "Token: "+fmt.Sprintf("%#v", this.Token)+",\n")
-	s = append(s, "}")
-	return strings.Join(s, "")
-}
 func (this *Signin) GoString() string {
 	if this == nil {
 		return "nil"
 	}
 	s := make([]string, 0, 6)
 	s = append(s, "&dto.Signin{")
-	s = append(s, "Email: "+fmt.Sprintf("%#v", this.Email)+",\n")
-	s = append(s, "Password: "+fmt.Sprintf("%#v", this.Password)+",\n")
-	s = append(s, "}")
-	return strings.Join(s, "")
-}
-func (this *Unsubscribe) GoString() string {
-	if this == nil {
-		return "nil"
-	}
-	s := make([]string, 0, 6)
-	s = append(s, "&dto.Unsubscribe{")
 	s = append(s, "Email: "+fmt.Sprintf("%#v", this.Email)+",\n")
 	s = append(s, "Password: "+fmt.Sprintf("%#v", this.Password)+",\n")
 	s = append(s, "}")
@@ -586,39 +423,6 @@ func (m *Subscribe) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *Token) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *Token) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *Token) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	{
-		size := m.Token.Size()
-		i -= size
-		if _, err := m.Token.MarshalTo(dAtA[i:]); err != nil {
-			return 0, err
-		}
-		i = encodeVarintAccount(dAtA, i, uint64(size))
-	}
-	i--
-	dAtA[i] = 0xa
-	return len(dAtA) - i, nil
-}
-
 func (m *Signin) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -635,43 +439,6 @@ func (m *Signin) MarshalTo(dAtA []byte) (int, error) {
 }
 
 func (m *Signin) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.Password) > 0 {
-		i -= len(m.Password)
-		copy(dAtA[i:], m.Password)
-		i = encodeVarintAccount(dAtA, i, uint64(len(m.Password)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.Email) > 0 {
-		i -= len(m.Email)
-		copy(dAtA[i:], m.Email)
-		i = encodeVarintAccount(dAtA, i, uint64(len(m.Email)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *Unsubscribe) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *Unsubscribe) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *Unsubscribe) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -725,26 +492,8 @@ func NewPopulatedSubscribe(r randyAccount, easy bool) *Subscribe {
 	return this
 }
 
-func NewPopulatedToken(r randyAccount, easy bool) *Token {
-	this := &Token{}
-	v3 := github_com_elojah_game_02_pkg_ulid.NewPopulatedID(r)
-	this.Token = *v3
-	if !easy && r.Intn(10) != 0 {
-	}
-	return this
-}
-
 func NewPopulatedSignin(r randyAccount, easy bool) *Signin {
 	this := &Signin{}
-	this.Email = string(randStringAccount(r))
-	this.Password = string(randStringAccount(r))
-	if !easy && r.Intn(10) != 0 {
-	}
-	return this
-}
-
-func NewPopulatedUnsubscribe(r randyAccount, easy bool) *Unsubscribe {
-	this := &Unsubscribe{}
 	this.Email = string(randStringAccount(r))
 	this.Password = string(randStringAccount(r))
 	if !easy && r.Intn(10) != 0 {
@@ -771,9 +520,9 @@ func randUTF8RuneAccount(r randyAccount) rune {
 	return rune(ru + 61)
 }
 func randStringAccount(r randyAccount) string {
-	v4 := r.Intn(100)
-	tmps := make([]rune, v4)
-	for i := 0; i < v4; i++ {
+	v3 := r.Intn(100)
+	tmps := make([]rune, v3)
+	for i := 0; i < v3; i++ {
 		tmps[i] = randUTF8RuneAccount(r)
 	}
 	return string(tmps)
@@ -795,11 +544,11 @@ func randFieldAccount(dAtA []byte, r randyAccount, fieldNumber int, wire int) []
 	switch wire {
 	case 0:
 		dAtA = encodeVarintPopulateAccount(dAtA, uint64(key))
-		v5 := r.Int63()
+		v4 := r.Int63()
 		if r.Intn(2) == 0 {
-			v5 *= -1
+			v4 *= -1
 		}
-		dAtA = encodeVarintPopulateAccount(dAtA, uint64(v5))
+		dAtA = encodeVarintPopulateAccount(dAtA, uint64(v4))
 	case 1:
 		dAtA = encodeVarintPopulateAccount(dAtA, uint64(key))
 		dAtA = append(dAtA, byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)))
@@ -858,35 +607,7 @@ func (m *Subscribe) Size() (n int) {
 	return n
 }
 
-func (m *Token) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = m.Token.Size()
-	n += 1 + l + sovAccount(uint64(l))
-	return n
-}
-
 func (m *Signin) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Email)
-	if l > 0 {
-		n += 1 + l + sovAccount(uint64(l))
-	}
-	l = len(m.Password)
-	if l > 0 {
-		n += 1 + l + sovAccount(uint64(l))
-	}
-	return n
-}
-
-func (m *Unsubscribe) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -932,32 +653,11 @@ func (this *Subscribe) String() string {
 	}, "")
 	return s
 }
-func (this *Token) String() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&Token{`,
-		`Token:` + fmt.Sprintf("%v", this.Token) + `,`,
-		`}`,
-	}, "")
-	return s
-}
 func (this *Signin) String() string {
 	if this == nil {
 		return "nil"
 	}
 	s := strings.Join([]string{`&Signin{`,
-		`Email:` + fmt.Sprintf("%v", this.Email) + `,`,
-		`Password:` + fmt.Sprintf("%v", this.Password) + `,`,
-		`}`,
-	}, "")
-	return s
-}
-func (this *Unsubscribe) String() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&Unsubscribe{`,
 		`Email:` + fmt.Sprintf("%v", this.Email) + `,`,
 		`Password:` + fmt.Sprintf("%v", this.Password) + `,`,
 		`}`,
@@ -1240,92 +940,6 @@ func (m *Subscribe) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *Token) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowAccount
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: Token: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Token: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Token", wireType)
-			}
-			var byteLen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowAccount
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				byteLen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if byteLen < 0 {
-				return ErrInvalidLengthAccount
-			}
-			postIndex := iNdEx + byteLen
-			if postIndex < 0 {
-				return ErrInvalidLengthAccount
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if err := m.Token.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipAccount(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if skippy < 0 {
-				return ErrInvalidLengthAccount
-			}
-			if (iNdEx + skippy) < 0 {
-				return ErrInvalidLengthAccount
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
 func (m *Signin) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1353,123 +967,6 @@ func (m *Signin) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: Signin: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Email", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowAccount
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthAccount
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthAccount
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Email = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Password", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowAccount
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthAccount
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthAccount
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Password = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipAccount(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if skippy < 0 {
-				return ErrInvalidLengthAccount
-			}
-			if (iNdEx + skippy) < 0 {
-				return ErrInvalidLengthAccount
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *Unsubscribe) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowAccount
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: Unsubscribe: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Unsubscribe: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:

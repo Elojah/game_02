@@ -24,7 +24,7 @@ type AuthUnsubscribe = {
   readonly service: typeof Auth;
   readonly requestStream: false;
   readonly responseStream: false;
-  readonly requestType: typeof github_com_elojah_game_02_pkg_account_dto_account_pb.Unsubscribe;
+  readonly requestType: typeof github_com_elojah_game_02_pkg_account_dto_account_pb.Auth;
   readonly responseType: typeof google_protobuf_empty_pb.Empty;
 };
 
@@ -34,7 +34,7 @@ type AuthSignin = {
   readonly requestStream: false;
   readonly responseStream: false;
   readonly requestType: typeof github_com_elojah_game_02_pkg_account_dto_account_pb.Signin;
-  readonly responseType: typeof github_com_elojah_game_02_pkg_account_dto_account_pb.Token;
+  readonly responseType: typeof github_com_elojah_game_02_pkg_account_dto_account_pb.Auth;
 };
 
 type AuthSignout = {
@@ -136,22 +136,22 @@ export class AuthClient {
     callback: (error: ServiceError|null, responseMessage: google_protobuf_empty_pb.Empty|null) => void
   ): UnaryResponse;
   unsubscribe(
-    requestMessage: github_com_elojah_game_02_pkg_account_dto_account_pb.Unsubscribe,
+    requestMessage: github_com_elojah_game_02_pkg_account_dto_account_pb.Auth,
     metadata: grpc.Metadata,
     callback: (error: ServiceError|null, responseMessage: google_protobuf_empty_pb.Empty|null) => void
   ): UnaryResponse;
   unsubscribe(
-    requestMessage: github_com_elojah_game_02_pkg_account_dto_account_pb.Unsubscribe,
+    requestMessage: github_com_elojah_game_02_pkg_account_dto_account_pb.Auth,
     callback: (error: ServiceError|null, responseMessage: google_protobuf_empty_pb.Empty|null) => void
   ): UnaryResponse;
   signin(
     requestMessage: github_com_elojah_game_02_pkg_account_dto_account_pb.Signin,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: github_com_elojah_game_02_pkg_account_dto_account_pb.Token|null) => void
+    callback: (error: ServiceError|null, responseMessage: github_com_elojah_game_02_pkg_account_dto_account_pb.Auth|null) => void
   ): UnaryResponse;
   signin(
     requestMessage: github_com_elojah_game_02_pkg_account_dto_account_pb.Signin,
-    callback: (error: ServiceError|null, responseMessage: github_com_elojah_game_02_pkg_account_dto_account_pb.Token|null) => void
+    callback: (error: ServiceError|null, responseMessage: github_com_elojah_game_02_pkg_account_dto_account_pb.Auth|null) => void
   ): UnaryResponse;
   signout(
     requestMessage: github_com_elojah_game_02_pkg_account_dto_account_pb.Auth,

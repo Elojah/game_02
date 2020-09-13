@@ -22,7 +22,10 @@ func (h handler) Subscribe(ctx context.Context, request *dto.Subscribe) (*types.
 
 	// #Request processing
 	if request == nil {
-		return &types.Empty{}, status.New(codes.InvalidArgument, gerrors.ErrNullRequest{}.Error()).Err()
+		err := gerrors.ErrNullRequest{}
+		logger.Error().Err(err).Msg("null request")
+
+		return &types.Empty{}, status.New(codes.InvalidArgument, err.Error()).Err()
 	}
 
 	if err := request.Check(); err != nil {
@@ -34,7 +37,7 @@ func (h handler) Subscribe(ctx context.Context, request *dto.Subscribe) (*types.
 	// #Check if account already exist with email
 	if _, err := h.account.FetchEmail(ctx, account.FilterEmail{Email: request.Email}); err != nil {
 		if errors.As(err, &gerrors.ErrNotFound{}) {
-			// no account found, no error, continue
+			// no account found with this email, no error, continue
 		} else {
 			// server error fetching account
 			logger.Error().Err(err).Msg("failed to check email duplicate")

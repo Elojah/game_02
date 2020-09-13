@@ -30,7 +30,7 @@ Auth.Unsubscribe = {
   service: Auth,
   requestStream: false,
   responseStream: false,
-  requestType: github_com_elojah_game_02_pkg_account_dto_account_pb.Unsubscribe,
+  requestType: github_com_elojah_game_02_pkg_account_dto_account_pb.Auth,
   responseType: google_protobuf_empty_pb.Empty
 };
 
@@ -40,7 +40,7 @@ Auth.Signin = {
   requestStream: false,
   responseStream: false,
   requestType: github_com_elojah_game_02_pkg_account_dto_account_pb.Signin,
-  responseType: github_com_elojah_game_02_pkg_account_dto_account_pb.Token
+  responseType: github_com_elojah_game_02_pkg_account_dto_account_pb.Auth
 };
 
 Auth.Signout = {

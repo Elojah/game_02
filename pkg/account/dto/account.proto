@@ -21,18 +21,8 @@ message Subscribe {
     string Password                    = 3;
 }
 
-message Token {
-    bytes Token                        = 1 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
-}
-
 // Signin request type for signin route.
 message Signin {
      string Email                      = 1;
      string Password                   = 2;
-}
-
-// Unsubscribe request type for unsubscribe route.
-message Unsubscribe {
-    string Email                       = 1;
-    string Password                    = 2;
 }
