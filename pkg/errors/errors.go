@@ -46,6 +46,16 @@ func (e ErrNullRequest) Error() string {
 	return "null request"
 }
 
+// ErrDuplicateEmail is raised when an account creation failed because of a duplicate email.
+type ErrDuplicateEmail struct {
+	Email string
+}
+
+// Error implementation for ErrDuplicateEmail.
+func (e ErrDuplicateEmail) Error() string {
+	return fmt.Sprintf("account for email %s already exists", e.Email)
+}
+
 // ErrInvalidCredentials is raised when invalid credentials are provided.
 type ErrInvalidCredentials struct{}
 

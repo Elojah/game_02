@@ -4,13 +4,16 @@ import (
 	"context"
 	"errors"
 
+	"github.com/gogo/protobuf/types"
+	"github.com/gogo/status"
+	"github.com/rs/zerolog/log"
+	"golang.org/x/crypto/bcrypt"
+	"google.golang.org/grpc/codes"
+
 	"github.com/elojah/game_02/pkg/account"
 	"github.com/elojah/game_02/pkg/account/dto"
 	gerrors "github.com/elojah/game_02/pkg/errors"
 	gulid "github.com/elojah/game_02/pkg/ulid"
-	"github.com/gogo/protobuf/types"
-	"github.com/rs/zerolog/log"
-	"golang.org/x/crypto/bcrypt"
 )
 
 func (h handler) Subscribe(ctx context.Context, request *dto.Subscribe) (*types.Empty, error) {
@@ -19,13 +22,13 @@ func (h handler) Subscribe(ctx context.Context, request *dto.Subscribe) (*types.
 
 	// #Request processing
 	if request == nil {
-		return &types.Empty{}, gerrors.ErrNullRequest{}
+		return &types.Empty{}, status.New(codes.InvalidArgument, gerrors.ErrNullRequest{}.Error()).Err()
 	}
 
 	if err := request.Check(); err != nil {
 		logger.Error().Err(err).Msg("invalid request")
 
-		return &types.Empty{}, err
+		return &types.Empty{}, status.New(codes.InvalidArgument, err.Error()).Err()
 	}
 
 	// #Check if account already exist with email
@@ -36,13 +39,14 @@ func (h handler) Subscribe(ctx context.Context, request *dto.Subscribe) (*types.
 			// server error fetching account
 			logger.Error().Err(err).Msg("failed to check email duplicate")
 
-			return &types.Empty{}, err
+			return &types.Empty{}, status.New(codes.Internal, err.Error()).Err()
 		}
 	} else {
 		// duplicate email account found
+		err := gerrors.ErrDuplicateEmail{Email: request.Email}
 		logger.Error().Err(err).Msg("email already registered")
 
-		return &types.Empty{}, err
+		return &types.Empty{}, status.New(codes.AlreadyExists, err.Error()).Err()
 	}
 	logger = logger.With().Str("email", request.Email).Logger()
 
@@ -51,7 +55,7 @@ func (h handler) Subscribe(ctx context.Context, request *dto.Subscribe) (*types.
 	if err != nil {
 		logger.Error().Err(err).Msg("failed to hash password")
 
-		return &types.Empty{}, err
+		return &types.Empty{}, status.New(codes.Internal, err.Error()).Err()
 	}
 
 	// #Create account
@@ -65,13 +69,13 @@ func (h handler) Subscribe(ctx context.Context, request *dto.Subscribe) (*types.
 	if err := h.account.Upsert(ctx, a); err != nil {
 		logger.Error().Err(err).Msg("failed to create account")
 
-		return &types.Empty{}, err
+		return &types.Empty{}, status.New(codes.Internal, err.Error()).Err()
 	}
 
 	if err := h.account.UpsertEmail(ctx, a); err != nil {
 		logger.Error().Err(err).Msg("failed to associate email to account")
 
-		return &types.Empty{}, err
+		return &types.Empty{}, status.New(codes.Internal, err.Error()).Err()
 	}
 
 	// #Write response

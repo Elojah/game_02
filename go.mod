@@ -10,6 +10,7 @@ require (
 	github.com/go-redis/redis/v8 v8.0.0-beta.8
 	github.com/gogo/grpc-example v0.0.0-20200717103124-72d9e2c2a032
 	github.com/gogo/protobuf v1.3.1
+	github.com/gogo/status v1.1.0
 	github.com/golang/protobuf v1.4.2
 	github.com/gorilla/mux v1.8.0
 	github.com/hajimehoshi/ebiten v1.11.7

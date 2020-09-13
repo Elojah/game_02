@@ -4,13 +4,14 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/rs/zerolog/log"
+
 	"github.com/elojah/game_02/pkg/account"
 	"github.com/elojah/game_02/pkg/entity"
 	"github.com/elojah/game_02/pkg/lobby"
 	"github.com/elojah/game_02/pkg/player"
 	"github.com/elojah/game_02/pkg/room"
 	"github.com/elojah/game_02/pkg/space"
-	"github.com/rs/zerolog/log"
 )
 
 type handler struct {
