@@ -53,33 +53,33 @@ func (s *Store) Fetch(ctx context.Context, filter lobby.Filter) (lobby.L, error)
 }
 
 // FetchAll implementation for lobby in redis.
-func (s *Store) FetchAll(ctx context.Context) ([]lobby.L, error) {
+func (s *Store) FetchAll(ctx context.Context, c chan<- lobby.L) error {
 	keys, err := s.Keys(ctx, lobbyKey+"*").Result()
 	if err != nil {
 		if !errors.Is(err, redis.Nil) {
-			return nil, fmt.Errorf("fetch all lobby: %w", err)
+			return fmt.Errorf("fetch all lobby: %w", err)
 		}
 
-		return nil, fmt.Errorf(
+		return fmt.Errorf(
 			"fetch lobby *: %w",
 			gerrors.ErrNotFound{Resource: lobbyKey, Index: "*"},
 		)
 	}
 
-	ls := make([]lobby.L, len(keys))
-
-	for i, key := range keys {
+	for _, key := range keys {
 		val, err := s.Get(ctx, key).Result()
 		if err != nil {
-			return nil, fmt.Errorf("fetch lobby %s: %w", key, err)
+			return fmt.Errorf("fetch lobby %s: %w", key, err)
 		}
 
-		if err := ls[i].Unmarshal([]byte(val)); err != nil {
-			return nil, fmt.Errorf("unmarshal lobby %s: %w", key, err)
+		var l lobby.L
+		if err := l.Unmarshal([]byte(val)); err != nil {
+			return fmt.Errorf("unmarshal lobby %s: %w", key, err)
 		}
+		c <- l
 	}
 
-	return ls, nil
+	return nil
 }
 
 // Delete implementation for lobby in redis.
