@@ -14,7 +14,7 @@ import (
 )
 
 func (h handler) Signout(ctx context.Context, request *dto.Auth) (*types.Empty, error) {
-	logger := log.With().Str("method", "unsubscribe").Logger()
+	logger := log.With().Str("method", "signout").Logger()
 
 	// #Request processing
 	if request == nil {
