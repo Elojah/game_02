@@ -10,7 +10,7 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"github.com/elojah/buntdb"
-	ggrpcweb "github.com/elojah/grpcweb"
+	"github.com/elojah/grpcweb"
 	"github.com/elojah/redis"
 	"github.com/elojah/services"
 
@@ -85,7 +85,7 @@ func run(prog string, filename string) {
 	}, "auth")
 	launchers.Add(hl)
 
-	gw := ggrpcweb.Service{}
+	gw := grpcweb.Service{}
 	gwl := gw.NewLauncher(grpcweb.Namespaces{
 		GRPCWeb: "grpcweb",
 	}, "grpcweb")
