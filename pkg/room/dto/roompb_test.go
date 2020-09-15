@@ -24,15 +24,15 @@ var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
-func TestConnectProto(t *testing.T) {
+func TestConnectRoomProto(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedConnect(popr, false)
+	p := NewPopulatedConnectRoom(popr, false)
 	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &Connect{}
+	msg := &ConnectRoom{}
 	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -55,10 +55,10 @@ func TestConnectProto(t *testing.T) {
 	}
 }
 
-func TestConnectMarshalTo(t *testing.T) {
+func TestConnectRoomMarshalTo(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedConnect(popr, false)
+	p := NewPopulatedConnectRoom(popr, false)
 	size := p.Size()
 	dAtA := make([]byte, size)
 	for i := range dAtA {
@@ -68,7 +68,7 @@ func TestConnectMarshalTo(t *testing.T) {
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &Connect{}
+	msg := &ConnectRoom{}
 	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -80,12 +80,12 @@ func TestConnectMarshalTo(t *testing.T) {
 	}
 }
 
-func BenchmarkConnectProtoMarshal(b *testing.B) {
+func BenchmarkConnectRoomProtoMarshal(b *testing.B) {
 	popr := math_rand.New(math_rand.NewSource(616))
 	total := 0
-	pops := make([]*Connect, 10000)
+	pops := make([]*ConnectRoom, 10000)
 	for i := 0; i < 10000; i++ {
-		pops[i] = NewPopulatedConnect(popr, false)
+		pops[i] = NewPopulatedConnectRoom(popr, false)
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -98,18 +98,18 @@ func BenchmarkConnectProtoMarshal(b *testing.B) {
 	b.SetBytes(int64(total / b.N))
 }
 
-func BenchmarkConnectProtoUnmarshal(b *testing.B) {
+func BenchmarkConnectRoomProtoUnmarshal(b *testing.B) {
 	popr := math_rand.New(math_rand.NewSource(616))
 	total := 0
 	datas := make([][]byte, 10000)
 	for i := 0; i < 10000; i++ {
-		dAtA, err := github_com_gogo_protobuf_proto.Marshal(NewPopulatedConnect(popr, false))
+		dAtA, err := github_com_gogo_protobuf_proto.Marshal(NewPopulatedConnectRoom(popr, false))
 		if err != nil {
 			panic(err)
 		}
 		datas[i] = dAtA
 	}
-	msg := &Connect{}
+	msg := &ConnectRoom{}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		total += len(datas[i%10000])
@@ -120,15 +120,15 @@ func BenchmarkConnectProtoUnmarshal(b *testing.B) {
 	b.SetBytes(int64(total / b.N))
 }
 
-func TestCreateProto(t *testing.T) {
+func TestCreateRoomProto(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedCreate(popr, false)
+	p := NewPopulatedCreateRoom(popr, false)
 	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &Create{}
+	msg := &CreateRoom{}
 	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -151,10 +151,10 @@ func TestCreateProto(t *testing.T) {
 	}
 }
 
-func TestCreateMarshalTo(t *testing.T) {
+func TestCreateRoomMarshalTo(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedCreate(popr, false)
+	p := NewPopulatedCreateRoom(popr, false)
 	size := p.Size()
 	dAtA := make([]byte, size)
 	for i := range dAtA {
@@ -164,7 +164,7 @@ func TestCreateMarshalTo(t *testing.T) {
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &Create{}
+	msg := &CreateRoom{}
 	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -176,12 +176,12 @@ func TestCreateMarshalTo(t *testing.T) {
 	}
 }
 
-func BenchmarkCreateProtoMarshal(b *testing.B) {
+func BenchmarkCreateRoomProtoMarshal(b *testing.B) {
 	popr := math_rand.New(math_rand.NewSource(616))
 	total := 0
-	pops := make([]*Create, 10000)
+	pops := make([]*CreateRoom, 10000)
 	for i := 0; i < 10000; i++ {
-		pops[i] = NewPopulatedCreate(popr, false)
+		pops[i] = NewPopulatedCreateRoom(popr, false)
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -194,18 +194,18 @@ func BenchmarkCreateProtoMarshal(b *testing.B) {
 	b.SetBytes(int64(total / b.N))
 }
 
-func BenchmarkCreateProtoUnmarshal(b *testing.B) {
+func BenchmarkCreateRoomProtoUnmarshal(b *testing.B) {
 	popr := math_rand.New(math_rand.NewSource(616))
 	total := 0
 	datas := make([][]byte, 10000)
 	for i := 0; i < 10000; i++ {
-		dAtA, err := github_com_gogo_protobuf_proto.Marshal(NewPopulatedCreate(popr, false))
+		dAtA, err := github_com_gogo_protobuf_proto.Marshal(NewPopulatedCreateRoom(popr, false))
 		if err != nil {
 			panic(err)
 		}
 		datas[i] = dAtA
 	}
-	msg := &Create{}
+	msg := &CreateRoom{}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		total += len(datas[i%10000])
@@ -216,16 +216,16 @@ func BenchmarkCreateProtoUnmarshal(b *testing.B) {
 	b.SetBytes(int64(total / b.N))
 }
 
-func TestConnectJSON(t *testing.T) {
+func TestConnectRoomJSON(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedConnect(popr, true)
+	p := NewPopulatedConnectRoom(popr, true)
 	marshaler := github_com_gogo_protobuf_jsonpb.Marshaler{}
 	jsondata, err := marshaler.MarshalToString(p)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &Connect{}
+	msg := &ConnectRoom{}
 	err = github_com_gogo_protobuf_jsonpb.UnmarshalString(jsondata, msg)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
@@ -234,16 +234,16 @@ func TestConnectJSON(t *testing.T) {
 		t.Fatalf("seed = %d, %#v !Json Equal %#v", seed, msg, p)
 	}
 }
-func TestCreateJSON(t *testing.T) {
+func TestCreateRoomJSON(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedCreate(popr, true)
+	p := NewPopulatedCreateRoom(popr, true)
 	marshaler := github_com_gogo_protobuf_jsonpb.Marshaler{}
 	jsondata, err := marshaler.MarshalToString(p)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &Create{}
+	msg := &CreateRoom{}
 	err = github_com_gogo_protobuf_jsonpb.UnmarshalString(jsondata, msg)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
@@ -252,12 +252,12 @@ func TestCreateJSON(t *testing.T) {
 		t.Fatalf("seed = %d, %#v !Json Equal %#v", seed, msg, p)
 	}
 }
-func TestConnectProtoText(t *testing.T) {
+func TestConnectRoomProtoText(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedConnect(popr, true)
+	p := NewPopulatedConnectRoom(popr, true)
 	dAtA := github_com_gogo_protobuf_proto.MarshalTextString(p)
-	msg := &Connect{}
+	msg := &ConnectRoom{}
 	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -266,12 +266,12 @@ func TestConnectProtoText(t *testing.T) {
 	}
 }
 
-func TestConnectProtoCompactText(t *testing.T) {
+func TestConnectRoomProtoCompactText(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedConnect(popr, true)
+	p := NewPopulatedConnectRoom(popr, true)
 	dAtA := github_com_gogo_protobuf_proto.CompactTextString(p)
-	msg := &Connect{}
+	msg := &ConnectRoom{}
 	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -280,12 +280,12 @@ func TestConnectProtoCompactText(t *testing.T) {
 	}
 }
 
-func TestCreateProtoText(t *testing.T) {
+func TestCreateRoomProtoText(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedCreate(popr, true)
+	p := NewPopulatedCreateRoom(popr, true)
 	dAtA := github_com_gogo_protobuf_proto.MarshalTextString(p)
-	msg := &Create{}
+	msg := &CreateRoom{}
 	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -294,12 +294,12 @@ func TestCreateProtoText(t *testing.T) {
 	}
 }
 
-func TestCreateProtoCompactText(t *testing.T) {
+func TestCreateRoomProtoCompactText(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedCreate(popr, true)
+	p := NewPopulatedCreateRoom(popr, true)
 	dAtA := github_com_gogo_protobuf_proto.CompactTextString(p)
-	msg := &Create{}
+	msg := &CreateRoom{}
 	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -308,9 +308,9 @@ func TestCreateProtoCompactText(t *testing.T) {
 	}
 }
 
-func TestConnectGoString(t *testing.T) {
+func TestConnectRoomGoString(t *testing.T) {
 	popr := math_rand.New(math_rand.NewSource(time.Now().UnixNano()))
-	p := NewPopulatedConnect(popr, false)
+	p := NewPopulatedConnectRoom(popr, false)
 	s1 := p.GoString()
 	s2 := fmt.Sprintf("%#v", p)
 	if s1 != s2 {
@@ -321,9 +321,9 @@ func TestConnectGoString(t *testing.T) {
 		t.Fatal(err)
 	}
 }
-func TestCreateGoString(t *testing.T) {
+func TestCreateRoomGoString(t *testing.T) {
 	popr := math_rand.New(math_rand.NewSource(time.Now().UnixNano()))
-	p := NewPopulatedCreate(popr, false)
+	p := NewPopulatedCreateRoom(popr, false)
 	s1 := p.GoString()
 	s2 := fmt.Sprintf("%#v", p)
 	if s1 != s2 {
@@ -334,10 +334,10 @@ func TestCreateGoString(t *testing.T) {
 		t.Fatal(err)
 	}
 }
-func TestConnectSize(t *testing.T) {
+func TestConnectRoomSize(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedConnect(popr, true)
+	p := NewPopulatedConnectRoom(popr, true)
 	size2 := github_com_gogo_protobuf_proto.Size(p)
 	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
 	if err != nil {
@@ -356,12 +356,12 @@ func TestConnectSize(t *testing.T) {
 	}
 }
 
-func BenchmarkConnectSize(b *testing.B) {
+func BenchmarkConnectRoomSize(b *testing.B) {
 	popr := math_rand.New(math_rand.NewSource(616))
 	total := 0
-	pops := make([]*Connect, 1000)
+	pops := make([]*ConnectRoom, 1000)
 	for i := 0; i < 1000; i++ {
-		pops[i] = NewPopulatedConnect(popr, false)
+		pops[i] = NewPopulatedConnectRoom(popr, false)
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -370,10 +370,10 @@ func BenchmarkConnectSize(b *testing.B) {
 	b.SetBytes(int64(total / b.N))
 }
 
-func TestCreateSize(t *testing.T) {
+func TestCreateRoomSize(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedCreate(popr, true)
+	p := NewPopulatedCreateRoom(popr, true)
 	size2 := github_com_gogo_protobuf_proto.Size(p)
 	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
 	if err != nil {
@@ -392,12 +392,12 @@ func TestCreateSize(t *testing.T) {
 	}
 }
 
-func BenchmarkCreateSize(b *testing.B) {
+func BenchmarkCreateRoomSize(b *testing.B) {
 	popr := math_rand.New(math_rand.NewSource(616))
 	total := 0
-	pops := make([]*Create, 1000)
+	pops := make([]*CreateRoom, 1000)
 	for i := 0; i < 1000; i++ {
-		pops[i] = NewPopulatedCreate(popr, false)
+		pops[i] = NewPopulatedCreateRoom(popr, false)
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -406,18 +406,18 @@ func BenchmarkCreateSize(b *testing.B) {
 	b.SetBytes(int64(total / b.N))
 }
 
-func TestConnectStringer(t *testing.T) {
+func TestConnectRoomStringer(t *testing.T) {
 	popr := math_rand.New(math_rand.NewSource(time.Now().UnixNano()))
-	p := NewPopulatedConnect(popr, false)
+	p := NewPopulatedConnectRoom(popr, false)
 	s1 := p.String()
 	s2 := fmt.Sprintf("%v", p)
 	if s1 != s2 {
 		t.Fatalf("String want %v got %v", s1, s2)
 	}
 }
-func TestCreateStringer(t *testing.T) {
+func TestCreateRoomStringer(t *testing.T) {
 	popr := math_rand.New(math_rand.NewSource(time.Now().UnixNano()))
-	p := NewPopulatedCreate(popr, false)
+	p := NewPopulatedCreateRoom(popr, false)
 	s1 := p.String()
 	s2 := fmt.Sprintf("%v", p)
 	if s1 != s2 {

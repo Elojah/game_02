@@ -4,18 +4,13 @@ import (
 	"github.com/elojah/game_02/pkg/errors"
 )
 
-// Config is web quic server structure config.
+// Config is auth structure config.
 type Config struct {
 	Address string `json:"address"`
 	Cert    string `json:"cert"`
 	Key     string `json:"key"`
-}
 
-// Equal returns is both configs are equal.
-func (c Config) Equal(rhs Config) bool {
-	return (c.Address == rhs.Address &&
-		c.Cert == rhs.Cert &&
-		c.Key == rhs.Key)
+	BufferLobbies uint `json:"buffer_lobbies"`
 }
 
 // Dial set the config from a config namespace.
@@ -63,6 +58,21 @@ func (c *Config) Dial(fileconf interface{}) error {
 			Value:  cKey,
 		}
 	}
+
+	cBufferLobbies, ok := fconf["buffer_lobbies"]
+	if !ok {
+		return errors.ErrMissingKey{Key: "buffer_lobbies"}
+	}
+
+	f, ok := cBufferLobbies.(float64)
+	if !ok {
+		return errors.ErrInvalidType{
+			Key:    "buffer_lobbies",
+			Expect: "number",
+			Value:  cBufferLobbies,
+		}
+	}
+	c.BufferLobbies = uint(f)
 
 	return nil
 }

@@ -27,22 +27,22 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type Connect struct {
+type ConnectPlayer struct {
 	Auth     dto.Auth                              `protobuf:"bytes,1,opt,name=Auth,proto3" json:"Auth"`
 	PlayerID github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,2,opt,name=PlayerID,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"PlayerID"`
 }
 
-func (m *Connect) Reset()      { *m = Connect{} }
-func (*Connect) ProtoMessage() {}
-func (*Connect) Descriptor() ([]byte, []int) {
+func (m *ConnectPlayer) Reset()      { *m = ConnectPlayer{} }
+func (*ConnectPlayer) ProtoMessage() {}
+func (*ConnectPlayer) Descriptor() ([]byte, []int) {
 	return fileDescriptor_4baa336cce0f7d41, []int{0}
 }
-func (m *Connect) XXX_Unmarshal(b []byte) error {
+func (m *ConnectPlayer) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *Connect) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ConnectPlayer) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_Connect.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ConnectPlayer.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -52,42 +52,42 @@ func (m *Connect) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *Connect) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Connect.Merge(m, src)
+func (m *ConnectPlayer) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ConnectPlayer.Merge(m, src)
 }
-func (m *Connect) XXX_Size() int {
+func (m *ConnectPlayer) XXX_Size() int {
 	return m.Size()
 }
-func (m *Connect) XXX_DiscardUnknown() {
-	xxx_messageInfo_Connect.DiscardUnknown(m)
+func (m *ConnectPlayer) XXX_DiscardUnknown() {
+	xxx_messageInfo_ConnectPlayer.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Connect proto.InternalMessageInfo
+var xxx_messageInfo_ConnectPlayer proto.InternalMessageInfo
 
-func (m *Connect) GetAuth() dto.Auth {
+func (m *ConnectPlayer) GetAuth() dto.Auth {
 	if m != nil {
 		return m.Auth
 	}
 	return dto.Auth{}
 }
 
-type Create struct {
+type CreatePlayer struct {
 	Auth       dto.Auth                              `protobuf:"bytes,1,opt,name=Auth,proto3" json:"Auth"`
 	TemplateID github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,2,opt,name=TemplateID,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"TemplateID"`
 	Name       string                                `protobuf:"bytes,3,opt,name=Name,proto3" json:"Name,omitempty"`
 }
 
-func (m *Create) Reset()      { *m = Create{} }
-func (*Create) ProtoMessage() {}
-func (*Create) Descriptor() ([]byte, []int) {
+func (m *CreatePlayer) Reset()      { *m = CreatePlayer{} }
+func (*CreatePlayer) ProtoMessage() {}
+func (*CreatePlayer) Descriptor() ([]byte, []int) {
 	return fileDescriptor_4baa336cce0f7d41, []int{1}
 }
-func (m *Create) XXX_Unmarshal(b []byte) error {
+func (m *CreatePlayer) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *Create) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *CreatePlayer) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_Create.Marshal(b, m, deterministic)
+		return xxx_messageInfo_CreatePlayer.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -97,26 +97,26 @@ func (m *Create) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *Create) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Create.Merge(m, src)
+func (m *CreatePlayer) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreatePlayer.Merge(m, src)
 }
-func (m *Create) XXX_Size() int {
+func (m *CreatePlayer) XXX_Size() int {
 	return m.Size()
 }
-func (m *Create) XXX_DiscardUnknown() {
-	xxx_messageInfo_Create.DiscardUnknown(m)
+func (m *CreatePlayer) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreatePlayer.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Create proto.InternalMessageInfo
+var xxx_messageInfo_CreatePlayer proto.InternalMessageInfo
 
-func (m *Create) GetAuth() dto.Auth {
+func (m *CreatePlayer) GetAuth() dto.Auth {
 	if m != nil {
 		return m.Auth
 	}
 	return dto.Auth{}
 }
 
-func (m *Create) GetName() string {
+func (m *CreatePlayer) GetName() string {
 	if m != nil {
 		return m.Name
 	}
@@ -124,8 +124,8 @@ func (m *Create) GetName() string {
 }
 
 func init() {
-	proto.RegisterType((*Connect)(nil), "dto.Connect")
-	proto.RegisterType((*Create)(nil), "dto.Create")
+	proto.RegisterType((*ConnectPlayer)(nil), "dto.ConnectPlayer")
+	proto.RegisterType((*CreatePlayer)(nil), "dto.CreatePlayer")
 }
 
 func init() {
@@ -133,37 +133,37 @@ func init() {
 }
 
 var fileDescriptor_4baa336cce0f7d41 = []byte{
-	// 316 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x90, 0xb1, 0x4f, 0xfa, 0x40,
-	0x14, 0xc7, 0xef, 0xfd, 0x20, 0xfc, 0xe4, 0x74, 0xea, 0x44, 0x18, 0x1e, 0x04, 0x63, 0xc2, 0x42,
-	0xcf, 0x60, 0x8c, 0xab, 0x02, 0x0b, 0x83, 0xc6, 0x10, 0x77, 0x73, 0xb4, 0x67, 0x8b, 0xb6, 0xbd,
-	0xa6, 0xb9, 0x0e, 0x6c, 0xfe, 0x09, 0xfc, 0x19, 0xfe, 0x09, 0x8e, 0x8e, 0x8c, 0x1d, 0x89, 0x03,
-	0xb1, 0xd7, 0xc5, 0x91, 0xd1, 0xd1, 0x70, 0x10, 0xc3, 0x44, 0x8c, 0xdb, 0xf7, 0xdd, 0x37, 0x9f,
-	0xfb, 0xbc, 0x3c, 0x7a, 0xee, 0x4d, 0x94, 0x9f, 0x8e, 0x6d, 0x47, 0x86, 0x4c, 0x04, 0xf2, 0x91,
-	0xfb, 0xcc, 0xe3, 0xa1, 0xb8, 0x3f, 0xed, 0xb2, 0xf8, 0xc9, 0x63, 0x71, 0xc0, 0xa7, 0x22, 0x61,
-	0xae, 0x92, 0xdb, 0x68, 0xc7, 0x89, 0x54, 0xd2, 0x2a, 0xb9, 0x4a, 0xd6, 0x3b, 0x3b, 0xac, 0x27,
-	0x3d, 0xc9, 0x4c, 0x37, 0x4e, 0x1f, 0xcc, 0x64, 0x06, 0x93, 0x36, 0x4c, 0xfd, 0x62, 0xbf, 0x8a,
-	0x3b, 0x8e, 0x4c, 0x23, 0x65, 0x5c, 0xdb, 0xbc, 0x01, 0x5b, 0x53, 0xfa, 0xbf, 0x2f, 0xa3, 0x48,
-	0x38, 0xca, 0x3a, 0xa6, 0xe5, 0xab, 0x54, 0xf9, 0x35, 0x68, 0x42, 0xfb, 0xb0, 0x5b, 0xb5, 0x5d,
-	0x25, 0xed, 0xf5, 0x43, 0xaf, 0x3c, 0x5f, 0x36, 0xc8, 0xc8, 0x94, 0xd6, 0x90, 0x1e, 0xdc, 0x9a,
-	0x65, 0x87, 0x83, 0xda, 0xbf, 0x26, 0xb4, 0x8f, 0x7a, 0x9d, 0x75, 0xfb, 0xbe, 0x6c, 0x9c, 0xec,
-	0x5f, 0x21, 0x0d, 0x26, 0xae, 0x3d, 0x1c, 0x8c, 0x7e, 0xf0, 0xd6, 0x0c, 0x68, 0xa5, 0x9f, 0x08,
-	0xae, 0xc4, 0xef, 0xd4, 0xd7, 0x94, 0xde, 0x89, 0x30, 0x0e, 0xb8, 0x12, 0x7f, 0x95, 0xef, 0x7c,
-	0x60, 0x59, 0xb4, 0x7c, 0xc3, 0x43, 0x51, 0x2b, 0x35, 0xa1, 0x5d, 0x1d, 0x99, 0xdc, 0xbb, 0xcc,
-	0x72, 0x24, 0x8b, 0x1c, 0xc9, 0x2a, 0x47, 0xf8, 0xca, 0x11, 0x9e, 0x35, 0xc2, 0x8b, 0x46, 0x78,
-	0xd5, 0x08, 0x6f, 0x1a, 0x61, 0xae, 0x11, 0x32, 0x8d, 0xf0, 0xa1, 0x11, 0x3e, 0x35, 0x92, 0x95,
-	0x46, 0x98, 0x15, 0x48, 0xb2, 0x02, 0xc9, 0xa2, 0x40, 0x32, 0xae, 0x98, 0xb3, 0x9e, 0x7d, 0x07,
-	0x00, 0x00, 0xff, 0xff, 0x37, 0xee, 0x1e, 0x25, 0xfc, 0x01, 0x00, 0x00,
+	// 320 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x32, 0x4d, 0xcf, 0x2c, 0xc9,
+	0x28, 0x4d, 0xd2, 0x4b, 0xce, 0xcf, 0xd5, 0x4f, 0xcd, 0xc9, 0xcf, 0x4a, 0xcc, 0xd0, 0x4f, 0x4f,
+	0xcc, 0x4d, 0x8d, 0x37, 0x30, 0xd2, 0x2f, 0xc8, 0x4e, 0xd7, 0x2f, 0xc8, 0x49, 0xac, 0x4c, 0x2d,
+	0xd2, 0x4f, 0x29, 0xc9, 0x87, 0x32, 0xf5, 0x0a, 0x8a, 0xf2, 0x4b, 0xf2, 0x85, 0x98, 0x53, 0x4a,
+	0xf2, 0xa5, 0x74, 0x91, 0xf4, 0xa6, 0xe7, 0xa7, 0xe7, 0xeb, 0x83, 0xe5, 0x92, 0x4a, 0xd3, 0xc0,
+	0x3c, 0x30, 0x07, 0xcc, 0x82, 0xe8, 0x91, 0x32, 0xc7, 0x6f, 0x55, 0x62, 0x72, 0x72, 0x7e, 0x69,
+	0x5e, 0x09, 0xd8, 0x2e, 0x28, 0x1b, 0xa2, 0x51, 0xa9, 0x9e, 0x8b, 0xd7, 0x39, 0x3f, 0x2f, 0x2f,
+	0x35, 0xb9, 0x24, 0x00, 0xec, 0x06, 0x21, 0x65, 0x2e, 0x16, 0xc7, 0xd2, 0x92, 0x0c, 0x09, 0x46,
+	0x05, 0x46, 0x0d, 0x6e, 0x23, 0x4e, 0xbd, 0x94, 0x92, 0x7c, 0x3d, 0x90, 0x80, 0x13, 0xcb, 0x89,
+	0x7b, 0xf2, 0x0c, 0x41, 0x60, 0x49, 0x21, 0x4f, 0x2e, 0x0e, 0x88, 0x72, 0x4f, 0x17, 0x09, 0x26,
+	0x05, 0x46, 0x0d, 0x1e, 0x27, 0x5d, 0x90, 0xec, 0xad, 0x7b, 0xf2, 0xaa, 0xf8, 0x1d, 0x52, 0x9a,
+	0x93, 0x99, 0xa2, 0xe7, 0xe9, 0x12, 0x04, 0xd7, 0xae, 0x34, 0x8d, 0x91, 0x8b, 0xc7, 0xb9, 0x28,
+	0x35, 0xb1, 0x24, 0x95, 0x14, 0x07, 0xf8, 0x72, 0x71, 0x85, 0xa4, 0xe6, 0x16, 0xe4, 0x24, 0x96,
+	0xa4, 0x92, 0xeb, 0x04, 0x24, 0x03, 0x84, 0x84, 0xb8, 0x58, 0xfc, 0x12, 0x73, 0x53, 0x25, 0x98,
+	0x15, 0x18, 0x35, 0x38, 0x83, 0xc0, 0x6c, 0x27, 0x87, 0x0b, 0x0f, 0xe5, 0x18, 0x6e, 0x3c, 0x94,
+	0x63, 0xf8, 0xf0, 0x50, 0x8e, 0xf1, 0xc7, 0x43, 0x39, 0xc6, 0x86, 0x47, 0x72, 0x8c, 0x2b, 0x1e,
+	0xc9, 0x31, 0xee, 0x78, 0x24, 0xc7, 0x78, 0xe0, 0x91, 0x1c, 0xe3, 0x89, 0x47, 0x72, 0x8c, 0x17,
+	0x1e, 0xc9, 0x31, 0x3e, 0x78, 0x24, 0xc7, 0xf8, 0xe2, 0x91, 0x1c, 0xc3, 0x87, 0x47, 0x72, 0x8c,
+	0x13, 0x1e, 0xcb, 0x31, 0x5c, 0x78, 0x2c, 0xc7, 0x70, 0xe3, 0xb1, 0x1c, 0x43, 0x12, 0x1b, 0x38,
+	0x88, 0x8d, 0x01, 0x01, 0x00, 0x00, 0xff, 0xff, 0x21, 0xf9, 0xc0, 0xab, 0x08, 0x02, 0x00, 0x00,
 }
 
-func (this *Connect) Equal(that interface{}) bool {
+func (this *ConnectPlayer) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
 	}
 
-	that1, ok := that.(*Connect)
+	that1, ok := that.(*ConnectPlayer)
 	if !ok {
-		that2, ok := that.(Connect)
+		that2, ok := that.(ConnectPlayer)
 		if ok {
 			that1 = &that2
 		} else {
@@ -183,14 +183,14 @@ func (this *Connect) Equal(that interface{}) bool {
 	}
 	return true
 }
-func (this *Create) Equal(that interface{}) bool {
+func (this *CreatePlayer) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
 	}
 
-	that1, ok := that.(*Create)
+	that1, ok := that.(*CreatePlayer)
 	if !ok {
-		that2, ok := that.(Create)
+		that2, ok := that.(CreatePlayer)
 		if ok {
 			that1 = &that2
 		} else {
@@ -213,23 +213,23 @@ func (this *Create) Equal(that interface{}) bool {
 	}
 	return true
 }
-func (this *Connect) GoString() string {
+func (this *ConnectPlayer) GoString() string {
 	if this == nil {
 		return "nil"
 	}
 	s := make([]string, 0, 6)
-	s = append(s, "&dto.Connect{")
+	s = append(s, "&dto.ConnectPlayer{")
 	s = append(s, "Auth: "+strings.Replace(this.Auth.GoString(), `&`, ``, 1)+",\n")
 	s = append(s, "PlayerID: "+fmt.Sprintf("%#v", this.PlayerID)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
-func (this *Create) GoString() string {
+func (this *CreatePlayer) GoString() string {
 	if this == nil {
 		return "nil"
 	}
 	s := make([]string, 0, 7)
-	s = append(s, "&dto.Create{")
+	s = append(s, "&dto.CreatePlayer{")
 	s = append(s, "Auth: "+strings.Replace(this.Auth.GoString(), `&`, ``, 1)+",\n")
 	s = append(s, "TemplateID: "+fmt.Sprintf("%#v", this.TemplateID)+",\n")
 	s = append(s, "Name: "+fmt.Sprintf("%#v", this.Name)+",\n")
@@ -244,7 +244,7 @@ func valueToGoStringPlayer(v interface{}, typ string) string {
 	pv := reflect.Indirect(rv).Interface()
 	return fmt.Sprintf("func(v %v) *%v { return &v } ( %#v )", typ, typ, pv)
 }
-func (m *Connect) Marshal() (dAtA []byte, err error) {
+func (m *ConnectPlayer) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -254,12 +254,12 @@ func (m *Connect) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *Connect) MarshalTo(dAtA []byte) (int, error) {
+func (m *ConnectPlayer) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *Connect) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *ConnectPlayer) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -287,7 +287,7 @@ func (m *Connect) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *Create) Marshal() (dAtA []byte, err error) {
+func (m *CreatePlayer) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -297,12 +297,12 @@ func (m *Create) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *Create) MarshalTo(dAtA []byte) (int, error) {
+func (m *CreatePlayer) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *Create) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *CreatePlayer) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -348,8 +348,8 @@ func encodeVarintPlayer(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func NewPopulatedConnect(r randyPlayer, easy bool) *Connect {
-	this := &Connect{}
+func NewPopulatedConnectPlayer(r randyPlayer, easy bool) *ConnectPlayer {
+	this := &ConnectPlayer{}
 	v1 := dto.NewPopulatedAuth(r, easy)
 	this.Auth = *v1
 	v2 := github_com_elojah_game_02_pkg_ulid.NewPopulatedID(r)
@@ -359,8 +359,8 @@ func NewPopulatedConnect(r randyPlayer, easy bool) *Connect {
 	return this
 }
 
-func NewPopulatedCreate(r randyPlayer, easy bool) *Create {
-	this := &Create{}
+func NewPopulatedCreatePlayer(r randyPlayer, easy bool) *CreatePlayer {
+	this := &CreatePlayer{}
 	v3 := dto.NewPopulatedAuth(r, easy)
 	this.Auth = *v3
 	v4 := github_com_elojah_game_02_pkg_ulid.NewPopulatedID(r)
@@ -443,7 +443,7 @@ func encodeVarintPopulatePlayer(dAtA []byte, v uint64) []byte {
 	dAtA = append(dAtA, uint8(v))
 	return dAtA
 }
-func (m *Connect) Size() (n int) {
+func (m *ConnectPlayer) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -456,7 +456,7 @@ func (m *Connect) Size() (n int) {
 	return n
 }
 
-func (m *Create) Size() (n int) {
+func (m *CreatePlayer) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -479,22 +479,22 @@ func sovPlayer(x uint64) (n int) {
 func sozPlayer(x uint64) (n int) {
 	return sovPlayer(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (this *Connect) String() string {
+func (this *ConnectPlayer) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{`&Connect{`,
+	s := strings.Join([]string{`&ConnectPlayer{`,
 		`Auth:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.Auth), "Auth", "dto.Auth", 1), `&`, ``, 1) + `,`,
 		`PlayerID:` + fmt.Sprintf("%v", this.PlayerID) + `,`,
 		`}`,
 	}, "")
 	return s
 }
-func (this *Create) String() string {
+func (this *CreatePlayer) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{`&Create{`,
+	s := strings.Join([]string{`&CreatePlayer{`,
 		`Auth:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.Auth), "Auth", "dto.Auth", 1), `&`, ``, 1) + `,`,
 		`TemplateID:` + fmt.Sprintf("%v", this.TemplateID) + `,`,
 		`Name:` + fmt.Sprintf("%v", this.Name) + `,`,
@@ -510,7 +510,7 @@ func valueToStringPlayer(v interface{}) string {
 	pv := reflect.Indirect(rv).Interface()
 	return fmt.Sprintf("*%v", pv)
 }
-func (m *Connect) Unmarshal(dAtA []byte) error {
+func (m *ConnectPlayer) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -533,10 +533,10 @@ func (m *Connect) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: Connect: wiretype end group for non-group")
+			return fmt.Errorf("proto: ConnectPlayer: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Connect: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: ConnectPlayer: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -629,7 +629,7 @@ func (m *Connect) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *Create) Unmarshal(dAtA []byte) error {
+func (m *CreatePlayer) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -652,10 +652,10 @@ func (m *Create) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: Create: wiretype end group for non-group")
+			return fmt.Errorf("proto: CreatePlayer: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Create: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: CreatePlayer: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:

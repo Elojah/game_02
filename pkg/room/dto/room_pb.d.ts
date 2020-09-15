@@ -7,7 +7,7 @@ import * as github_com_elojah_game_02_pkg_space_dto_tile_pb from "../../../../..
 import * as github_com_elojah_game_02_pkg_account_dto_account_pb from "../../../../../../github.com/elojah/game_02/pkg/account/dto/account_pb";
 import * as github_com_elojah_game_02_pkg_geometry_geometry_pb from "../../../../../../github.com/elojah/game_02/pkg/geometry/geometry_pb";
 
-export class Connect extends jspb.Message {
+export class ConnectRoom extends jspb.Message {
   hasAuth(): boolean;
   clearAuth(): void;
   getAuth(): github_com_elojah_game_02_pkg_account_dto_account_pb.Auth | undefined;
@@ -22,16 +22,16 @@ export class Connect extends jspb.Message {
   setPassword(value: string): void;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): Connect.AsObject;
-  static toObject(includeInstance: boolean, msg: Connect): Connect.AsObject;
+  toObject(includeInstance?: boolean): ConnectRoom.AsObject;
+  static toObject(includeInstance: boolean, msg: ConnectRoom): ConnectRoom.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: Connect, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): Connect;
-  static deserializeBinaryFromReader(message: Connect, reader: jspb.BinaryReader): Connect;
+  static serializeBinaryToWriter(message: ConnectRoom, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ConnectRoom;
+  static deserializeBinaryFromReader(message: ConnectRoom, reader: jspb.BinaryReader): ConnectRoom;
 }
 
-export namespace Connect {
+export namespace ConnectRoom {
   export type AsObject = {
     auth?: github_com_elojah_game_02_pkg_account_dto_account_pb.Auth.AsObject,
     id: Uint8Array | string,
@@ -39,7 +39,7 @@ export namespace Connect {
   }
 }
 
-export class Create extends jspb.Message {
+export class CreateRoom extends jspb.Message {
   hasAuth(): boolean;
   clearAuth(): void;
   getAuth(): github_com_elojah_game_02_pkg_account_dto_account_pb.Auth | undefined;
@@ -62,16 +62,16 @@ export class Create extends jspb.Message {
   setSectordimensions(value?: github_com_elojah_game_02_pkg_geometry_geometry_pb.Vec3): void;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): Create.AsObject;
-  static toObject(includeInstance: boolean, msg: Create): Create.AsObject;
+  toObject(includeInstance?: boolean): CreateRoom.AsObject;
+  static toObject(includeInstance: boolean, msg: CreateRoom): CreateRoom.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: Create, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): Create;
-  static deserializeBinaryFromReader(message: Create, reader: jspb.BinaryReader): Create;
+  static serializeBinaryToWriter(message: CreateRoom, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CreateRoom;
+  static deserializeBinaryFromReader(message: CreateRoom, reader: jspb.BinaryReader): CreateRoom;
 }
 
-export namespace Create {
+export namespace CreateRoom {
   export type AsObject = {
     auth?: github_com_elojah_game_02_pkg_account_dto_account_pb.Auth.AsObject,
     name: string,

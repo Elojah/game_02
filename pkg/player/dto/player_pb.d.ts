@@ -5,7 +5,7 @@ import * as jspb from "google-protobuf";
 import * as github_com_gogo_protobuf_gogoproto_gogo_pb from "../../../../../../github.com/gogo/protobuf/gogoproto/gogo_pb";
 import * as github_com_elojah_game_02_pkg_account_dto_account_pb from "../../../../../../github.com/elojah/game_02/pkg/account/dto/account_pb";
 
-export class Connect extends jspb.Message {
+export class ConnectPlayer extends jspb.Message {
   hasAuth(): boolean;
   clearAuth(): void;
   getAuth(): github_com_elojah_game_02_pkg_account_dto_account_pb.Auth | undefined;
@@ -17,23 +17,23 @@ export class Connect extends jspb.Message {
   setPlayerid(value: Uint8Array | string): void;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): Connect.AsObject;
-  static toObject(includeInstance: boolean, msg: Connect): Connect.AsObject;
+  toObject(includeInstance?: boolean): ConnectPlayer.AsObject;
+  static toObject(includeInstance: boolean, msg: ConnectPlayer): ConnectPlayer.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: Connect, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): Connect;
-  static deserializeBinaryFromReader(message: Connect, reader: jspb.BinaryReader): Connect;
+  static serializeBinaryToWriter(message: ConnectPlayer, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ConnectPlayer;
+  static deserializeBinaryFromReader(message: ConnectPlayer, reader: jspb.BinaryReader): ConnectPlayer;
 }
 
-export namespace Connect {
+export namespace ConnectPlayer {
   export type AsObject = {
     auth?: github_com_elojah_game_02_pkg_account_dto_account_pb.Auth.AsObject,
     playerid: Uint8Array | string,
   }
 }
 
-export class Create extends jspb.Message {
+export class CreatePlayer extends jspb.Message {
   hasAuth(): boolean;
   clearAuth(): void;
   getAuth(): github_com_elojah_game_02_pkg_account_dto_account_pb.Auth | undefined;
@@ -48,16 +48,16 @@ export class Create extends jspb.Message {
   setName(value: string): void;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): Create.AsObject;
-  static toObject(includeInstance: boolean, msg: Create): Create.AsObject;
+  toObject(includeInstance?: boolean): CreatePlayer.AsObject;
+  static toObject(includeInstance: boolean, msg: CreatePlayer): CreatePlayer.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: Create, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): Create;
-  static deserializeBinaryFromReader(message: Create, reader: jspb.BinaryReader): Create;
+  static serializeBinaryToWriter(message: CreatePlayer, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CreatePlayer;
+  static deserializeBinaryFromReader(message: CreatePlayer, reader: jspb.BinaryReader): CreatePlayer;
 }
 
-export namespace Create {
+export namespace CreatePlayer {
   export type AsObject = {
     auth?: github_com_elojah_game_02_pkg_account_dto_account_pb.Auth.AsObject,
     templateid: Uint8Array | string,

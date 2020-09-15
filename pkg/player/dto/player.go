@@ -5,8 +5,7 @@ import (
 )
 
 // Check returns if subscription request is valid.
-func (r Create) Check() error {
-
+func (r CreatePlayer) Check() error {
 	if len(r.Name) == 0 {
 		return gerrors.ErrInvalidKey{
 			Key:   "name",
@@ -19,6 +18,6 @@ func (r Create) Check() error {
 }
 
 // Check returns if subscription request is valid.
-func (r Connect) Check() error {
+func (r ConnectPlayer) Check() error {
 	return nil
 }

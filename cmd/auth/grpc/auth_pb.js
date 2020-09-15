@@ -18,3 +18,4 @@ var github_com_elojah_game_02_pkg_player_player_pb = require('../../../../../../
 var github_com_elojah_game_02_pkg_room_room_pb = require('../../../../../../github.com/elojah/game_02/pkg/room/room_pb.js');
 var github_com_elojah_game_02_pkg_account_dto_account_pb = require('../../../../../../github.com/elojah/game_02/pkg/account/dto/account_pb.js');
 var github_com_elojah_game_02_pkg_room_dto_room_pb = require('../../../../../../github.com/elojah/game_02/pkg/room/dto/room_pb.js');
+var github_com_elojah_game_02_pkg_player_dto_player_pb = require('../../../../../../github.com/elojah/game_02/pkg/player/dto/player_pb.js');

@@ -9,13 +9,13 @@ option (gogoproto.populate_all) = true;
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "github.com/elojah/game_02/pkg/account/dto/account.proto";
 
-message Connect {
+message ConnectPlayer {
 	dto.Auth Auth                            = 1 [(gogoproto.nullable) = false];
 
 	bytes PlayerID                           = 2 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
 }
 
-message Create {
+message CreatePlayer {
 	dto.Auth Auth                            = 1 [(gogoproto.nullable) = false];
 
 	bytes TemplateID                         = 2 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];

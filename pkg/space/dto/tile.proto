@@ -12,7 +12,7 @@ import "github.com/elojah/game_02/pkg/account/dto/account.proto";
 import "github.com/elojah/game_02/pkg/space/tile.proto";
 
 message CreateMap {
-	geometry.Vec3 Dimensions         = 1;
+	geometry.Vec3 Dimensions         = 1 [(gogoproto.nullable) = false];
 	uint64 NPlatforms                = 2;
 	uint64 PlatformSize              = 3;
 	uint64 PlatformVariance          = 4;

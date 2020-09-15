@@ -8,6 +8,7 @@ var github_com_elojah_game_02_pkg_player_player_pb = require("../../../../../../
 var github_com_elojah_game_02_pkg_room_room_pb = require("../../../../../../github.com/elojah/game_02/pkg/room/room_pb");
 var github_com_elojah_game_02_pkg_account_dto_account_pb = require("../../../../../../github.com/elojah/game_02/pkg/account/dto/account_pb");
 var github_com_elojah_game_02_pkg_room_dto_room_pb = require("../../../../../../github.com/elojah/game_02/pkg/room/dto/room_pb");
+var github_com_elojah_game_02_pkg_player_dto_player_pb = require("../../../../../../github.com/elojah/game_02/pkg/player/dto/player_pb");
 var grpc = require("@improbable-eng/grpc-web").grpc;
 
 var Auth = (function () {
@@ -66,7 +67,7 @@ Auth.CreateRoom = {
   service: Auth,
   requestStream: false,
   responseStream: false,
-  requestType: github_com_elojah_game_02_pkg_room_dto_room_pb.Create,
+  requestType: github_com_elojah_game_02_pkg_room_dto_room_pb.CreateRoom,
   responseType: github_com_elojah_game_02_pkg_room_room_pb.R
 };
 
@@ -75,7 +76,7 @@ Auth.ConnectRoom = {
   service: Auth,
   requestStream: false,
   responseStream: false,
-  requestType: github_com_elojah_game_02_pkg_room_dto_room_pb.Connect,
+  requestType: github_com_elojah_game_02_pkg_room_dto_room_pb.ConnectRoom,
   responseType: github_com_elojah_game_02_pkg_room_room_pb.R
 };
 
@@ -84,7 +85,7 @@ Auth.CreatePlayer = {
   service: Auth,
   requestStream: false,
   responseStream: false,
-  requestType: github_com_elojah_game_02_pkg_room_dto_room_pb.Create,
+  requestType: github_com_elojah_game_02_pkg_player_dto_player_pb.CreatePlayer,
   responseType: github_com_elojah_game_02_pkg_player_player_pb.P
 };
 

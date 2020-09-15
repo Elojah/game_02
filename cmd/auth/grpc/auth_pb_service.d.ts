@@ -8,6 +8,7 @@ import * as github_com_elojah_game_02_pkg_player_player_pb from "../../../../../
 import * as github_com_elojah_game_02_pkg_room_room_pb from "../../../../../../github.com/elojah/game_02/pkg/room/room_pb";
 import * as github_com_elojah_game_02_pkg_account_dto_account_pb from "../../../../../../github.com/elojah/game_02/pkg/account/dto/account_pb";
 import * as github_com_elojah_game_02_pkg_room_dto_room_pb from "../../../../../../github.com/elojah/game_02/pkg/room/dto/room_pb";
+import * as github_com_elojah_game_02_pkg_player_dto_player_pb from "../../../../../../github.com/elojah/game_02/pkg/player/dto/player_pb";
 import {grpc} from "@improbable-eng/grpc-web";
 
 type AuthSubscribe = {
@@ -60,7 +61,7 @@ type AuthCreateRoom = {
   readonly service: typeof Auth;
   readonly requestStream: false;
   readonly responseStream: false;
-  readonly requestType: typeof github_com_elojah_game_02_pkg_room_dto_room_pb.Create;
+  readonly requestType: typeof github_com_elojah_game_02_pkg_room_dto_room_pb.CreateRoom;
   readonly responseType: typeof github_com_elojah_game_02_pkg_room_room_pb.R;
 };
 
@@ -69,7 +70,7 @@ type AuthConnectRoom = {
   readonly service: typeof Auth;
   readonly requestStream: false;
   readonly responseStream: false;
-  readonly requestType: typeof github_com_elojah_game_02_pkg_room_dto_room_pb.Connect;
+  readonly requestType: typeof github_com_elojah_game_02_pkg_room_dto_room_pb.ConnectRoom;
   readonly responseType: typeof github_com_elojah_game_02_pkg_room_room_pb.R;
 };
 
@@ -78,7 +79,7 @@ type AuthCreatePlayer = {
   readonly service: typeof Auth;
   readonly requestStream: false;
   readonly responseStream: false;
-  readonly requestType: typeof github_com_elojah_game_02_pkg_room_dto_room_pb.Create;
+  readonly requestType: typeof github_com_elojah_game_02_pkg_player_dto_player_pb.CreatePlayer;
   readonly responseType: typeof github_com_elojah_game_02_pkg_player_player_pb.P;
 };
 
@@ -164,30 +165,30 @@ export class AuthClient {
   ): UnaryResponse;
   listLobbies(requestMessage: github_com_elojah_game_02_pkg_account_dto_account_pb.Auth, metadata?: grpc.Metadata): ResponseStream<github_com_elojah_game_02_pkg_lobby_lobby_pb.L>;
   createRoom(
-    requestMessage: github_com_elojah_game_02_pkg_room_dto_room_pb.Create,
+    requestMessage: github_com_elojah_game_02_pkg_room_dto_room_pb.CreateRoom,
     metadata: grpc.Metadata,
     callback: (error: ServiceError|null, responseMessage: github_com_elojah_game_02_pkg_room_room_pb.R|null) => void
   ): UnaryResponse;
   createRoom(
-    requestMessage: github_com_elojah_game_02_pkg_room_dto_room_pb.Create,
+    requestMessage: github_com_elojah_game_02_pkg_room_dto_room_pb.CreateRoom,
     callback: (error: ServiceError|null, responseMessage: github_com_elojah_game_02_pkg_room_room_pb.R|null) => void
   ): UnaryResponse;
   connectRoom(
-    requestMessage: github_com_elojah_game_02_pkg_room_dto_room_pb.Connect,
+    requestMessage: github_com_elojah_game_02_pkg_room_dto_room_pb.ConnectRoom,
     metadata: grpc.Metadata,
     callback: (error: ServiceError|null, responseMessage: github_com_elojah_game_02_pkg_room_room_pb.R|null) => void
   ): UnaryResponse;
   connectRoom(
-    requestMessage: github_com_elojah_game_02_pkg_room_dto_room_pb.Connect,
+    requestMessage: github_com_elojah_game_02_pkg_room_dto_room_pb.ConnectRoom,
     callback: (error: ServiceError|null, responseMessage: github_com_elojah_game_02_pkg_room_room_pb.R|null) => void
   ): UnaryResponse;
   createPlayer(
-    requestMessage: github_com_elojah_game_02_pkg_room_dto_room_pb.Create,
+    requestMessage: github_com_elojah_game_02_pkg_player_dto_player_pb.CreatePlayer,
     metadata: grpc.Metadata,
     callback: (error: ServiceError|null, responseMessage: github_com_elojah_game_02_pkg_player_player_pb.P|null) => void
   ): UnaryResponse;
   createPlayer(
-    requestMessage: github_com_elojah_game_02_pkg_room_dto_room_pb.Create,
+    requestMessage: github_com_elojah_game_02_pkg_player_dto_player_pb.CreatePlayer,
     callback: (error: ServiceError|null, responseMessage: github_com_elojah_game_02_pkg_player_player_pb.P|null) => void
   ): UnaryResponse;
 }

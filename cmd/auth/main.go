@@ -5,18 +5,14 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
 
 	"github.com/elojah/buntdb"
+	ggrpcweb "github.com/elojah/grpcweb"
 	"github.com/elojah/redis"
 	"github.com/elojah/services"
-	"github.com/gogo/grpc-example/insecure"
-	"github.com/improbable-eng/grpc-web/go/grpcweb"
 
 	authgrpc "github.com/elojah/game_02/cmd/auth/grpc"
 	accountapp "github.com/elojah/game_02/pkg/account/app"
@@ -89,20 +85,16 @@ func run(prog string, filename string) {
 	}, "auth")
 	launchers.Add(hl)
 
-	// TEST GRPC
-	s := grpc.NewServer(
-		grpc.Creds(credentials.NewServerTLSFromCert(&insecure.Cert)),
-		grpc.ConnectionTimeout(2*time.Second),
-		grpc.NumStreamWorkers(100),
-		grpc.MaxSendMsgSize(32*1000),
-	)
+	gw := ggrpcweb.Service{}
+	gwl := gw.NewLauncher(grpcweb.Namespaces{
+		GRPCWeb: "grpcweb",
+	}, "grpcweb")
+	launchers.Add(gwl)
 
-	authgrpc.RegisterAuthServer(s, h)
-	ws := grpcweb.WrapServer(s,
-		grpcweb.WithOriginFunc(func(origin string) bool { return true }),
-	)
-	h.Handler = ws
-	// !TEST GRPC
+	gw.Register = func() {
+		authgrpc.RegisterAuthServer(gw.Server, h)
+		h.Handler = gw.WrappedGrpcServer
+	}
 
 	if err := launchers.Up(filename); err != nil {
 		log.Error().Err(err).Str("filename", filename).Msg("failed to start")

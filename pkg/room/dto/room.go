@@ -6,11 +6,11 @@ import (
 	gerrors "github.com/elojah/game_02/pkg/errors"
 )
 
-func (r Connect) Check() error {
+func (r ConnectRoom) Check() error {
 	return nil
 }
 
-func (r Create) Check() error {
+func (r CreateRoom) Check() error {
 	if err := r.Map.Check(); err != nil {
 		return err
 	}

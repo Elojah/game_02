@@ -15,6 +15,7 @@ import "github.com/elojah/game_02/pkg/player/player.proto";
 import "github.com/elojah/game_02/pkg/room/room.proto";
 import "github.com/elojah/game_02/pkg/account/dto/account.proto";
 import "github.com/elojah/game_02/pkg/room/dto/room.proto";
+import "github.com/elojah/game_02/pkg/player/dto/player.proto";
 
 service Auth {
     rpc Subscribe(dto.Subscribe) returns (google.protobuf.Empty);
@@ -25,8 +26,8 @@ service Auth {
 
     rpc ListLobbies(dto.Auth) returns (stream lobby.L);
 
-    rpc CreateRoom(dto.Create) returns (room.R);
-    rpc ConnectRoom(dto.Connect) returns (room.R);
+    rpc CreateRoom(dto.CreateRoom) returns (room.R);
+    rpc ConnectRoom(dto.ConnectRoom) returns (room.R);
 
-    rpc CreatePlayer(dto.Create) returns (player.P);
+    rpc CreatePlayer(dto.CreatePlayer) returns (player.P);
 }

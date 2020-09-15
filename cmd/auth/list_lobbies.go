@@ -3,13 +3,15 @@ package main
 import (
 	"errors"
 
+	"github.com/gogo/status"
+	"github.com/hashicorp/go-multierror"
+	"github.com/rs/zerolog/log"
+	"google.golang.org/grpc/codes"
+
 	"github.com/elojah/game_02/cmd/auth/grpc"
 	"github.com/elojah/game_02/pkg/account/dto"
 	gerrors "github.com/elojah/game_02/pkg/errors"
 	"github.com/elojah/game_02/pkg/lobby"
-	"github.com/gogo/status"
-	"github.com/rs/zerolog/log"
-	"google.golang.org/grpc/codes"
 )
 
 func (h handler) ListLobbies(request *dto.Auth, stream grpc.Auth_ListLobbiesServer) error {
@@ -37,26 +39,27 @@ func (h handler) ListLobbies(request *dto.Auth, stream grpc.Auth_ListLobbiesServ
 	}
 
 	// #Fetch lobbies
-	c := make(chan lobby.L)
-	var errC error
+	c := make(chan lobby.L, h.c.BufferLobbies)
+	var result error
 	go func() {
 		// #Send lobbies through stream
 		for l := range c {
 			if err := stream.Send(&l); err != nil {
-				errC = err
+				result = multierror.Append(result, err)
 			}
 		}
 	}()
 
 	if err := h.lobby.FetchAll(ctx, c); err != nil {
+		close(c)
 		logger.Error().Err(err).Msg("failed to fetch lobbies")
 
 		return status.New(codes.Internal, err.Error()).Err()
 	}
 
 	close(c)
-	if errC != nil {
-		return status.New(codes.Internal, errC.Error()).Err()
+	if result != nil {
+		return status.New(codes.Internal, result.Error()).Err()
 	}
 
 	return nil

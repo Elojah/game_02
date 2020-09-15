@@ -11,13 +11,6 @@ type Config struct {
 	Key     string `json:"key"`
 }
 
-// Equal returns is both configs are equal.
-func (c Config) Equal(rhs Config) bool {
-	return (c.Address == rhs.Address &&
-		c.Cert == rhs.Cert &&
-		c.Key == rhs.Key)
-}
-
 // Dial set the config from a config namespace.
 func (c *Config) Dial(fileconf interface{}) error {
 	fconf, ok := fileconf.(map[string]interface{})

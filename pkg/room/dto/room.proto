@@ -11,14 +11,14 @@ import "github.com/elojah/game_02/pkg/space/dto/tile.proto";
 import "github.com/elojah/game_02/pkg/account/dto/account.proto";
 import "github.com/elojah/game_02/pkg/geometry/geometry.proto";
 
-message Connect {
+message ConnectRoom {
 	dto.Auth Auth                            = 1 [(gogoproto.nullable) = false];
 
     bytes ID                                 = 2 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
     string Password                          = 3;
 }
 
-message Create {
+message CreateRoom {
 	dto.Auth Auth                            = 1 [(gogoproto.nullable) = false];
 
     string Name                              = 2;

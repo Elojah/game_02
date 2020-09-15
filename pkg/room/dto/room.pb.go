@@ -29,23 +29,23 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type Connect struct {
+type ConnectRoom struct {
 	Auth     dto.Auth                              `protobuf:"bytes,1,opt,name=Auth,proto3" json:"Auth"`
 	ID       github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,2,opt,name=ID,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"ID"`
 	Password string                                `protobuf:"bytes,3,opt,name=Password,proto3" json:"Password,omitempty"`
 }
 
-func (m *Connect) Reset()      { *m = Connect{} }
-func (*Connect) ProtoMessage() {}
-func (*Connect) Descriptor() ([]byte, []int) {
+func (m *ConnectRoom) Reset()      { *m = ConnectRoom{} }
+func (*ConnectRoom) ProtoMessage() {}
+func (*ConnectRoom) Descriptor() ([]byte, []int) {
 	return fileDescriptor_2e935013b6998d93, []int{0}
 }
-func (m *Connect) XXX_Unmarshal(b []byte) error {
+func (m *ConnectRoom) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *Connect) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ConnectRoom) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_Connect.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ConnectRoom.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -55,33 +55,33 @@ func (m *Connect) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *Connect) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Connect.Merge(m, src)
+func (m *ConnectRoom) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ConnectRoom.Merge(m, src)
 }
-func (m *Connect) XXX_Size() int {
+func (m *ConnectRoom) XXX_Size() int {
 	return m.Size()
 }
-func (m *Connect) XXX_DiscardUnknown() {
-	xxx_messageInfo_Connect.DiscardUnknown(m)
+func (m *ConnectRoom) XXX_DiscardUnknown() {
+	xxx_messageInfo_ConnectRoom.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Connect proto.InternalMessageInfo
+var xxx_messageInfo_ConnectRoom proto.InternalMessageInfo
 
-func (m *Connect) GetAuth() dto.Auth {
+func (m *ConnectRoom) GetAuth() dto.Auth {
 	if m != nil {
 		return m.Auth
 	}
 	return dto.Auth{}
 }
 
-func (m *Connect) GetPassword() string {
+func (m *ConnectRoom) GetPassword() string {
 	if m != nil {
 		return m.Password
 	}
 	return ""
 }
 
-type Create struct {
+type CreateRoom struct {
 	Auth             dto.Auth       `protobuf:"bytes,1,opt,name=Auth,proto3" json:"Auth"`
 	Name             string         `protobuf:"bytes,2,opt,name=Name,proto3" json:"Name,omitempty"`
 	Password         string         `protobuf:"bytes,3,opt,name=Password,proto3" json:"Password,omitempty"`
@@ -89,17 +89,17 @@ type Create struct {
 	SectorDimensions geometry.Vec3  `protobuf:"bytes,5,opt,name=SectorDimensions,proto3" json:"SectorDimensions"`
 }
 
-func (m *Create) Reset()      { *m = Create{} }
-func (*Create) ProtoMessage() {}
-func (*Create) Descriptor() ([]byte, []int) {
+func (m *CreateRoom) Reset()      { *m = CreateRoom{} }
+func (*CreateRoom) ProtoMessage() {}
+func (*CreateRoom) Descriptor() ([]byte, []int) {
 	return fileDescriptor_2e935013b6998d93, []int{1}
 }
-func (m *Create) XXX_Unmarshal(b []byte) error {
+func (m *CreateRoom) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *Create) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *CreateRoom) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_Create.Marshal(b, m, deterministic)
+		return xxx_messageInfo_CreateRoom.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -109,47 +109,47 @@ func (m *Create) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *Create) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Create.Merge(m, src)
+func (m *CreateRoom) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateRoom.Merge(m, src)
 }
-func (m *Create) XXX_Size() int {
+func (m *CreateRoom) XXX_Size() int {
 	return m.Size()
 }
-func (m *Create) XXX_DiscardUnknown() {
-	xxx_messageInfo_Create.DiscardUnknown(m)
+func (m *CreateRoom) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateRoom.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Create proto.InternalMessageInfo
+var xxx_messageInfo_CreateRoom proto.InternalMessageInfo
 
-func (m *Create) GetAuth() dto.Auth {
+func (m *CreateRoom) GetAuth() dto.Auth {
 	if m != nil {
 		return m.Auth
 	}
 	return dto.Auth{}
 }
 
-func (m *Create) GetName() string {
+func (m *CreateRoom) GetName() string {
 	if m != nil {
 		return m.Name
 	}
 	return ""
 }
 
-func (m *Create) GetPassword() string {
+func (m *CreateRoom) GetPassword() string {
 	if m != nil {
 		return m.Password
 	}
 	return ""
 }
 
-func (m *Create) GetMap() dto1.CreateMap {
+func (m *CreateRoom) GetMap() dto1.CreateMap {
 	if m != nil {
 		return m.Map
 	}
 	return dto1.CreateMap{}
 }
 
-func (m *Create) GetSectorDimensions() geometry.Vec3 {
+func (m *CreateRoom) GetSectorDimensions() geometry.Vec3 {
 	if m != nil {
 		return m.SectorDimensions
 	}
@@ -157,8 +157,8 @@ func (m *Create) GetSectorDimensions() geometry.Vec3 {
 }
 
 func init() {
-	proto.RegisterType((*Connect)(nil), "dto.Connect")
-	proto.RegisterType((*Create)(nil), "dto.Create")
+	proto.RegisterType((*ConnectRoom)(nil), "dto.ConnectRoom")
+	proto.RegisterType((*CreateRoom)(nil), "dto.CreateRoom")
 }
 
 func init() {
@@ -166,42 +166,42 @@ func init() {
 }
 
 var fileDescriptor_2e935013b6998d93 = []byte{
-	// 395 bytes of a gzipped FileDescriptorProto
+	// 397 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x91, 0x3f, 0xcb, 0xd3, 0x50,
-	0x14, 0xc6, 0x73, 0xda, 0xf8, 0x6a, 0xaf, 0x22, 0x92, 0x29, 0x74, 0x38, 0x6f, 0x79, 0x45, 0xe9,
-	0xd2, 0x44, 0x5b, 0xc4, 0x49, 0xa8, 0x6d, 0x96, 0x0e, 0x15, 0x89, 0xe0, 0x2a, 0xb7, 0xc9, 0x35,
-	0x8d, 0x36, 0x39, 0x21, 0xb9, 0x41, 0xdc, 0x5c, 0xdd, 0xfc, 0x18, 0x7e, 0x04, 0x47, 0x37, 0x3b,
-	0x76, 0x2c, 0x0e, 0xc5, 0xdc, 0x2e, 0x8e, 0x1d, 0x1d, 0xa5, 0xb7, 0xa1, 0x08, 0x42, 0x78, 0xb7,
-	0xe7, 0xfc, 0xf9, 0x3d, 0xcf, 0xe1, 0x5e, 0xf6, 0x38, 0x8a, 0xe5, 0xb2, 0x5c, 0x38, 0x01, 0x25,
-	0xae, 0x58, 0xd1, 0x3b, 0xbe, 0x74, 0x23, 0x9e, 0x88, 0x37, 0x8f, 0x86, 0x6e, 0xf6, 0x3e, 0x72,
-	0x73, 0xa2, 0xc4, 0x0d, 0x25, 0x69, 0xe1, 0x64, 0x39, 0x49, 0xb2, 0xda, 0xa1, 0xa4, 0xee, 0xe0,
-	0x1f, 0x2e, 0xa2, 0x88, 0x5c, 0x3d, 0x5b, 0x94, 0x6f, 0x75, 0xa5, 0x0b, 0xad, 0x4e, 0x4c, 0x77,
-	0xd8, 0x1c, 0x53, 0x64, 0x3c, 0x10, 0x3a, 0x47, 0xc6, 0x2b, 0x51, 0x33, 0x4f, 0x9b, 0x19, 0x1e,
-	0x04, 0x54, 0xa6, 0x52, 0x53, 0xb5, 0xae, 0xc1, 0x27, 0xcd, 0x60, 0x24, 0x28, 0x11, 0x32, 0xff,
-	0x78, 0x16, 0x27, 0xec, 0xea, 0x33, 0xb0, 0x9b, 0x53, 0x4a, 0x53, 0x11, 0x48, 0xeb, 0x3e, 0x33,
-	0x9f, 0x97, 0x72, 0x69, 0x43, 0x0f, 0xfa, 0xb7, 0x87, 0x1d, 0x27, 0x94, 0xe4, 0x1c, 0x1b, 0x13,
-	0x73, 0xbd, 0xbb, 0x34, 0x7c, 0x3d, 0xb4, 0x9e, 0xb1, 0xd6, 0xcc, 0xb3, 0x5b, 0x3d, 0xe8, 0xdf,
-	0x99, 0x0c, 0x8e, 0xfd, 0x9f, 0xbb, 0xcb, 0x07, 0xcd, 0xd9, 0xe5, 0x2a, 0x0e, 0x9d, 0x99, 0xe7,
-	0xb7, 0x66, 0x9e, 0xd5, 0x65, 0xb7, 0x5e, 0xf2, 0xa2, 0xf8, 0x40, 0x79, 0x68, 0xb7, 0x7b, 0xd0,
-	0xef, 0xf8, 0xe7, 0xfa, 0xea, 0x07, 0xb0, 0x8b, 0x69, 0x2e, 0xb8, 0x14, 0xd7, 0x3b, 0xc5, 0x62,
-	0xe6, 0x0b, 0x9e, 0x08, 0x7d, 0x4c, 0xc7, 0xd7, 0xba, 0xc9, 0xdf, 0x7a, 0xc8, 0xda, 0x73, 0x9e,
-	0xd9, 0xa6, 0xf6, 0xbc, 0xab, 0x3d, 0x4f, 0x71, 0x73, 0x9e, 0xd5, 0xc6, 0xc7, 0x05, 0x6b, 0xcc,
-	0xee, 0xbd, 0x12, 0x81, 0xa4, 0xdc, 0x8b, 0x13, 0x91, 0x16, 0x31, 0xa5, 0x85, 0x7d, 0xa3, 0x86,
-	0xce, 0xcf, 0xf7, 0x5a, 0x04, 0xa3, 0x1a, 0xfa, 0x6f, 0x7b, 0x32, 0xde, 0x54, 0x68, 0x6c, 0x2b,
-	0x34, 0x0e, 0x15, 0xc2, 0x9f, 0x0a, 0xe1, 0x93, 0x42, 0xf8, 0xaa, 0x10, 0xbe, 0x29, 0x84, 0xef,
-	0x0a, 0x61, 0xad, 0x10, 0x36, 0x0a, 0xe1, 0x97, 0x42, 0xf8, 0xad, 0xd0, 0x38, 0x28, 0x84, 0x2f,
-	0x7b, 0x34, 0x36, 0x7b, 0x34, 0xb6, 0x7b, 0x34, 0x16, 0x17, 0xfa, 0x7b, 0x46, 0x7f, 0x03, 0x00,
-	0x00, 0xff, 0xff, 0x3d, 0x9e, 0x31, 0x6b, 0xab, 0x02, 0x00, 0x00,
+	0x14, 0xc6, 0x73, 0xda, 0x28, 0xf6, 0xbe, 0x22, 0x92, 0x29, 0x74, 0x38, 0x6f, 0xa9, 0x28, 0x5d,
+	0x9a, 0x68, 0x8b, 0x38, 0x09, 0xb5, 0xcd, 0xd2, 0xa1, 0x22, 0x11, 0x5c, 0xe5, 0x36, 0xb9, 0xa6,
+	0xd1, 0x26, 0x27, 0x24, 0x37, 0x88, 0x9b, 0x5f, 0x40, 0xf0, 0x63, 0xf8, 0x11, 0x1c, 0x1d, 0x0b,
+	0x2e, 0x1d, 0x8b, 0x43, 0x31, 0xb7, 0x8b, 0x63, 0x47, 0x47, 0xe9, 0x6d, 0x28, 0x82, 0x10, 0xdc,
+	0x9e, 0xf3, 0xe7, 0xf7, 0x3c, 0x87, 0x7b, 0xd9, 0xa3, 0x28, 0x96, 0xab, 0x72, 0xe9, 0x04, 0x94,
+	0xb8, 0x62, 0x4d, 0x6f, 0xf9, 0xca, 0x8d, 0x78, 0x22, 0x5e, 0x3f, 0x1c, 0xb9, 0xd9, 0xbb, 0xc8,
+	0xcd, 0x89, 0x12, 0x37, 0x94, 0xa4, 0x85, 0x93, 0xe5, 0x24, 0xc9, 0x6a, 0x87, 0x92, 0xba, 0xc3,
+	0xbf, 0xb8, 0x88, 0x22, 0x72, 0xf5, 0x6c, 0x59, 0xbe, 0xd1, 0x95, 0x2e, 0xb4, 0x3a, 0x33, 0xdd,
+	0x51, 0x73, 0x4c, 0x91, 0xf1, 0x40, 0xe8, 0x1c, 0x19, 0xaf, 0x45, 0xcd, 0x3c, 0x69, 0x66, 0x78,
+	0x10, 0x50, 0x99, 0x4a, 0x4d, 0xd5, 0xba, 0x06, 0x1f, 0x37, 0x83, 0x91, 0xa0, 0x44, 0xc8, 0xfc,
+	0xc3, 0x45, 0x9c, 0xb1, 0xfe, 0x27, 0x60, 0x57, 0x33, 0x4a, 0x53, 0x11, 0x48, 0x9f, 0x28, 0xb1,
+	0xee, 0x31, 0xf3, 0x59, 0x29, 0x57, 0x36, 0xf4, 0x60, 0x70, 0x35, 0xea, 0x38, 0xa1, 0x24, 0xe7,
+	0xd4, 0x98, 0x9a, 0x9b, 0xfd, 0xb5, 0xe1, 0xeb, 0xa1, 0xf5, 0x94, 0xb5, 0xe6, 0x9e, 0xdd, 0xea,
+	0xc1, 0xe0, 0xf6, 0x74, 0x78, 0xea, 0xff, 0xd8, 0x5f, 0xdf, 0x6f, 0xce, 0x2f, 0xd7, 0x71, 0xe8,
+	0xcc, 0x3d, 0xbf, 0x35, 0xf7, 0xac, 0x2e, 0xbb, 0xf5, 0x82, 0x17, 0xc5, 0x7b, 0xca, 0x43, 0xbb,
+	0xdd, 0x83, 0x41, 0xc7, 0xbf, 0xd4, 0xfd, 0xef, 0xc0, 0xd8, 0x2c, 0x17, 0x5c, 0x8a, 0xff, 0x3f,
+	0xc7, 0x62, 0xe6, 0x73, 0x9e, 0x08, 0x7d, 0x50, 0xc7, 0xd7, 0xba, 0x29, 0xc3, 0x7a, 0xc0, 0xda,
+	0x0b, 0x9e, 0xd9, 0xa6, 0xf6, 0xbc, 0xa3, 0x3d, 0xcf, 0x91, 0x0b, 0x9e, 0xd5, 0xc6, 0xa7, 0x05,
+	0x6b, 0xc2, 0xee, 0xbe, 0x14, 0x81, 0xa4, 0xdc, 0x8b, 0x13, 0x91, 0x16, 0x31, 0xa5, 0x85, 0x7d,
+	0xa3, 0x86, 0x2e, 0xcf, 0xf8, 0x4a, 0x04, 0xe3, 0x1a, 0xfa, 0x67, 0x7b, 0x3a, 0xd9, 0x56, 0x68,
+	0xec, 0x2a, 0x34, 0x8e, 0x15, 0xc2, 0xef, 0x0a, 0xe1, 0xa3, 0x42, 0xf8, 0xa2, 0x10, 0xbe, 0x2a,
+	0x84, 0x6f, 0x0a, 0x61, 0xa3, 0x10, 0xb6, 0x0a, 0xe1, 0xa7, 0x42, 0xf8, 0xa5, 0xd0, 0x38, 0x2a,
+	0x84, 0xcf, 0x07, 0x34, 0xb6, 0x07, 0x34, 0x76, 0x07, 0x34, 0x96, 0x37, 0xf5, 0x37, 0x8d, 0xff,
+	0x04, 0x00, 0x00, 0xff, 0xff, 0x46, 0xfa, 0x56, 0x44, 0xb3, 0x02, 0x00, 0x00,
 }
 
-func (this *Connect) Equal(that interface{}) bool {
+func (this *ConnectRoom) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
 	}
 
-	that1, ok := that.(*Connect)
+	that1, ok := that.(*ConnectRoom)
 	if !ok {
-		that2, ok := that.(Connect)
+		that2, ok := that.(ConnectRoom)
 		if ok {
 			that1 = &that2
 		} else {
@@ -224,14 +224,14 @@ func (this *Connect) Equal(that interface{}) bool {
 	}
 	return true
 }
-func (this *Create) Equal(that interface{}) bool {
+func (this *CreateRoom) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
 	}
 
-	that1, ok := that.(*Create)
+	that1, ok := that.(*CreateRoom)
 	if !ok {
-		that2, ok := that.(Create)
+		that2, ok := that.(CreateRoom)
 		if ok {
 			that1 = &that2
 		} else {
@@ -260,24 +260,24 @@ func (this *Create) Equal(that interface{}) bool {
 	}
 	return true
 }
-func (this *Connect) GoString() string {
+func (this *ConnectRoom) GoString() string {
 	if this == nil {
 		return "nil"
 	}
 	s := make([]string, 0, 7)
-	s = append(s, "&dto.Connect{")
+	s = append(s, "&dto.ConnectRoom{")
 	s = append(s, "Auth: "+strings.Replace(this.Auth.GoString(), `&`, ``, 1)+",\n")
 	s = append(s, "ID: "+fmt.Sprintf("%#v", this.ID)+",\n")
 	s = append(s, "Password: "+fmt.Sprintf("%#v", this.Password)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
-func (this *Create) GoString() string {
+func (this *CreateRoom) GoString() string {
 	if this == nil {
 		return "nil"
 	}
 	s := make([]string, 0, 9)
-	s = append(s, "&dto.Create{")
+	s = append(s, "&dto.CreateRoom{")
 	s = append(s, "Auth: "+strings.Replace(this.Auth.GoString(), `&`, ``, 1)+",\n")
 	s = append(s, "Name: "+fmt.Sprintf("%#v", this.Name)+",\n")
 	s = append(s, "Password: "+fmt.Sprintf("%#v", this.Password)+",\n")
@@ -294,7 +294,7 @@ func valueToGoStringRoom(v interface{}, typ string) string {
 	pv := reflect.Indirect(rv).Interface()
 	return fmt.Sprintf("func(v %v) *%v { return &v } ( %#v )", typ, typ, pv)
 }
-func (m *Connect) Marshal() (dAtA []byte, err error) {
+func (m *ConnectRoom) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -304,12 +304,12 @@ func (m *Connect) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *Connect) MarshalTo(dAtA []byte) (int, error) {
+func (m *ConnectRoom) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *Connect) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *ConnectRoom) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -344,7 +344,7 @@ func (m *Connect) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *Create) Marshal() (dAtA []byte, err error) {
+func (m *CreateRoom) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -354,12 +354,12 @@ func (m *Create) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *Create) MarshalTo(dAtA []byte) (int, error) {
+func (m *CreateRoom) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *Create) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *CreateRoom) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -422,8 +422,8 @@ func encodeVarintRoom(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func NewPopulatedConnect(r randyRoom, easy bool) *Connect {
-	this := &Connect{}
+func NewPopulatedConnectRoom(r randyRoom, easy bool) *ConnectRoom {
+	this := &ConnectRoom{}
 	v1 := dto.NewPopulatedAuth(r, easy)
 	this.Auth = *v1
 	v2 := github_com_elojah_game_02_pkg_ulid.NewPopulatedID(r)
@@ -434,8 +434,8 @@ func NewPopulatedConnect(r randyRoom, easy bool) *Connect {
 	return this
 }
 
-func NewPopulatedCreate(r randyRoom, easy bool) *Create {
-	this := &Create{}
+func NewPopulatedCreateRoom(r randyRoom, easy bool) *CreateRoom {
+	this := &CreateRoom{}
 	v3 := dto.NewPopulatedAuth(r, easy)
 	this.Auth = *v3
 	this.Name = string(randStringRoom(r))
@@ -521,7 +521,7 @@ func encodeVarintPopulateRoom(dAtA []byte, v uint64) []byte {
 	dAtA = append(dAtA, uint8(v))
 	return dAtA
 }
-func (m *Connect) Size() (n int) {
+func (m *ConnectRoom) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -538,7 +538,7 @@ func (m *Connect) Size() (n int) {
 	return n
 }
 
-func (m *Create) Size() (n int) {
+func (m *CreateRoom) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -567,11 +567,11 @@ func sovRoom(x uint64) (n int) {
 func sozRoom(x uint64) (n int) {
 	return sovRoom(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (this *Connect) String() string {
+func (this *ConnectRoom) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{`&Connect{`,
+	s := strings.Join([]string{`&ConnectRoom{`,
 		`Auth:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.Auth), "Auth", "dto.Auth", 1), `&`, ``, 1) + `,`,
 		`ID:` + fmt.Sprintf("%v", this.ID) + `,`,
 		`Password:` + fmt.Sprintf("%v", this.Password) + `,`,
@@ -579,11 +579,11 @@ func (this *Connect) String() string {
 	}, "")
 	return s
 }
-func (this *Create) String() string {
+func (this *CreateRoom) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{`&Create{`,
+	s := strings.Join([]string{`&CreateRoom{`,
 		`Auth:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.Auth), "Auth", "dto.Auth", 1), `&`, ``, 1) + `,`,
 		`Name:` + fmt.Sprintf("%v", this.Name) + `,`,
 		`Password:` + fmt.Sprintf("%v", this.Password) + `,`,
@@ -601,7 +601,7 @@ func valueToStringRoom(v interface{}) string {
 	pv := reflect.Indirect(rv).Interface()
 	return fmt.Sprintf("*%v", pv)
 }
-func (m *Connect) Unmarshal(dAtA []byte) error {
+func (m *ConnectRoom) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -624,10 +624,10 @@ func (m *Connect) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: Connect: wiretype end group for non-group")
+			return fmt.Errorf("proto: ConnectRoom: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Connect: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: ConnectRoom: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -752,7 +752,7 @@ func (m *Connect) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *Create) Unmarshal(dAtA []byte) error {
+func (m *CreateRoom) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -775,10 +775,10 @@ func (m *Create) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: Create: wiretype end group for non-group")
+			return fmt.Errorf("proto: CreateRoom: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Create: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: CreateRoom: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:

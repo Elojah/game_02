@@ -15,6 +15,8 @@ import (
 )
 
 type handler struct {
+	c Config
+
 	http.Handler
 	srv *http.Server
 
@@ -28,6 +30,7 @@ type handler struct {
 
 // Dial starts the auth server.
 func (h *handler) Dial(c Config) error {
+	h.c = c
 	h.srv = &http.Server{
 		Addr:    c.Address,
 		Handler: h.Handler,

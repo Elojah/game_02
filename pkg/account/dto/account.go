@@ -79,30 +79,3 @@ func (r Signin) Check() error {
 
 	return nil
 }
-
-// Check returns if unsubscription request is valid.
-func (r Unsubscribe) Check() error {
-	// Email check
-	if len(r.Email) == 0 || !emailValidation.MatchString(r.Email) {
-		return gerrors.ErrInvalidKey{
-			Key:   "email",
-			Value: r.Email,
-			Rules: []string{
-				"is valid email format",
-			},
-		}
-	}
-
-	// Password check
-	if len(r.Password) == 0 {
-		return gerrors.ErrInvalidKey{
-			Key:   "password",
-			Value: r.Password,
-			Rules: []string{
-				"contains at least 1 character",
-			},
-		}
-	}
-
-	return nil
-}
