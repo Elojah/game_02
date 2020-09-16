@@ -16,5 +16,6 @@ type FilterTileSet struct {
 type StoreTileSet interface {
 	UpsertTileSet(context.Context, TileSet) error
 	FetchTileSet(context.Context, FilterTileSet) (TileSet, error)
+	FetchManyTileSet(context.Context, chan<- TileSet, FilterTileSet) error
 	DeleteTileSet(context.Context, FilterTileSet) error
 }

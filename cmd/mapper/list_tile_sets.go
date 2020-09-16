@@ -26,13 +26,13 @@ func (h handler) ListTileSets(request *dto.ListSet, stream grpc.Mapper_ListTileS
 	}
 
 	// #Check credentials
-	ac, err := h.account.Authorize(ctx, request.Auth.ID, request.Auth.Token)
-	if err != nil {
+	if _, err := h.account.Authorize(ctx, request.Auth.ID, request.Auth.Token); err != nil {
 		if errors.As(err, &gerrors.ErrInvalidCredentials{}) {
 			logger.Error().Err(err).Msg("invalid credentials")
 
 			return status.New(codes.Unauthenticated, err.Error()).Err()
 		}
+
 		logger.Error().Err(err).Msg("failed to authenticate")
 
 		return status.New(codes.Internal, err.Error()).Err()
@@ -40,17 +40,20 @@ func (h handler) ListTileSets(request *dto.ListSet, stream grpc.Mapper_ListTileS
 
 	// #Fetch tilesets
 	c := make(chan space.TileSet, h.c.BufferTileSets)
+
 	var result error
+
 	go func() {
 		// #Send tileset through stream
 		for ts := range c {
-			if err := stream.Send(&ts); err != nil {
+			local := ts
+			if err := stream.Send(&local); err != nil {
 				result = multierror.Append(result, err)
 			}
 		}
 	}()
 
-	if err := h.space.FetchManyTileSets(ctx, c, space.FilterTileSet{IDs: request.IDs}); err != nil {
+	if err := h.space.FetchManyTileSet(ctx, c, space.FilterTileSet{IDs: request.IDs}); err != nil {
 		close(c)
 		logger.Error().Err(err).Msg("failed to fetch tilesets")
 
@@ -58,6 +61,7 @@ func (h handler) ListTileSets(request *dto.ListSet, stream grpc.Mapper_ListTileS
 	}
 
 	close(c)
+
 	if result != nil {
 		return status.New(codes.Internal, result.Error()).Err()
 	}

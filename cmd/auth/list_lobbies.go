@@ -33,6 +33,7 @@ func (h handler) ListLobbies(request *dto.Auth, stream grpc.Auth_ListLobbiesServ
 
 			return status.New(codes.Unauthenticated, err.Error()).Err()
 		}
+
 		logger.Error().Err(err).Msg("failed to authenticate")
 
 		return status.New(codes.Internal, err.Error()).Err()
@@ -40,11 +41,14 @@ func (h handler) ListLobbies(request *dto.Auth, stream grpc.Auth_ListLobbiesServ
 
 	// #Fetch lobbies
 	c := make(chan lobby.L, h.c.BufferLobbies)
+
 	var result error
+
 	go func() {
 		// #Send lobbies through stream
 		for l := range c {
-			if err := stream.Send(&l); err != nil {
+			local := l
+			if err := stream.Send(&local); err != nil {
 				result = multierror.Append(result, err)
 			}
 		}
@@ -58,6 +62,7 @@ func (h handler) ListLobbies(request *dto.Auth, stream grpc.Auth_ListLobbiesServ
 	}
 
 	close(c)
+
 	if result != nil {
 		return status.New(codes.Internal, result.Error()).Err()
 	}

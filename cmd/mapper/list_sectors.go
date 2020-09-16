@@ -26,13 +26,13 @@ func (h handler) ListSectors(request *dto.ListSector, stream grpc.Mapper_ListSec
 	}
 
 	// #Check credentials
-	ac, err := h.account.Authorize(ctx, request.Auth.ID, request.Auth.Token)
-	if err != nil {
+	if _, err := h.account.Authorize(ctx, request.Auth.ID, request.Auth.Token); err != nil {
 		if errors.As(err, &gerrors.ErrInvalidCredentials{}) {
 			logger.Error().Err(err).Msg("invalid credentials")
 
 			return status.New(codes.Unauthenticated, err.Error()).Err()
 		}
+
 		logger.Error().Err(err).Msg("failed to authenticate")
 
 		return status.New(codes.Internal, err.Error()).Err()
@@ -40,11 +40,14 @@ func (h handler) ListSectors(request *dto.ListSector, stream grpc.Mapper_ListSec
 
 	// #Fetch sectors
 	c := make(chan space.Sector, h.c.BufferSectors)
+
 	var result error
+
 	go func() {
 		// #Send sector through stream
 		for sec := range c {
-			if err := stream.Send(&sec); err != nil {
+			local := sec
+			if err := stream.Send(&local); err != nil {
 				result = multierror.Append(result, err)
 			}
 		}
@@ -58,6 +61,7 @@ func (h handler) ListSectors(request *dto.ListSector, stream grpc.Mapper_ListSec
 	}
 
 	close(c)
+
 	if result != nil {
 		return status.New(codes.Internal, result.Error()).Err()
 	}
