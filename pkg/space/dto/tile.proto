@@ -29,8 +29,8 @@ message CreateSet {
 	space.TileSet Set                = 3 [(gogoproto.nullable) = false];
 }
 
-message ReadSet {
+message ListSet {
 	dto.Auth Auth                    = 1 [(gogoproto.nullable) = false];
 
-    bytes ID                         = 2 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
+    repeated bytes IDs               = 2 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
 }

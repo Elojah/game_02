@@ -59,12 +59,6 @@ func run(prog string, filename string) {
 	}, "buntdb")
 	launchers.Add(buntlrul)
 
-	gw := grpcweb.Service{}
-	gwl := gw.NewLauncher(grpcweb.Namespaces{
-		GRPCWeb: "grpcweb",
-	}, "grpcweb")
-	launchers.Add(gwl)
-
 	// Stores and applicatives
 	accountStore := accountredis.Store{Service: rd}
 	accountApp := accountapp.A{Store: &accountStore, StoreEmail: &accountStore}
@@ -76,6 +70,12 @@ func run(prog string, filename string) {
 	playerApp := playerapp.A{Store: &playerStore, StoreSpawn: &playerStore}
 	roomStore := roomredis.Store{Service: rd}
 	roomApp := roomapp.A{Store: &roomStore}
+
+	gw := grpcweb.Service{}
+	gwl := gw.NewLauncher(grpcweb.Namespaces{
+		GRPCWeb: "grpcweb",
+	}, "grpcweb")
+	launchers.Add(gwl)
 
 	// handler (https server)
 	h := &handler{

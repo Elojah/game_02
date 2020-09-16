@@ -27,22 +27,22 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type ReadSector struct {
-	Auth dto.Auth                              `protobuf:"bytes,1,opt,name=Auth,proto3" json:"Auth"`
-	ID   github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,2,opt,name=ID,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"ID"`
+type ListSector struct {
+	Auth dto.Auth                                `protobuf:"bytes,1,opt,name=Auth,proto3" json:"Auth"`
+	IDs  []github_com_elojah_game_02_pkg_ulid.ID `protobuf:"bytes,2,rep,name=IDs,proto3,customtype=github.com/elojah/game_02/pkg/ulid.ID" json:"IDs"`
 }
 
-func (m *ReadSector) Reset()      { *m = ReadSector{} }
-func (*ReadSector) ProtoMessage() {}
-func (*ReadSector) Descriptor() ([]byte, []int) {
+func (m *ListSector) Reset()      { *m = ListSector{} }
+func (*ListSector) ProtoMessage() {}
+func (*ListSector) Descriptor() ([]byte, []int) {
 	return fileDescriptor_4a4d7d4a74309654, []int{0}
 }
-func (m *ReadSector) XXX_Unmarshal(b []byte) error {
+func (m *ListSector) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *ReadSector) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ListSector) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_ReadSector.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ListSector.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -52,19 +52,19 @@ func (m *ReadSector) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *ReadSector) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ReadSector.Merge(m, src)
+func (m *ListSector) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListSector.Merge(m, src)
 }
-func (m *ReadSector) XXX_Size() int {
+func (m *ListSector) XXX_Size() int {
 	return m.Size()
 }
-func (m *ReadSector) XXX_DiscardUnknown() {
-	xxx_messageInfo_ReadSector.DiscardUnknown(m)
+func (m *ListSector) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListSector.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ReadSector proto.InternalMessageInfo
+var xxx_messageInfo_ListSector proto.InternalMessageInfo
 
-func (m *ReadSector) GetAuth() dto.Auth {
+func (m *ListSector) GetAuth() dto.Auth {
 	if m != nil {
 		return m.Auth
 	}
@@ -72,7 +72,7 @@ func (m *ReadSector) GetAuth() dto.Auth {
 }
 
 func init() {
-	proto.RegisterType((*ReadSector)(nil), "dto.ReadSector")
+	proto.RegisterType((*ListSector)(nil), "dto.ListSector")
 }
 
 func init() {
@@ -80,35 +80,35 @@ func init() {
 }
 
 var fileDescriptor_4a4d7d4a74309654 = []byte{
-	// 273 bytes of a gzipped FileDescriptorProto
+	// 274 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x32, 0x49, 0xcf, 0x2c, 0xc9,
 	0x28, 0x4d, 0xd2, 0x4b, 0xce, 0xcf, 0xd5, 0x4f, 0xcd, 0xc9, 0xcf, 0x4a, 0xcc, 0xd0, 0x4f, 0x4f,
 	0xcc, 0x4d, 0x8d, 0x37, 0x30, 0xd2, 0x2f, 0xc8, 0x4e, 0xd7, 0x2f, 0x2e, 0x48, 0x4c, 0x4e, 0xd5,
 	0x4f, 0x29, 0xc9, 0xd7, 0x2f, 0x4e, 0x4d, 0x2e, 0xc9, 0x2f, 0xd2, 0x2b, 0x28, 0xca, 0x2f, 0xc9,
 	0x17, 0x62, 0x4e, 0x29, 0xc9, 0x97, 0xd2, 0x45, 0xd2, 0x9a, 0x9e, 0x9f, 0x9e, 0xaf, 0x0f, 0x96,
 	0x4b, 0x2a, 0x4d, 0x03, 0xf3, 0xc0, 0x1c, 0x30, 0x0b, 0xa2, 0x47, 0xca, 0x1c, 0xbf, 0x4d, 0x89,
-	0xc9, 0xc9, 0xf9, 0xa5, 0x79, 0x25, 0x60, 0xbb, 0xa0, 0x6c, 0x88, 0x46, 0xa5, 0x02, 0x2e, 0xae,
-	0xa0, 0xd4, 0xc4, 0x94, 0x60, 0xb0, 0x03, 0x84, 0x94, 0xb9, 0x58, 0x1c, 0x4b, 0x4b, 0x32, 0x24,
+	0xc9, 0xc9, 0xf9, 0xa5, 0x79, 0x25, 0x60, 0xbb, 0xa0, 0x6c, 0x88, 0x46, 0xa5, 0x22, 0x2e, 0x2e,
+	0x9f, 0xcc, 0xe2, 0x92, 0x60, 0xb0, 0x03, 0x84, 0x94, 0xb9, 0x58, 0x1c, 0x4b, 0x4b, 0x32, 0x24,
 	0x18, 0x15, 0x18, 0x35, 0xb8, 0x8d, 0x38, 0xf5, 0x52, 0x4a, 0xf2, 0xf5, 0x40, 0x02, 0x4e, 0x2c,
-	0x27, 0xee, 0xc9, 0x33, 0x04, 0x81, 0x25, 0x85, 0x6c, 0xb9, 0x98, 0x3c, 0x5d, 0x24, 0x98, 0x14,
-	0x18, 0x35, 0x78, 0x9c, 0x74, 0x41, 0xe2, 0xb7, 0xee, 0xc9, 0xab, 0xe2, 0xb7, 0xbf, 0x34, 0x27,
-	0x33, 0x45, 0xcf, 0xd3, 0x25, 0x88, 0xc9, 0xd3, 0xc5, 0xc9, 0xe1, 0xc2, 0x43, 0x39, 0x86, 0x1b,
-	0x0f, 0xe5, 0x18, 0x3e, 0x3c, 0x94, 0x63, 0xfc, 0xf1, 0x50, 0x8e, 0xb1, 0xe1, 0x91, 0x1c, 0xe3,
-	0x8a, 0x47, 0x72, 0x8c, 0x3b, 0x1e, 0xc9, 0x31, 0x1e, 0x78, 0x24, 0xc7, 0x78, 0xe2, 0x91, 0x1c,
-	0xe3, 0x85, 0x47, 0x72, 0x8c, 0x0f, 0x1e, 0xc9, 0x31, 0xbe, 0x78, 0x24, 0xc7, 0xf0, 0xe1, 0x91,
-	0x1c, 0xe3, 0x84, 0xc7, 0x72, 0x0c, 0x17, 0x1e, 0xcb, 0x31, 0xdc, 0x78, 0x2c, 0xc7, 0x90, 0xc4,
-	0x06, 0x76, 0xba, 0x31, 0x20, 0x00, 0x00, 0xff, 0xff, 0xe4, 0xde, 0xfc, 0x64, 0x5f, 0x01, 0x00,
-	0x00,
+	0x27, 0xee, 0xc9, 0x33, 0x04, 0x81, 0x25, 0x85, 0xec, 0xb9, 0x98, 0x3d, 0x5d, 0x8a, 0x25, 0x98,
+	0x14, 0x98, 0x35, 0x78, 0x9c, 0x74, 0x41, 0x12, 0xb7, 0xee, 0xc9, 0xab, 0xe2, 0x77, 0x40, 0x69,
+	0x4e, 0x66, 0x8a, 0x9e, 0xa7, 0x4b, 0x10, 0x48, 0xa7, 0x93, 0xc3, 0x85, 0x87, 0x72, 0x0c, 0x37,
+	0x1e, 0xca, 0x31, 0x7c, 0x78, 0x28, 0xc7, 0xf8, 0xe3, 0xa1, 0x1c, 0x63, 0xc3, 0x23, 0x39, 0xc6,
+	0x15, 0x8f, 0xe4, 0x18, 0x77, 0x3c, 0x92, 0x63, 0x3c, 0xf0, 0x48, 0x8e, 0xf1, 0xc4, 0x23, 0x39,
+	0xc6, 0x0b, 0x8f, 0xe4, 0x18, 0x1f, 0x3c, 0x92, 0x63, 0x7c, 0xf1, 0x48, 0x8e, 0xe1, 0xc3, 0x23,
+	0x39, 0xc6, 0x09, 0x8f, 0xe5, 0x18, 0x2e, 0x3c, 0x96, 0x63, 0xb8, 0xf1, 0x58, 0x8e, 0x21, 0x89,
+	0x0d, 0xec, 0x78, 0x63, 0x40, 0x00, 0x00, 0x00, 0xff, 0xff, 0xea, 0x4e, 0x35, 0x21, 0x61, 0x01,
+	0x00, 0x00,
 }
 
-func (this *ReadSector) Equal(that interface{}) bool {
+func (this *ListSector) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
 	}
 
-	that1, ok := that.(*ReadSector)
+	that1, ok := that.(*ListSector)
 	if !ok {
-		that2, ok := that.(ReadSector)
+		that2, ok := that.(ListSector)
 		if ok {
 			that1 = &that2
 		} else {
@@ -123,19 +123,24 @@ func (this *ReadSector) Equal(that interface{}) bool {
 	if !this.Auth.Equal(&that1.Auth) {
 		return false
 	}
-	if !this.ID.Equal(that1.ID) {
+	if len(this.IDs) != len(that1.IDs) {
 		return false
+	}
+	for i := range this.IDs {
+		if !this.IDs[i].Equal(that1.IDs[i]) {
+			return false
+		}
 	}
 	return true
 }
-func (this *ReadSector) GoString() string {
+func (this *ListSector) GoString() string {
 	if this == nil {
 		return "nil"
 	}
 	s := make([]string, 0, 6)
-	s = append(s, "&dto.ReadSector{")
+	s = append(s, "&dto.ListSector{")
 	s = append(s, "Auth: "+strings.Replace(this.Auth.GoString(), `&`, ``, 1)+",\n")
-	s = append(s, "ID: "+fmt.Sprintf("%#v", this.ID)+",\n")
+	s = append(s, "IDs: "+fmt.Sprintf("%#v", this.IDs)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -147,7 +152,7 @@ func valueToGoStringSector(v interface{}, typ string) string {
 	pv := reflect.Indirect(rv).Interface()
 	return fmt.Sprintf("func(v %v) *%v { return &v } ( %#v )", typ, typ, pv)
 }
-func (m *ReadSector) Marshal() (dAtA []byte, err error) {
+func (m *ListSector) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -157,26 +162,30 @@ func (m *ReadSector) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *ReadSector) MarshalTo(dAtA []byte) (int, error) {
+func (m *ListSector) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *ReadSector) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *ListSector) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	{
-		size := m.ID.Size()
-		i -= size
-		if _, err := m.ID.MarshalTo(dAtA[i:]); err != nil {
-			return 0, err
+	if len(m.IDs) > 0 {
+		for iNdEx := len(m.IDs) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size := m.IDs[iNdEx].Size()
+				i -= size
+				if _, err := m.IDs[iNdEx].MarshalTo(dAtA[i:]); err != nil {
+					return 0, err
+				}
+				i = encodeVarintSector(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x12
 		}
-		i = encodeVarintSector(dAtA, i, uint64(size))
 	}
-	i--
-	dAtA[i] = 0x12
 	{
 		size, err := m.Auth.MarshalToSizedBuffer(dAtA[:i])
 		if err != nil {
@@ -201,12 +210,16 @@ func encodeVarintSector(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func NewPopulatedReadSector(r randySector, easy bool) *ReadSector {
-	this := &ReadSector{}
+func NewPopulatedListSector(r randySector, easy bool) *ListSector {
+	this := &ListSector{}
 	v1 := dto.NewPopulatedAuth(r, easy)
 	this.Auth = *v1
-	v2 := github_com_elojah_game_02_pkg_ulid.NewPopulatedID(r)
-	this.ID = *v2
+	v2 := r.Intn(10)
+	this.IDs = make([]github_com_elojah_game_02_pkg_ulid.ID, v2)
+	for i := 0; i < v2; i++ {
+		v3 := github_com_elojah_game_02_pkg_ulid.NewPopulatedID(r)
+		this.IDs[i] = *v3
+	}
 	if !easy && r.Intn(10) != 0 {
 	}
 	return this
@@ -231,9 +244,9 @@ func randUTF8RuneSector(r randySector) rune {
 	return rune(ru + 61)
 }
 func randStringSector(r randySector) string {
-	v3 := r.Intn(100)
-	tmps := make([]rune, v3)
-	for i := 0; i < v3; i++ {
+	v4 := r.Intn(100)
+	tmps := make([]rune, v4)
+	for i := 0; i < v4; i++ {
 		tmps[i] = randUTF8RuneSector(r)
 	}
 	return string(tmps)
@@ -255,11 +268,11 @@ func randFieldSector(dAtA []byte, r randySector, fieldNumber int, wire int) []by
 	switch wire {
 	case 0:
 		dAtA = encodeVarintPopulateSector(dAtA, uint64(key))
-		v4 := r.Int63()
+		v5 := r.Int63()
 		if r.Intn(2) == 0 {
-			v4 *= -1
+			v5 *= -1
 		}
-		dAtA = encodeVarintPopulateSector(dAtA, uint64(v4))
+		dAtA = encodeVarintPopulateSector(dAtA, uint64(v5))
 	case 1:
 		dAtA = encodeVarintPopulateSector(dAtA, uint64(key))
 		dAtA = append(dAtA, byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)))
@@ -284,7 +297,7 @@ func encodeVarintPopulateSector(dAtA []byte, v uint64) []byte {
 	dAtA = append(dAtA, uint8(v))
 	return dAtA
 }
-func (m *ReadSector) Size() (n int) {
+func (m *ListSector) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -292,8 +305,12 @@ func (m *ReadSector) Size() (n int) {
 	_ = l
 	l = m.Auth.Size()
 	n += 1 + l + sovSector(uint64(l))
-	l = m.ID.Size()
-	n += 1 + l + sovSector(uint64(l))
+	if len(m.IDs) > 0 {
+		for _, e := range m.IDs {
+			l = e.Size()
+			n += 1 + l + sovSector(uint64(l))
+		}
+	}
 	return n
 }
 
@@ -303,13 +320,13 @@ func sovSector(x uint64) (n int) {
 func sozSector(x uint64) (n int) {
 	return sovSector(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (this *ReadSector) String() string {
+func (this *ListSector) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{`&ReadSector{`,
+	s := strings.Join([]string{`&ListSector{`,
 		`Auth:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.Auth), "Auth", "dto.Auth", 1), `&`, ``, 1) + `,`,
-		`ID:` + fmt.Sprintf("%v", this.ID) + `,`,
+		`IDs:` + fmt.Sprintf("%v", this.IDs) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -322,7 +339,7 @@ func valueToStringSector(v interface{}) string {
 	pv := reflect.Indirect(rv).Interface()
 	return fmt.Sprintf("*%v", pv)
 }
-func (m *ReadSector) Unmarshal(dAtA []byte) error {
+func (m *ListSector) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -345,10 +362,10 @@ func (m *ReadSector) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: ReadSector: wiretype end group for non-group")
+			return fmt.Errorf("proto: ListSector: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ReadSector: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: ListSector: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -386,7 +403,7 @@ func (m *ReadSector) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ID", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field IDs", wireType)
 			}
 			var byteLen int
 			for shift := uint(0); ; shift += 7 {
@@ -413,7 +430,9 @@ func (m *ReadSector) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := m.ID.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			var v github_com_elojah_game_02_pkg_ulid.ID
+			m.IDs = append(m.IDs, v)
+			if err := m.IDs[len(m.IDs)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

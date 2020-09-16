@@ -216,15 +216,15 @@ func BenchmarkCreateSetProtoUnmarshal(b *testing.B) {
 	b.SetBytes(int64(total / b.N))
 }
 
-func TestReadSetProto(t *testing.T) {
+func TestListSetProto(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedReadSet(popr, false)
+	p := NewPopulatedListSet(popr, false)
 	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &ReadSet{}
+	msg := &ListSet{}
 	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -247,10 +247,10 @@ func TestReadSetProto(t *testing.T) {
 	}
 }
 
-func TestReadSetMarshalTo(t *testing.T) {
+func TestListSetMarshalTo(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedReadSet(popr, false)
+	p := NewPopulatedListSet(popr, false)
 	size := p.Size()
 	dAtA := make([]byte, size)
 	for i := range dAtA {
@@ -260,7 +260,7 @@ func TestReadSetMarshalTo(t *testing.T) {
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &ReadSet{}
+	msg := &ListSet{}
 	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -272,12 +272,12 @@ func TestReadSetMarshalTo(t *testing.T) {
 	}
 }
 
-func BenchmarkReadSetProtoMarshal(b *testing.B) {
+func BenchmarkListSetProtoMarshal(b *testing.B) {
 	popr := math_rand.New(math_rand.NewSource(616))
 	total := 0
-	pops := make([]*ReadSet, 10000)
+	pops := make([]*ListSet, 10000)
 	for i := 0; i < 10000; i++ {
-		pops[i] = NewPopulatedReadSet(popr, false)
+		pops[i] = NewPopulatedListSet(popr, false)
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -290,18 +290,18 @@ func BenchmarkReadSetProtoMarshal(b *testing.B) {
 	b.SetBytes(int64(total / b.N))
 }
 
-func BenchmarkReadSetProtoUnmarshal(b *testing.B) {
+func BenchmarkListSetProtoUnmarshal(b *testing.B) {
 	popr := math_rand.New(math_rand.NewSource(616))
 	total := 0
 	datas := make([][]byte, 10000)
 	for i := 0; i < 10000; i++ {
-		dAtA, err := github_com_gogo_protobuf_proto.Marshal(NewPopulatedReadSet(popr, false))
+		dAtA, err := github_com_gogo_protobuf_proto.Marshal(NewPopulatedListSet(popr, false))
 		if err != nil {
 			panic(err)
 		}
 		datas[i] = dAtA
 	}
-	msg := &ReadSet{}
+	msg := &ListSet{}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		total += len(datas[i%10000])
@@ -348,16 +348,16 @@ func TestCreateSetJSON(t *testing.T) {
 		t.Fatalf("seed = %d, %#v !Json Equal %#v", seed, msg, p)
 	}
 }
-func TestReadSetJSON(t *testing.T) {
+func TestListSetJSON(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedReadSet(popr, true)
+	p := NewPopulatedListSet(popr, true)
 	marshaler := github_com_gogo_protobuf_jsonpb.Marshaler{}
 	jsondata, err := marshaler.MarshalToString(p)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &ReadSet{}
+	msg := &ListSet{}
 	err = github_com_gogo_protobuf_jsonpb.UnmarshalString(jsondata, msg)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
@@ -422,12 +422,12 @@ func TestCreateSetProtoCompactText(t *testing.T) {
 	}
 }
 
-func TestReadSetProtoText(t *testing.T) {
+func TestListSetProtoText(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedReadSet(popr, true)
+	p := NewPopulatedListSet(popr, true)
 	dAtA := github_com_gogo_protobuf_proto.MarshalTextString(p)
-	msg := &ReadSet{}
+	msg := &ListSet{}
 	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -436,12 +436,12 @@ func TestReadSetProtoText(t *testing.T) {
 	}
 }
 
-func TestReadSetProtoCompactText(t *testing.T) {
+func TestListSetProtoCompactText(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedReadSet(popr, true)
+	p := NewPopulatedListSet(popr, true)
 	dAtA := github_com_gogo_protobuf_proto.CompactTextString(p)
-	msg := &ReadSet{}
+	msg := &ListSet{}
 	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -476,9 +476,9 @@ func TestCreateSetGoString(t *testing.T) {
 		t.Fatal(err)
 	}
 }
-func TestReadSetGoString(t *testing.T) {
+func TestListSetGoString(t *testing.T) {
 	popr := math_rand.New(math_rand.NewSource(time.Now().UnixNano()))
-	p := NewPopulatedReadSet(popr, false)
+	p := NewPopulatedListSet(popr, false)
 	s1 := p.GoString()
 	s2 := fmt.Sprintf("%#v", p)
 	if s1 != s2 {
@@ -561,10 +561,10 @@ func BenchmarkCreateSetSize(b *testing.B) {
 	b.SetBytes(int64(total / b.N))
 }
 
-func TestReadSetSize(t *testing.T) {
+func TestListSetSize(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedReadSet(popr, true)
+	p := NewPopulatedListSet(popr, true)
 	size2 := github_com_gogo_protobuf_proto.Size(p)
 	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
 	if err != nil {
@@ -583,12 +583,12 @@ func TestReadSetSize(t *testing.T) {
 	}
 }
 
-func BenchmarkReadSetSize(b *testing.B) {
+func BenchmarkListSetSize(b *testing.B) {
 	popr := math_rand.New(math_rand.NewSource(616))
 	total := 0
-	pops := make([]*ReadSet, 1000)
+	pops := make([]*ListSet, 1000)
 	for i := 0; i < 1000; i++ {
-		pops[i] = NewPopulatedReadSet(popr, false)
+		pops[i] = NewPopulatedListSet(popr, false)
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -615,9 +615,9 @@ func TestCreateSetStringer(t *testing.T) {
 		t.Fatalf("String want %v got %v", s1, s2)
 	}
 }
-func TestReadSetStringer(t *testing.T) {
+func TestListSetStringer(t *testing.T) {
 	popr := math_rand.New(math_rand.NewSource(time.Now().UnixNano()))
-	p := NewPopulatedReadSet(popr, false)
+	p := NewPopulatedListSet(popr, false)
 	s1 := p.String()
 	s2 := fmt.Sprintf("%v", p)
 	if s1 != s2 {

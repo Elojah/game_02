@@ -9,9 +9,11 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
+	"github.com/elojah/grpcweb"
 	"github.com/elojah/redis"
 	"github.com/elojah/services"
 
+	mappergrpc "github.com/elojah/game_02/cmd/mapper/grpc"
 	accountapp "github.com/elojah/game_02/pkg/account/app"
 	accountredis "github.com/elojah/game_02/pkg/account/redis"
 	entityapp "github.com/elojah/game_02/pkg/entity/app"
@@ -60,6 +62,12 @@ func run(prog string, filename string) {
 		StoreTileSet: &spaceStore,
 	}
 
+	gw := grpcweb.Service{}
+	gwl := gw.NewLauncher(grpcweb.Namespaces{
+		GRPCWeb: "grpcweb",
+	}, "grpcweb")
+	launchers.Add(gwl)
+
 	// handler (https server)
 	h := &handler{
 		account: &accountApp,
@@ -72,6 +80,11 @@ func run(prog string, filename string) {
 		Mapper: "mapper",
 	}, "mapper")
 	launchers.Add(hl)
+
+	gw.Register = func() {
+		mappergrpc.RegisterMapperServer(gw.Server, h)
+		h.Handler = gw.WrappedGrpcServer
+	}
 
 	if err := launchers.Up(filename); err != nil {
 		log.Error().Err(err).Str("filename", filename).Msg("failed to start")

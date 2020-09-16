@@ -119,8 +119,10 @@ proto: ## Regenerate protobuf files
 	$Q $(GEN_PB) $(GO_PACKAGE)/pkg/space/dto/sector.proto
 	$Q $(GEN_PB) $(GO_PACKAGE)/pkg/room/dto/room.proto
 	$(info $(M) generate services…) @
-	$Q $(GEN_PB_SERVICE) $(GO_PACKAGE)/cmd/$(AUTH)/grpc/auth.proto
-	$Q sed -i '/goog.object.extend/d' cmd/$(AUTH)/grpc/auth_pb.js
+	$Q $(GEN_PB_SERVICE) $(GO_PACKAGE)/cmd/$(AUTH)/grpc/$(AUTH).proto
+	$Q sed -i '/goog.object.extend/d' cmd/$(AUTH)/grpc/$(AUTH)_pb.js
+	$Q $(GEN_PB_SERVICE) $(GO_PACKAGE)/cmd/$(MAPPER)/grpc/$(MAPPER).proto
+	$Q sed -i '/goog.object.extend/d' cmd/$(MAPPER)/grpc/$(MAPPER)_pb.js
 
 # Vendoring
 .PHONY: vendor

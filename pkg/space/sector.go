@@ -17,6 +17,7 @@ type StoreSector interface {
 	UpsertSector(context.Context, Sector) error
 	UpsertManySector(context.Context, []Sector) error
 	FetchSector(context.Context, FilterSector) (Sector, error)
+	FetchManySector(context.Context, chan<- Sector, FilterSector) error
 	DeleteSector(context.Context, FilterSector) error
 }
 

@@ -73,24 +73,21 @@ func (s *Store) FetchSector(ctx context.Context, filter space.FilterSector) (spa
 }
 
 // FetchManySector implementation for sector in redis.
-func (s *Store) FetchManySector(ctx context.Context, filter space.FilterSector) (map[string]space.Sector, error) {
-	secs := make(map[string]space.Sector, len(filter.IDs))
-
+func (s *Store) FetchManySector(ctx context.Context, c chan<- space.Sector, filter space.FilterSector) error {
 	for _, id := range filter.IDs {
 		val, err := s.Get(ctx, sectorKey+id.String()).Result()
 		if err != nil {
-			return nil, fmt.Errorf("fetch sector %s: %w", id.String(), err)
+			return fmt.Errorf("fetch sector %s: %w", id.String(), err)
 		}
 
-		var tmp space.Sector
-		if err := tmp.Unmarshal([]byte(val)); err != nil {
-			return nil, fmt.Errorf("fetch items %s: %w", filter.ID.String(), err)
+		var sec space.Sector
+		if err := sec.Unmarshal([]byte(val)); err != nil {
+			return fmt.Errorf("fetch sector %s: %w", id.String(), err)
 		}
-
-		secs[tmp.ID.String()] = tmp
+		c <- sec
 	}
 
-	return secs, nil
+	return nil
 }
 
 // DeleteSector implementation for sector in redis.

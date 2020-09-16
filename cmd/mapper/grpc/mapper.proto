@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package grpc;
+
+option (gogoproto.testgen_all)  = true;
+option (gogoproto.benchgen_all) = true;
+option (gogoproto.populate_all) = true;
+option (gogoproto.goproto_registration) = true;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+import "github.com/elojah/game_02/pkg/space/dto/sector.proto";
+import "github.com/elojah/game_02/pkg/space/dto/tile.proto";
+import "github.com/elojah/game_02/pkg/space/sector.proto";
+import "github.com/elojah/game_02/pkg/space/tile.proto";
+
+service Mapper {
+    rpc ListSectors(dto.ListSector) returns (stream space.Sector);
+    rpc ListTileSets(dto.ListSet) returns (stream space.TileSet);
+}

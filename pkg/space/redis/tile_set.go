@@ -73,24 +73,21 @@ func (s *Store) FetchTileSet(ctx context.Context, filter space.FilterTileSet) (s
 }
 
 // FetchManyTileSet implementation for tileset in redis.
-func (s *Store) FetchManyTileSet(ctx context.Context, filter space.FilterTileSet) (map[string]space.TileSet, error) {
-	tss := make(map[string]space.TileSet, len(filter.IDs))
-
+func (s *Store) FetchManyTileSet(ctx context.Context, c chan<- space.TileSet, filter space.FilterTileSet) error {
 	for _, id := range filter.IDs {
 		val, err := s.Get(ctx, tilesetKey+id.String()).Result()
 		if err != nil {
-			return nil, fmt.Errorf("fetch tileset %s: %w", id.String(), err)
+			return fmt.Errorf("fetch tileset %s: %w", id.String(), err)
 		}
 
-		var tmp space.TileSet
-		if err := tmp.Unmarshal([]byte(val)); err != nil {
-			return nil, fmt.Errorf("fetch items %s: %w", filter.ID.String(), err)
+		var ts space.TileSet
+		if err := ts.Unmarshal([]byte(val)); err != nil {
+			return fmt.Errorf("fetch tileset %s: %w", id.String(), err)
 		}
-
-		tss[tmp.ID.String()] = tmp
+		c <- ts
 	}
 
-	return tss, nil
+	return nil
 }
 
 // DeleteTileSet implementation for tileset in redis.

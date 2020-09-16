@@ -22,15 +22,15 @@ var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
-func TestReadSectorProto(t *testing.T) {
+func TestListSectorProto(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedReadSector(popr, false)
+	p := NewPopulatedListSector(popr, false)
 	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &ReadSector{}
+	msg := &ListSector{}
 	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -53,10 +53,10 @@ func TestReadSectorProto(t *testing.T) {
 	}
 }
 
-func TestReadSectorMarshalTo(t *testing.T) {
+func TestListSectorMarshalTo(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedReadSector(popr, false)
+	p := NewPopulatedListSector(popr, false)
 	size := p.Size()
 	dAtA := make([]byte, size)
 	for i := range dAtA {
@@ -66,7 +66,7 @@ func TestReadSectorMarshalTo(t *testing.T) {
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &ReadSector{}
+	msg := &ListSector{}
 	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -78,12 +78,12 @@ func TestReadSectorMarshalTo(t *testing.T) {
 	}
 }
 
-func BenchmarkReadSectorProtoMarshal(b *testing.B) {
+func BenchmarkListSectorProtoMarshal(b *testing.B) {
 	popr := math_rand.New(math_rand.NewSource(616))
 	total := 0
-	pops := make([]*ReadSector, 10000)
+	pops := make([]*ListSector, 10000)
 	for i := 0; i < 10000; i++ {
-		pops[i] = NewPopulatedReadSector(popr, false)
+		pops[i] = NewPopulatedListSector(popr, false)
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -96,18 +96,18 @@ func BenchmarkReadSectorProtoMarshal(b *testing.B) {
 	b.SetBytes(int64(total / b.N))
 }
 
-func BenchmarkReadSectorProtoUnmarshal(b *testing.B) {
+func BenchmarkListSectorProtoUnmarshal(b *testing.B) {
 	popr := math_rand.New(math_rand.NewSource(616))
 	total := 0
 	datas := make([][]byte, 10000)
 	for i := 0; i < 10000; i++ {
-		dAtA, err := github_com_gogo_protobuf_proto.Marshal(NewPopulatedReadSector(popr, false))
+		dAtA, err := github_com_gogo_protobuf_proto.Marshal(NewPopulatedListSector(popr, false))
 		if err != nil {
 			panic(err)
 		}
 		datas[i] = dAtA
 	}
-	msg := &ReadSector{}
+	msg := &ListSector{}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		total += len(datas[i%10000])
@@ -118,16 +118,16 @@ func BenchmarkReadSectorProtoUnmarshal(b *testing.B) {
 	b.SetBytes(int64(total / b.N))
 }
 
-func TestReadSectorJSON(t *testing.T) {
+func TestListSectorJSON(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedReadSector(popr, true)
+	p := NewPopulatedListSector(popr, true)
 	marshaler := github_com_gogo_protobuf_jsonpb.Marshaler{}
 	jsondata, err := marshaler.MarshalToString(p)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &ReadSector{}
+	msg := &ListSector{}
 	err = github_com_gogo_protobuf_jsonpb.UnmarshalString(jsondata, msg)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
@@ -136,12 +136,12 @@ func TestReadSectorJSON(t *testing.T) {
 		t.Fatalf("seed = %d, %#v !Json Equal %#v", seed, msg, p)
 	}
 }
-func TestReadSectorProtoText(t *testing.T) {
+func TestListSectorProtoText(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedReadSector(popr, true)
+	p := NewPopulatedListSector(popr, true)
 	dAtA := github_com_gogo_protobuf_proto.MarshalTextString(p)
-	msg := &ReadSector{}
+	msg := &ListSector{}
 	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -150,12 +150,12 @@ func TestReadSectorProtoText(t *testing.T) {
 	}
 }
 
-func TestReadSectorProtoCompactText(t *testing.T) {
+func TestListSectorProtoCompactText(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedReadSector(popr, true)
+	p := NewPopulatedListSector(popr, true)
 	dAtA := github_com_gogo_protobuf_proto.CompactTextString(p)
-	msg := &ReadSector{}
+	msg := &ListSector{}
 	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -164,9 +164,9 @@ func TestReadSectorProtoCompactText(t *testing.T) {
 	}
 }
 
-func TestReadSectorGoString(t *testing.T) {
+func TestListSectorGoString(t *testing.T) {
 	popr := math_rand.New(math_rand.NewSource(time.Now().UnixNano()))
-	p := NewPopulatedReadSector(popr, false)
+	p := NewPopulatedListSector(popr, false)
 	s1 := p.GoString()
 	s2 := fmt.Sprintf("%#v", p)
 	if s1 != s2 {
@@ -177,10 +177,10 @@ func TestReadSectorGoString(t *testing.T) {
 		t.Fatal(err)
 	}
 }
-func TestReadSectorSize(t *testing.T) {
+func TestListSectorSize(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedReadSector(popr, true)
+	p := NewPopulatedListSector(popr, true)
 	size2 := github_com_gogo_protobuf_proto.Size(p)
 	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
 	if err != nil {
@@ -199,12 +199,12 @@ func TestReadSectorSize(t *testing.T) {
 	}
 }
 
-func BenchmarkReadSectorSize(b *testing.B) {
+func BenchmarkListSectorSize(b *testing.B) {
 	popr := math_rand.New(math_rand.NewSource(616))
 	total := 0
-	pops := make([]*ReadSector, 1000)
+	pops := make([]*ListSector, 1000)
 	for i := 0; i < 1000; i++ {
-		pops[i] = NewPopulatedReadSector(popr, false)
+		pops[i] = NewPopulatedListSector(popr, false)
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -213,9 +213,9 @@ func BenchmarkReadSectorSize(b *testing.B) {
 	b.SetBytes(int64(total / b.N))
 }
 
-func TestReadSectorStringer(t *testing.T) {
+func TestListSectorStringer(t *testing.T) {
 	popr := math_rand.New(math_rand.NewSource(time.Now().UnixNano()))
-	p := NewPopulatedReadSector(popr, false)
+	p := NewPopulatedListSector(popr, false)
 	s1 := p.String()
 	s2 := fmt.Sprintf("%v", p)
 	if s1 != s2 {

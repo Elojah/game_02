@@ -57,7 +57,7 @@ func (r CreateMap) Check() error {
 	return nil
 }
 
-func (r ReadSet) Check() error {
+func (r ListSet) Check() error {
 	return nil
 }
 

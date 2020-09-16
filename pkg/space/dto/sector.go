@@ -5,6 +5,6 @@ const (
 	maxDimension = 2000
 )
 
-func (r ReadSector) Check() error {
+func (r ListSector) Check() error {
 	return nil
 }
