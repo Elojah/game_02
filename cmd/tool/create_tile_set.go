@@ -1,71 +1,51 @@
 package main
 
 import (
-	"encoding/json"
+	"context"
 	"errors"
-	"fmt"
-	"net/http"
 
+	"github.com/gogo/protobuf/types"
+	"github.com/gogo/status"
 	"github.com/rs/zerolog/log"
+	"google.golang.org/grpc/codes"
 
 	gerrors "github.com/elojah/game_02/pkg/errors"
 	"github.com/elojah/game_02/pkg/space/dto"
-	gulid "github.com/elojah/game_02/pkg/ulid"
 )
 
-func (h handler) createTileSet(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
-	case "POST":
-		// continue
-	default:
-		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
-	ctx := r.Context()
-	logger := log.With().Str("route", r.URL.EscapedPath()).Str("method", r.Method).Str("address", r.RemoteAddr).Logger()
+func (h handler) CreateTileSet(ctx context.Context, request *dto.CreateSet) (*types.Empty, error) {
+	logger := log.With().Str("method", "create_room").Logger()
 
 	// #Request processing
-	var request dto.CreateTileSet
-	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
-		logger.Error().Err(err).Msg("invalid payload")
-		http.Error(w, fmt.Sprintf("invalid payload: %v", err), http.StatusBadRequest)
+	if request == nil {
+		err := gerrors.ErrNullRequest{}
+		logger.Error().Err(err).Msg("null request")
 
-		return
+		return &types.Empty{}, status.New(codes.InvalidArgument, err.Error()).Err()
 	}
 
-	if err := request.Check(); err != nil {
-		logger.Error().Err(err).Msg("invalid payload")
-		http.Error(w, fmt.Sprintf("invalid payload: %v", err), http.StatusBadRequest)
-
-		return
-	}
-
-	if _, err := h.account.Authorize(ctx, request.Email, request.Token); err != nil {
+	// #Check credentials
+	if _, err := h.account.Authorize(ctx, request.Auth.ID, request.Auth.Token); err != nil {
 		if errors.As(err, &gerrors.ErrInvalidCredentials{}) {
 			logger.Error().Err(err).Msg("invalid credentials")
-			http.Error(w, "invalid credentials", http.StatusBadRequest)
 
-			return
+			return &types.Empty{}, status.New(codes.Unauthenticated, err.Error()).Err()
 		}
 
 		logger.Error().Err(err).Msg("failed to authenticate")
-		http.Error(w, fmt.Sprintf("failed to authenticate: %v", err), http.StatusInternalServerError)
 
-		return
+		return &types.Empty{}, status.New(codes.Internal, err.Error()).Err()
 	}
-
-	ts := request.TileSet
-	ts.ID = gulid.MustParse(request.ID)
 
 	// #Upsert tileset
-	if err := h.space.UpsertTileSet(ctx, ts); err != nil {
+	request.Set.ID = request.ID
+	if err := h.space.UpsertTileSet(ctx, request.Set); err != nil {
 		logger.Error().Err(err).Msg("failed to upsert space tileset")
-		http.Error(w, fmt.Sprintf("failed to upsert space tileset: %v", err), http.StatusInternalServerError)
 
-		return
+		return &types.Empty{}, status.New(codes.Internal, err.Error()).Err()
 	}
 
-	w.WriteHeader(http.StatusOK)
 	logger.Info().Msg("success")
+
+	return &types.Empty{}, nil
 }

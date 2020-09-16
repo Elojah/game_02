@@ -73,6 +73,7 @@ func (c *Config) Dial(fileconf interface{}) error {
 			Value:  cBufferSectors,
 		}
 	}
+
 	c.BufferSectors = uint(f)
 
 	cBufferTileSets, ok := fconf["buffer_tile_sets"]
@@ -88,6 +89,7 @@ func (c *Config) Dial(fileconf interface{}) error {
 			Value:  cBufferTileSets,
 		}
 	}
+
 	c.BufferTileSets = uint(f)
 
 	return nil

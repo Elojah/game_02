@@ -17,7 +17,6 @@ import (
 )
 
 func (h handler) Subscribe(ctx context.Context, request *dto.Subscribe) (*types.Empty, error) {
-
 	logger := log.With().Str("method", "subscribe").Logger()
 
 	// #Request processing
@@ -51,6 +50,7 @@ func (h handler) Subscribe(ctx context.Context, request *dto.Subscribe) (*types.
 
 		return &types.Empty{}, status.New(codes.AlreadyExists, err.Error()).Err()
 	}
+
 	logger = logger.With().Str("email", request.Email).Logger()
 
 	// #Encrypt password
@@ -81,7 +81,6 @@ func (h handler) Subscribe(ctx context.Context, request *dto.Subscribe) (*types.
 		return &types.Empty{}, status.New(codes.Internal, err.Error()).Err()
 	}
 
-	// #Write response
 	logger.Info().Msg("success")
 
 	return &types.Empty{}, nil

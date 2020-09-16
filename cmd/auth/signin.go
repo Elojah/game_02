@@ -31,10 +31,13 @@ func (h handler) Signin(ctx context.Context, request *dto.Signin) (*dto.Auth, er
 
 			return &dto.Auth{}, status.New(codes.Unauthenticated, err.Error()).Err()
 		}
+
 		logger.Error().Err(err).Msg("failed to login")
 
 		return &dto.Auth{}, status.New(codes.Internal, err.Error()).Err()
 	}
+
+	logger.Info().Msg("success")
 
 	return &dto.Auth{
 		ID:    ac.ID,

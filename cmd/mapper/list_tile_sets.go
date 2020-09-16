@@ -66,6 +66,7 @@ func (h handler) ListTileSets(request *dto.ListSet, stream grpc.Mapper_ListTileS
 		return status.New(codes.Internal, result.Error()).Err()
 	}
 
-	return nil
+	logger.Info().Msg("success")
 
+	return nil
 }

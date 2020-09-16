@@ -35,6 +35,7 @@ func (h handler) CreatePlayer(ctx context.Context, request *dto.CreatePlayer) (*
 
 			return &player.P{}, status.New(codes.Unauthenticated, err.Error()).Err()
 		}
+
 		logger.Error().Err(err).Msg("failed to authenticate")
 
 		return &player.P{}, status.New(codes.Internal, err.Error()).Err()
@@ -55,6 +56,7 @@ func (h handler) CreatePlayer(ctx context.Context, request *dto.CreatePlayer) (*
 
 			return &player.P{}, status.New(codes.InvalidArgument, err.Error()).Err()
 		}
+
 		logger.Error().Err(err).Msg("failed to fetch entity template")
 
 		return &player.P{}, status.New(codes.Internal, err.Error()).Err()
@@ -111,6 +113,8 @@ func (h handler) CreatePlayer(ctx context.Context, request *dto.CreatePlayer) (*
 
 		return &player.P{}, status.New(codes.Internal, err.Error()).Err()
 	}
+
+	logger.Info().Msg("success")
 
 	return &p, nil
 }

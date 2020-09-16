@@ -41,6 +41,7 @@ func (s *Store) FetchEmail(ctx context.Context, filter account.FilterEmail) (gul
 	}
 
 	var id gulid.ID
+
 	if id, err = gulid.Parse(val); err != nil {
 		return gulid.Zero(), fmt.Errorf("fetch email %s: %w", filter.Email, err)
 	}

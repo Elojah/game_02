@@ -67,5 +67,7 @@ func (h handler) ListLobbies(request *dto.Auth, stream grpc.Auth_ListLobbiesServ
 		return status.New(codes.Internal, result.Error()).Err()
 	}
 
+	logger.Info().Msg("success")
+
 	return nil
 }

@@ -123,6 +123,8 @@ proto: ## Regenerate protobuf files
 	$Q sed -i '/goog.object.extend/d' cmd/$(AUTH)/grpc/$(AUTH)_pb.js
 	$Q $(GEN_PB_SERVICE) $(GO_PACKAGE)/cmd/$(MAPPER)/grpc/$(MAPPER).proto
 	$Q sed -i '/goog.object.extend/d' cmd/$(MAPPER)/grpc/$(MAPPER)_pb.js
+	$Q $(GEN_PB_SERVICE) $(GO_PACKAGE)/cmd/$(TOOL)/grpc/$(TOOL).proto
+	$Q sed -i '/goog.object.extend/d' cmd/$(TOOL)/grpc/$(TOOL)_pb.js
 
 # Vendoring
 .PHONY: vendor

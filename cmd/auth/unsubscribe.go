@@ -32,6 +32,7 @@ func (h handler) Unsubscribe(ctx context.Context, request *dto.Auth) (*types.Emp
 
 			return &types.Empty{}, status.New(codes.Unauthenticated, err.Error()).Err()
 		}
+
 		logger.Error().Err(err).Msg("failed to authenticate")
 
 		return &types.Empty{}, status.New(codes.Internal, err.Error()).Err()
@@ -46,7 +47,6 @@ func (h handler) Unsubscribe(ctx context.Context, request *dto.Auth) (*types.Emp
 		return &types.Empty{}, status.New(codes.Internal, err.Error()).Err()
 	}
 
-	// #Write response
 	logger.Info().Msg("success")
 
 	return &types.Empty{}, nil

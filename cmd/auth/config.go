@@ -72,6 +72,7 @@ func (c *Config) Dial(fileconf interface{}) error {
 			Value:  cBufferLobbies,
 		}
 	}
+
 	c.BufferLobbies = uint(f)
 
 	return nil

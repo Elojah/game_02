@@ -66,5 +66,7 @@ func (h handler) ListSectors(request *dto.ListSector, stream grpc.Mapper_ListSec
 		return status.New(codes.Internal, result.Error()).Err()
 	}
 
+	logger.Info().Msg("success")
+
 	return nil
 }

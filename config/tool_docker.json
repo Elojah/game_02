@@ -13,5 +13,15 @@
 		"address": "0.0.0.0:8083",
 		"cert": "server.crt",
 		"key": "server.key"
+	},
+	"grpcweb": {
+		"cert": "server.crt",
+		"key": "server.key",
+		"connection_timeout": 2,
+		"num_stream_workers": 10,
+		"max_recv_msg_size": 64000,
+		"origin": {
+			"https://localhost:8080": {}
+		}
 	}
 }

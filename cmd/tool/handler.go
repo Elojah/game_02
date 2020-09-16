@@ -8,11 +8,13 @@ import (
 	"github.com/elojah/game_02/pkg/entity"
 	"github.com/elojah/game_02/pkg/player"
 	"github.com/elojah/game_02/pkg/space"
-	"github.com/gorilla/mux"
 	"github.com/rs/zerolog/log"
 )
 
 type handler struct {
+	c Config
+
+	http.Handler
 	srv *http.Server
 
 	account account.App
@@ -23,13 +25,10 @@ type handler struct {
 
 // Dial starts the auth server.
 func (h *handler) Dial(c Config) error {
-	mux := mux.NewRouter()
-
-	mux.HandleFunc("/tileset", h.createTileSet)
-
+	h.c = c
 	h.srv = &http.Server{
 		Addr:    c.Address,
-		Handler: mux,
+		Handler: h.Handler,
 	}
 
 	go func() {

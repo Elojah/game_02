@@ -32,6 +32,7 @@ func (h handler) ConnectRoom(ctx context.Context, request *dto.ConnectRoom) (*ro
 
 			return &room.R{}, status.New(codes.Unauthenticated, err.Error()).Err()
 		}
+
 		logger.Error().Err(err).Msg("failed to authenticate")
 
 		return &room.R{}, status.New(codes.Internal, err.Error()).Err()
@@ -67,6 +68,8 @@ func (h handler) ConnectRoom(ctx context.Context, request *dto.ConnectRoom) (*ro
 
 		return &room.R{}, status.New(codes.Internal, err.Error()).Err()
 	}
+
+	logger.Info().Msg("success")
 
 	return &ro, nil
 }
