@@ -24,9 +24,6 @@ jobs:
           name: Install linters
           command: curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s v1.27.0
       - run:
-          name: Install ebiten requirements
-          command: sudo apt install libc6-dev libglu1-mesa-dev libgl1-mesa-dev libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev libxxf86vm-dev libasound2-dev pkg-config
-      - run:
           name: Run unit
           command: make check
           environment:
