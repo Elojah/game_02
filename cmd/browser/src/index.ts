@@ -1,6 +1,19 @@
 import {grpc} from "@improbable-eng/grpc-web";
 import {Auth} from "@cmd/auth/grpc/auth_pb_service";
 import {Subscribe} from "@pkg/account/dto/account_pb";
+import * as PIXI from 'pixi.js';
+
+function setup() {
+  // The application will create a renderer using WebGL, if possible,
+  // with a fallback to a canvas render. It will also setup the ticker
+  // and the root stage PIXI.Container
+  const app = new PIXI.Application();
+
+  // The application will create a canvas element for you that you
+  // can then insert into the DOM
+  document.body.appendChild(app.view);
+}
+setup();
 
 function subscribe() {
   const sub = new Subscribe();
@@ -18,28 +31,8 @@ function subscribe() {
         console.log("subscribe.onEnd.message", message.toObject());
       }
       console.log("subscribe.onEnd.trailers", trailers);
-    //   queryBooks();
     }
   });
 }
 
-subscribe();
-
-// function queryBooks() {
-//   const queryBooksRequest = new QueryBooksRequest();
-//   queryBooksRequest.setAuthorPrefix("Geor");
-//   const client = grpc.client(BookService.QueryBooks, {
-//     host: host,
-//   });
-//   client.onHeaders((headers: grpc.Metadata) => {
-//     console.log("queryBooks.onHeaders", headers);
-//   });
-//   client.onMessage((message: Book) => {
-//     console.log("queryBooks.onMessage", message.toObject());
-//   });
-//   client.onEnd((code: grpc.Code, msg: string, trailers: grpc.Metadata) => {
-//     console.log("queryBooks.onEnd", code, msg, trailers);
-//   });
-//   client.start();
-//   client.send(queryBooksRequest);
-// }
+// subscribe();
