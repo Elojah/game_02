@@ -59,6 +59,12 @@ func run(prog string, filename string) {
 	}, "buntdb")
 	launchers.Add(buntlrul)
 
+	gw := grpcweb.Service{}
+	gwl := gw.NewLauncher(grpcweb.Namespaces{
+		GRPCWeb: "grpcweb",
+	}, "grpcweb")
+	launchers.Add(gwl)
+
 	// Stores and applicatives
 	accountStore := accountredis.Store{Service: rd}
 	accountApp := accountapp.A{Store: &accountStore, StoreEmail: &accountStore}
@@ -84,12 +90,6 @@ func run(prog string, filename string) {
 		Auth: "auth",
 	}, "auth")
 	launchers.Add(hl)
-
-	gw := grpcweb.Service{}
-	gwl := gw.NewLauncher(grpcweb.Namespaces{
-		GRPCWeb: "grpcweb",
-	}, "grpcweb")
-	launchers.Add(gwl)
 
 	gw.Register = func() {
 		authgrpc.RegisterAuthServer(gw.Server, h)
