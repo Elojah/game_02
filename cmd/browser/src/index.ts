@@ -25,6 +25,7 @@ function main() {
       'background_0.png',
       'yellow_button00.png',
       'yellow_button01.png',
+      'theme.png'
     ]
   ).load(function(){
     console.log("start setup")
@@ -43,15 +44,25 @@ function setup(app: PIXI.Application) {
   // add background to stage
   app.stage.addChild(background);
 
+  const textureDefault = app.loader.resources['theme.png'].texture
+  textureDefault.frame = new PIXI.Rectangle(200, 113, 168, 50)
+  const textureDown = app.loader.resources['theme.png'].texture
+  textureDown.frame = new PIXI.Rectangle(200, 241, 168, 50)
+  const textureOver = app.loader.resources['theme.png'].texture
+  textureOver.frame = new PIXI.Rectangle(200, 177, 168, 50)
+
   const login = CreateButton({
     text: 'LOGIN',
     x: app.screen.width/2,
     y: app.screen.height/2,
-    textureDefault: app.loader.resources['yellow_button00.png'].texture,
-    textureDown: app.loader.resources['yellow_button01.png'].texture,
-    textureOver: app.loader.resources['yellow_button00.png'].texture,
+    textureDefault: textureDefault,
+    textureDown: textureDown,
+    textureOver: textureOver,
   })
   app.stage.addChild(login);
+  login.children.map(function(v){
+    app.stage.addChild(v)
+  })
 }
 
 function subscribe() {

@@ -90,7 +90,7 @@ web: browser ## Build web binary
 
 file-assets:  ## Copy assets directory into bin directory for testing and vendoring
 	$(info $(M) copy assets directory…) @
-	$Q yes | cp -Rrf assets/ bin/static/
+	$Q yes | cp -Rf assets/* bin/static/
 
 # Utils
 .PHONY: proto

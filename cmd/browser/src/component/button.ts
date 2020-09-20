@@ -13,43 +13,52 @@ interface Button {
 export function CreateButton(b: Button) {
     const result = new PIXI.Sprite(b.textureDefault);
 
+    const style = new PIXI.TextStyle();
+    const text = new PIXI.Text(b.text, style);
+    text.x = b.x
+    text.y = b.y
+    text.anchor.set(0.5, 0.5)
+    result.addChild(text)
 
     result.x = b.x
     result.y = b.y
-
     result.anchor.set(0.5, 0.5)
+
     result.interactive = true
     result.buttonMode = true
 
-    function onButtonDown() {
-        this.isdown = true;
-        this.texture = b.textureDown;
-        this.alpha = 1;
+    var down = false
+    var over = false
+
+    const onButtonDown = () => {
+        down = true;
+        result.texture = b.textureDown;
+        result.alpha = 1;
     }
     
-    function onButtonUp() {
-        this.isdown = false;
-        if (this.isOver) {
-            this.texture = b.textureOver;
+    const onButtonUp = () => {
+        down = false;
+        if (over) {
+            result.texture = b.textureOver;
         } else {
-            this.texture = b.textureDefault;
+            result.texture = b.textureDefault;
         }
     }
     
-    function onButtonOver() {
-        this.isOver = true;
-        if (this.isdown) {
+    const onButtonOver = () => {
+        over = true;
+        if (down) {
             return;
         }
-        this.texture = b.textureOver;
+        result.texture = b.textureOver;
     }
     
-    function onButtonOut() {
-        this.isOver = false;
-        if (this.isdown) {
+    const onButtonOut = () => {
+        result.isOver = false;
+        if (result.isdown) {
             return;
         }
-        this.texture = b.textureDefault;
+        result.texture = b.textureDefault;
     }
 
     result
@@ -60,4 +69,3 @@ export function CreateButton(b: Button) {
         .on('pointerout', onButtonOut);
     return result
 }
-
