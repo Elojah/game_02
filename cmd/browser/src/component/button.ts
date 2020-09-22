@@ -1,71 +1,83 @@
 import * as PIXI from 'pixi.js';
 
 interface Button {
-    text: string;
+    text: PIXI.Text,
+    style:  PIXI.TextStyle,
     x: number;
     y: number;
 
     textureDefault: PIXI.Texture;
     textureDown: PIXI.Texture;
     textureOver: PIXI.Texture;
+
+    sprite?: PIXI.Sprite;
+    down?: boolean;
+    over?: boolean;
 }
 
-export function CreateButton(b: Button) {
-    const result = new PIXI.Sprite(b.textureDefault);
+export function createButton(b: Button, stage: PIXI.Container) {
+    b.down = false
+    b.over = false
 
-    const style = new PIXI.TextStyle();
-    const text = new PIXI.Text(b.text, style);
-    text.x = b.x
-    text.y = b.y
-    text.anchor.set(0.5, 0.5)
-    result.addChild(text)
+    b.text.anchor.set(0.5, 0.5)
+    b.text.x = b.x
+    b.text.y = b.y
 
-    result.x = b.x
-    result.y = b.y
-    result.anchor.set(0.5, 0.5)
+    b.sprite = new PIXI.Sprite(b.textureDefault)
+    b.sprite.anchor.set(0.5, 0.5)
+    b.sprite.x = b.x
+    b.sprite.y = b.y
 
-    result.interactive = true
-    result.buttonMode = true
+    b.sprite.interactive = true
+    b.sprite.buttonMode = true
 
-    var down = false
-    var over = false
+    b.sprite.addChild(b.text)
 
-    const onButtonDown = () => {
-        down = true;
-        result.texture = b.textureDown;
-        result.alpha = 1;
+    b.sprite
+        .on('pointerdown', onButtonDown.bind(b))
+        .on('pointerup', onButtonUp.bind(b))
+        .on('pointerupoutside', onButtonUp.bind(b))
+        .on('pointerover', onButtonOver.bind(b))
+        .on('pointerout', onButtonOut.bind(b));
+
+    stage.addChild(b.sprite!)
+    stage.addChild(b.text)
+
+    return b
+}
+
+function onButtonDown() {
+    const b = this as unknown as Button
+    console.log("onButtonDown:", b)
+    b.down = true;
+    b.sprite!.texture = b.textureDown;
+    b.sprite!.alpha = 1;
+}
+
+function onButtonUp() {
+    const b = this as unknown as Button
+    b.down = false;
+    if (b.over) {
+        b.sprite!.texture = b.textureOver;
+    } else {
+        b.sprite!.texture = b.textureDefault;
     }
-    
-    const onButtonUp = () => {
-        down = false;
-        if (over) {
-            result.texture = b.textureOver;
-        } else {
-            result.texture = b.textureDefault;
-        }
-    }
-    
-    const onButtonOver = () => {
-        over = true;
-        if (down) {
-            return;
-        }
-        result.texture = b.textureOver;
-    }
-    
-    const onButtonOut = () => {
-        result.isOver = false;
-        if (result.isdown) {
-            return;
-        }
-        result.texture = b.textureDefault;
-    }
+}
 
-    result
-        .on('pointerdown', onButtonDown)
-        .on('pointerup', onButtonUp)
-        .on('pointerupoutside', onButtonUp)
-        .on('pointerover', onButtonOver)
-        .on('pointerout', onButtonOut);
-    return result
+function onButtonOver() {
+    const b = this as unknown as Button
+    b.over = true;
+    if (b.down) {
+        return;
+    }
+    b.sprite!.texture = b.textureOver;
+}
+
+function onButtonOut() {
+    const b = this as unknown as Button
+    b.over = false;
+    if (b.down) {
+        return;
+    }
+    b.sprite!.texture = b.textureDefault;
 }

@@ -1,7 +1,8 @@
 import {grpc} from "@improbable-eng/grpc-web";
 import {Auth} from "@cmd/auth/grpc/auth_pb_service";
 import {Subscribe} from "@pkg/account/dto/account_pb";
-import {CreateButton} from "@cmd/browser/src/component/button";
+import {createButton} from "@cmd/browser/src/component/button";
+import * as PIXITextInput from 'pixi-text-input';
 import * as PIXI from 'pixi.js';
 
 function main() {
@@ -23,12 +24,9 @@ function main() {
   app.loader.add(
     [
       'background_0.png',
-      'yellow_button00.png',
-      'yellow_button01.png',
       'theme.png'
     ]
   ).load(function(){
-    console.log("start setup")
     setup(app)
   });
 }
@@ -44,25 +42,22 @@ function setup(app: PIXI.Application) {
   // add background to stage
   app.stage.addChild(background);
 
-  const textureDefault = app.loader.resources['theme.png'].texture
-  textureDefault.frame = new PIXI.Rectangle(200, 113, 168, 50)
-  const textureDown = app.loader.resources['theme.png'].texture
-  textureDown.frame = new PIXI.Rectangle(200, 241, 168, 50)
-  const textureOver = app.loader.resources['theme.png'].texture
-  textureOver.frame = new PIXI.Rectangle(200, 177, 168, 50)
+  const textureDefault = new PIXI.Texture(app.loader.resources['theme.png'].texture.baseTexture, new PIXI.Rectangle(200, 113, 168, 50))
+  const textureDown = new PIXI.Texture(app.loader.resources['theme.png'].texture.baseTexture, new PIXI.Rectangle(200, 241, 168, 50))
+  const textureOver = new PIXI.Texture(app.loader.resources['theme.png'].texture.baseTexture, new PIXI.Rectangle(200, 177, 168, 50))
 
-  const login = CreateButton({
-    text: 'LOGIN',
+  const style = new PIXI.TextStyle()
+  const login = createButton({
+    text: new PIXI.Text('LOGIN', style),
+    style: style,
     x: app.screen.width/2,
     y: app.screen.height/2,
+
     textureDefault: textureDefault,
     textureDown: textureDown,
-    textureOver: textureOver,
-  })
-  app.stage.addChild(login);
-  login.children.map(function(v){
-    app.stage.addChild(v)
-  })
+    textureOver: textureOver
+  }, app.stage)
+  const ti = PIXITextInput
 }
 
 function subscribe() {

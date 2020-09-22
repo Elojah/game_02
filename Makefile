@@ -76,7 +76,7 @@ browser:  ## Build browser content
 	$Q cd cmd/$(BROWSER) && npx webpack --config webpack.config.js
 	$Q yes | cp -rf cmd/$(BROWSER)/index.html cmd/$(BROWSER)/dist/index.html
 	$Q yes | cp -rf cmd/$(BROWSER)/favicon.ico cmd/$(BROWSER)/dist/favicon.ico
-	$Q yes | cp -rf cmd/$(BROWSER)/dist/. bin/static
+	$Q yes | cp -rf cmd/$(BROWSER)/dist/. bin/static/
 
 .PHONY: web
 web: browser ## Build web binary
