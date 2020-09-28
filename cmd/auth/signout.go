@@ -37,8 +37,8 @@ func (h handler) Signout(ctx context.Context, request *dto.Auth) (*types.Empty, 
 		return &types.Empty{}, status.New(codes.Internal, err.Error()).Err()
 	}
 
-	// #Logout
-	if _, err := h.account.Logout(ctx, request.ID, request.Token); err != nil {
+	// #Signout
+	if _, err := h.account.Signout(ctx, request.ID, request.Token); err != nil {
 		if errors.As(err, &gerrors.ErrNotFound{}) {
 			logger.Error().Err(err).Msg("account not found")
 

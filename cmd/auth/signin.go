@@ -24,7 +24,7 @@ func (h handler) Signin(ctx context.Context, request *dto.Signin) (*dto.Auth, er
 	}
 
 	// #Check credentials
-	ac, err := h.account.Login(ctx, request.Email, request.Password)
+	ac, err := h.account.Signin(ctx, request.Email, request.Password)
 	if err != nil {
 		if errors.As(err, &gerrors.ErrInvalidCredentials{}) {
 			logger.Error().Err(err).Msg("invalid credentials")
@@ -32,7 +32,7 @@ func (h handler) Signin(ctx context.Context, request *dto.Signin) (*dto.Auth, er
 			return &dto.Auth{}, status.New(codes.Unauthenticated, err.Error()).Err()
 		}
 
-		logger.Error().Err(err).Msg("failed to login")
+		logger.Error().Err(err).Msg("failed to signin")
 
 		return &dto.Auth{}, status.New(codes.Internal, err.Error()).Err()
 	}

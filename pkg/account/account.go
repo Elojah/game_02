@@ -34,7 +34,7 @@ type StoreEmail interface {
 type App interface {
 	Store
 	StoreEmail
-	Login(context.Context, string, string) (A, error)
-	Logout(context.Context, gulid.ID, gulid.ID) (A, error)
+	Signin(context.Context, string, string) (A, error)
+	Signout(context.Context, gulid.ID, gulid.ID) (A, error)
 	Authorize(context.Context, gulid.ID, gulid.ID) (A, error)
 }

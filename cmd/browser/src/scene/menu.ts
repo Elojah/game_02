@@ -1,13 +1,13 @@
 import {Scene} from "phaser";
 import {grpc} from "@improbable-eng/grpc-web";
 
-import {Auth} from "@cmd/auth/grpc/auth_pb_service";
-import {Signin, Subscribe} from "@pkg/account/dto/account_pb";
+import * as AuthService from "@cmd/auth/grpc/auth_pb_service";
+import {Auth, Signin, Subscribe} from "@pkg/account/dto/account_pb";
 
 export class Menu extends Scene {
 
     HTMLsubscribe: Phaser.GameObjects.DOMElement;
-    HTMLlogin: Phaser.GameObjects.DOMElement;
+    HTMLsignin: Phaser.GameObjects.DOMElement;
 
     constructor(config: string | Phaser.Types.Scenes.SettingsConfig) {
         super(config);
@@ -15,18 +15,18 @@ export class Menu extends Scene {
     preload() {
         this.load.html('subscribe', 'html/subscribe.html')
         this.load.html('signin', 'html/signin.html')
-        this.load.image('background', 'background_menu.png')
+        this.load.image('background_menu', 'background_menu.png')
     }
     create() {
-        this.add.image(0, 0, 'background').setOrigin(0)
+        this.add.image(0, 0, 'background_menu').setOrigin(0)
 
         this.HTMLsubscribe = this.add.dom(60, 30).createFromCache('subscribe').setOrigin(0);
         this.HTMLsubscribe.addListener('click');
         this.HTMLsubscribe.on('click', this.subscribe, this)
 
-        this.HTMLlogin = this.add.dom(60, 120).createFromCache('signin').setOrigin(0);
-        this.HTMLlogin.addListener('click');
-        this.HTMLlogin.on('click', this.signin, this)
+        this.HTMLsignin = this.add.dom(60, 120).createFromCache('signin').setOrigin(0);
+        this.HTMLsignin.addListener('click');
+        this.HTMLsignin.on('click', this.signin, this)
     }
     update() {}
     subscribe(event: MouseEvent) {
@@ -41,17 +41,17 @@ export class Menu extends Scene {
         sub.setAlias(alias.value)
         sub.setEmail(email.value)
         sub.setPassword(password.value)
-        grpc.unary(Auth.Subscribe, {
+        grpc.unary(AuthService.Auth.Subscribe, {
             request: sub,
             host: "https://localhost:8081",
             onEnd: res => {
-            const { status, statusMessage, headers, message, trailers } = res;
-            console.log("subscribe.onEnd.status", status, statusMessage);
-            console.log("subscribe.onEnd.headers", headers);
-            if (status === grpc.Code.OK && message) {
-                console.log("subscribe.onEnd.message", message.toObject());
-            }
-            console.log("subscribe.onEnd.trailers", trailers);
+                const { status, statusMessage, headers, message, trailers } = res;
+                if (status === grpc.Code.OK && message) {
+                    console.log("subscribe.onEnd.message", message.toObject());
+                }
+                console.log("subscribe.onEnd.status", status, statusMessage);
+                console.log("subscribe.onEnd.headers", headers);
+                console.log("subscribe.onEnd.trailers", trailers);
             }
         });
     }
@@ -59,23 +59,27 @@ export class Menu extends Scene {
         if ((<HTMLInputElement>event.target).name !== 'signin') {
             return
         }
-        const email = this.HTMLsubscribe.getChildByName('email') as HTMLInputElement
-        const password = this.HTMLsubscribe.getChildByName('password') as HTMLInputElement
+        const email = this.HTMLsignin.getChildByName('email') as HTMLInputElement
+        const password = this.HTMLsignin.getChildByName('password') as HTMLInputElement
         // Apply basic security checks for those fields
         const log = new Signin();
         log.setEmail(email.value)
         log.setPassword(password.value)
-        grpc.unary(Auth.Signin, {
+        grpc.unary(AuthService.Auth.Signin, {
             request: log,
             host: "https://localhost:8081",
             onEnd: res => {
-            const { status, statusMessage, headers, message, trailers } = res;
-            console.log("subscribe.onEnd.status", status, statusMessage);
-            console.log("subscribe.onEnd.headers", headers);
-            if (status === grpc.Code.OK && message) {
-                console.log("subscribe.onEnd.message", message.toObject());
-            }
-            console.log("subscribe.onEnd.trailers", trailers);
+                const { status, statusMessage, headers, message, trailers } = res;
+                if (status === grpc.Code.OK && message) {
+                    console.log("subscribe.onEnd.message", message.toObject());
+                    const account = message as Auth
+                    window.sessionStorage.setItem("account_id", account.getId_asB64())
+                    window.sessionStorage.setItem("token", account.getToken_asB64())
+                    this.scene.start('lobby')
+                }
+                console.log("subscribe.onEnd.status", status, statusMessage);
+                console.log("subscribe.onEnd.headers", headers);
+                console.log("subscribe.onEnd.trailers", trailers);
             }
         });
     }

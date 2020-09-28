@@ -2,11 +2,11 @@
 _______________
 
 - [x] subscribe
-- [x] login
-- [x] logout
+- [x] signin
+- [x] signout
 - [x] unsubscribe
 
-- [~] client UI login + room (gopherjs + vecty) -> UI
+- [~] client UI signin + room (gopherjs + vecty) -> UI
 - [x] room REST
 - [ ] world creation: create domain tileset with upsert/fetch
 - [ ] client gameworld -> Tiles API ->

@@ -19,7 +19,7 @@ type A struct {
 	account.StoreEmail
 }
 
-func (a *A) Login(ctx context.Context, email string, password string) (account.A, error) {
+func (a *A) Signin(ctx context.Context, email string, password string) (account.A, error) {
 	// #Check if account exist
 	id, err := a.FetchEmail(ctx, account.FilterEmail{Email: email})
 	if err != nil {
@@ -61,7 +61,7 @@ func (a *A) Login(ctx context.Context, email string, password string) (account.A
 	return ac, nil
 }
 
-func (a *A) Logout(ctx context.Context, id gulid.ID, token gulid.ID) (account.A, error) {
+func (a *A) Signout(ctx context.Context, id gulid.ID, token gulid.ID) (account.A, error) {
 	// #Check if account exist
 	ac, err := a.Fetch(ctx, account.Filter{ID: id})
 	if err != nil {
