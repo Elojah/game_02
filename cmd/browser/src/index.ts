@@ -1,64 +1,38 @@
 import {grpc} from "@improbable-eng/grpc-web";
 import {Auth} from "@cmd/auth/grpc/auth_pb_service";
 import {Subscribe} from "@pkg/account/dto/account_pb";
-import {createButton} from "@cmd/browser/src/component/button";
-import * as PIXITextInput from 'pixi-text-input';
-import * as PIXI from 'pixi.js';
+import {Menu} from "@cmd/browser/src/scene/menu";
+import * as Phaser from "phaser";
 
 function main() {
-  // The application will create a renderer using WebGL, if possible,
-  // with a fallback to a canvas render. It will also setup the ticker
-  // and the root stage PIXI.Container
-  const app = new PIXI.Application({
-    width: window.innerWidth,
-    height: window.innerHeight,
-    backgroundColor: 0x1099bb,
-    resolution: window.devicePixelRatio || 1
-  });
 
-  // The application will create a canvas element for you that you
-  // can then insert into the DOM
-  document.body.style.margin = '0'
-  document.body.appendChild(app.view);
+  const config: Phaser.Types.Core.GameConfig = {
+    title: 'GAME_02',
+    type: Phaser.AUTO,
+    scale: {
+      width: window.document.body.clientWidth,
+      height: window.innerHeight,
+    },
+    // physics: {
+    //   default: 'arcade',
+    //   arcade: {
+    //     debug: true,
+    //   },
+    // },
+    // parent: 'game',
+    backgroundColor: '#000000',
+  };
 
-  app.loader.add(
-    [
-      'background_0.png',
-      'theme.png'
-    ]
-  ).load(function(){
-    setup(app)
-  });
-}
+  const g = new Phaser.Game(config)
+  const sm = new Phaser.Scenes.SceneManager(g, {})
+  sm.add('menu', new Menu({
+    key: 'menu',
+    active: true,
+    visible: true,
+  }), true)
+};
+
 main();
-
-function setup(app: PIXI.Application) {
-
-  // create a background
-  const background = new PIXI.Sprite(app.loader.resources['background_0.png'].texture);
-  background.width = app.screen.width;
-  background.height = app.screen.height;
-
-  // add background to stage
-  app.stage.addChild(background);
-
-  const textureDefault = new PIXI.Texture(app.loader.resources['theme.png'].texture.baseTexture, new PIXI.Rectangle(200, 113, 168, 50))
-  const textureDown = new PIXI.Texture(app.loader.resources['theme.png'].texture.baseTexture, new PIXI.Rectangle(200, 241, 168, 50))
-  const textureOver = new PIXI.Texture(app.loader.resources['theme.png'].texture.baseTexture, new PIXI.Rectangle(200, 177, 168, 50))
-
-  const style = new PIXI.TextStyle()
-  const login = createButton({
-    text: new PIXI.Text('LOGIN', style),
-    style: style,
-    x: app.screen.width/2,
-    y: app.screen.height/2,
-
-    textureDefault: textureDefault,
-    textureDown: textureDown,
-    textureOver: textureOver
-  }, app.stage)
-  const ti = PIXITextInput
-}
 
 function subscribe() {
   const sub = new Subscribe();
