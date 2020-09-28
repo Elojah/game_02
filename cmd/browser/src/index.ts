@@ -9,10 +9,14 @@ function main() {
   const config: Phaser.Types.Core.GameConfig = {
     title: 'GAME_02',
     type: Phaser.AUTO,
+    parent: 'main',
     scale: {
-      width: window.document.body.clientWidth,
+      width: window.innerWidth,
       height: window.innerHeight,
     },
+    dom: {
+      createContainer: true
+    }
     // physics: {
     //   default: 'arcade',
     //   arcade: {
@@ -20,16 +24,16 @@ function main() {
     //   },
     // },
     // parent: 'game',
-    backgroundColor: '#000000',
+    // backgroundColor: '#000000',
   };
 
   const g = new Phaser.Game(config)
-  const sm = new Phaser.Scenes.SceneManager(g, {})
-  sm.add('menu', new Menu({
+  g.scene.add('menu', new Menu({
     key: 'menu',
     active: true,
     visible: true,
-  }), true)
+  }))
+  g.scene.start('menu')
 };
 
 main();
