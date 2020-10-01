@@ -53,6 +53,15 @@ Auth.Signout = {
   responseType: google_protobuf_empty_pb.Empty
 };
 
+Auth.CreateLobby = {
+  methodName: "CreateLobby",
+  service: Auth,
+  requestStream: false,
+  responseStream: false,
+  requestType: github_com_elojah_game_02_pkg_account_dto_account_pb.Auth,
+  responseType: github_com_elojah_game_02_pkg_lobby_lobby_pb.L
+};
+
 Auth.ListLobbies = {
   methodName: "ListLobbies",
   service: Auth,
@@ -194,6 +203,37 @@ AuthClient.prototype.signout = function signout(requestMessage, metadata, callba
     callback = arguments[1];
   }
   var client = grpc.unary(Auth.Signout, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+AuthClient.prototype.createLobby = function createLobby(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(Auth.CreateLobby, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

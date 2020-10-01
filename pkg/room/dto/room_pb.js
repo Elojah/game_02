@@ -302,8 +302,9 @@ proto.dto.CreateRoom.prototype.toObject = function(opt_includeInstance) {
 proto.dto.CreateRoom.toObject = function(includeInstance, msg) {
   var f, obj = {
     auth: (f = msg.getAuth()) && github_com_elojah_game_02_pkg_account_dto_account_pb.Auth.toObject(includeInstance, f),
-    name: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    password: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    lobbyid: msg.getLobbyid_asB64(),
+    name: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    password: jspb.Message.getFieldWithDefault(msg, 4, ""),
     map: (f = msg.getMap()) && github_com_elojah_game_02_pkg_space_dto_tile_pb.CreateMap.toObject(includeInstance, f),
     sectordimensions: (f = msg.getSectordimensions()) && github_com_elojah_game_02_pkg_geometry_geometry_pb.Vec3.toObject(includeInstance, f)
   };
@@ -348,19 +349,23 @@ proto.dto.CreateRoom.deserializeBinaryFromReader = function(msg, reader) {
       msg.setAuth(value);
       break;
     case 2:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setName(value);
+      var value = /** @type {!Uint8Array} */ (reader.readBytes());
+      msg.setLobbyid(value);
       break;
     case 3:
       var value = /** @type {string} */ (reader.readString());
-      msg.setPassword(value);
+      msg.setName(value);
       break;
     case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPassword(value);
+      break;
+    case 5:
       var value = new github_com_elojah_game_02_pkg_space_dto_tile_pb.CreateMap;
       reader.readMessage(value,github_com_elojah_game_02_pkg_space_dto_tile_pb.CreateMap.deserializeBinaryFromReader);
       msg.setMap(value);
       break;
-    case 5:
+    case 6:
       var value = new github_com_elojah_game_02_pkg_geometry_geometry_pb.Vec3;
       reader.readMessage(value,github_com_elojah_game_02_pkg_geometry_geometry_pb.Vec3.deserializeBinaryFromReader);
       msg.setSectordimensions(value);
@@ -402,24 +407,31 @@ proto.dto.CreateRoom.serializeBinaryToWriter = function(message, writer) {
       github_com_elojah_game_02_pkg_account_dto_account_pb.Auth.serializeBinaryToWriter
     );
   }
-  f = message.getName();
+  f = message.getLobbyid_asU8();
   if (f.length > 0) {
-    writer.writeString(
+    writer.writeBytes(
       2,
       f
     );
   }
-  f = message.getPassword();
+  f = message.getName();
   if (f.length > 0) {
     writer.writeString(
       3,
       f
     );
   }
+  f = message.getPassword();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
   f = message.getMap();
   if (f != null) {
     writer.writeMessage(
-      4,
+      5,
       f,
       github_com_elojah_game_02_pkg_space_dto_tile_pb.CreateMap.serializeBinaryToWriter
     );
@@ -427,7 +439,7 @@ proto.dto.CreateRoom.serializeBinaryToWriter = function(message, writer) {
   f = message.getSectordimensions();
   if (f != null) {
     writer.writeMessage(
-      5,
+      6,
       f,
       github_com_elojah_game_02_pkg_geometry_geometry_pb.Vec3.serializeBinaryToWriter
     );
@@ -466,48 +478,87 @@ proto.dto.CreateRoom.prototype.hasAuth = function() {
 
 
 /**
- * optional string Name = 2;
- * @return {string}
+ * optional bytes LobbyID = 2;
+ * @return {!(string|Uint8Array)}
  */
-proto.dto.CreateRoom.prototype.getName = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
-};
-
-
-/** @param {string} value */
-proto.dto.CreateRoom.prototype.setName = function(value) {
-  jspb.Message.setProto3StringField(this, 2, value);
+proto.dto.CreateRoom.prototype.getLobbyid = function() {
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
 /**
- * optional string Password = 3;
+ * optional bytes LobbyID = 2;
+ * This is a type-conversion wrapper around `getLobbyid()`
  * @return {string}
  */
-proto.dto.CreateRoom.prototype.getPassword = function() {
+proto.dto.CreateRoom.prototype.getLobbyid_asB64 = function() {
+  return /** @type {string} */ (jspb.Message.bytesAsB64(
+      this.getLobbyid()));
+};
+
+
+/**
+ * optional bytes LobbyID = 2;
+ * Note that Uint8Array is not supported on all browsers.
+ * @see http://caniuse.com/Uint8Array
+ * This is a type-conversion wrapper around `getLobbyid()`
+ * @return {!Uint8Array}
+ */
+proto.dto.CreateRoom.prototype.getLobbyid_asU8 = function() {
+  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
+      this.getLobbyid()));
+};
+
+
+/** @param {!(string|Uint8Array)} value */
+proto.dto.CreateRoom.prototype.setLobbyid = function(value) {
+  jspb.Message.setProto3BytesField(this, 2, value);
+};
+
+
+/**
+ * optional string Name = 3;
+ * @return {string}
+ */
+proto.dto.CreateRoom.prototype.getName = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
 /** @param {string} value */
-proto.dto.CreateRoom.prototype.setPassword = function(value) {
+proto.dto.CreateRoom.prototype.setName = function(value) {
   jspb.Message.setProto3StringField(this, 3, value);
 };
 
 
 /**
- * optional CreateMap Map = 4;
+ * optional string Password = 4;
+ * @return {string}
+ */
+proto.dto.CreateRoom.prototype.getPassword = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/** @param {string} value */
+proto.dto.CreateRoom.prototype.setPassword = function(value) {
+  jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional CreateMap Map = 5;
  * @return {?proto.dto.CreateMap}
  */
 proto.dto.CreateRoom.prototype.getMap = function() {
   return /** @type{?proto.dto.CreateMap} */ (
-    jspb.Message.getWrapperField(this, github_com_elojah_game_02_pkg_space_dto_tile_pb.CreateMap, 4));
+    jspb.Message.getWrapperField(this, github_com_elojah_game_02_pkg_space_dto_tile_pb.CreateMap, 5));
 };
 
 
 /** @param {?proto.dto.CreateMap|undefined} value */
 proto.dto.CreateRoom.prototype.setMap = function(value) {
-  jspb.Message.setWrapperField(this, 4, value);
+  jspb.Message.setWrapperField(this, 5, value);
 };
 
 
@@ -521,23 +572,23 @@ proto.dto.CreateRoom.prototype.clearMap = function() {
  * @return {!boolean}
  */
 proto.dto.CreateRoom.prototype.hasMap = function() {
-  return jspb.Message.getField(this, 4) != null;
+  return jspb.Message.getField(this, 5) != null;
 };
 
 
 /**
- * optional geometry.Vec3 SectorDimensions = 5;
+ * optional geometry.Vec3 SectorDimensions = 6;
  * @return {?proto.geometry.Vec3}
  */
 proto.dto.CreateRoom.prototype.getSectordimensions = function() {
   return /** @type{?proto.geometry.Vec3} */ (
-    jspb.Message.getWrapperField(this, github_com_elojah_game_02_pkg_geometry_geometry_pb.Vec3, 5));
+    jspb.Message.getWrapperField(this, github_com_elojah_game_02_pkg_geometry_geometry_pb.Vec3, 6));
 };
 
 
 /** @param {?proto.geometry.Vec3|undefined} value */
 proto.dto.CreateRoom.prototype.setSectordimensions = function(value) {
-  jspb.Message.setWrapperField(this, 5, value);
+  jspb.Message.setWrapperField(this, 6, value);
 };
 
 
@@ -551,7 +602,7 @@ proto.dto.CreateRoom.prototype.clearSectordimensions = function() {
  * @return {!boolean}
  */
 proto.dto.CreateRoom.prototype.hasSectordimensions = function() {
-  return jspb.Message.getField(this, 5) != null;
+  return jspb.Message.getField(this, 6) != null;
 };
 
 

@@ -6,6 +6,8 @@ import {Auth, Signin, Subscribe} from "@pkg/account/dto/account_pb";
 
 export class Menu extends Scene {
 
+    Alpha: number;
+    Background: Phaser.GameObjects.Image;
     HTMLsubscribe: Phaser.GameObjects.DOMElement;
     HTMLsignin: Phaser.GameObjects.DOMElement;
 
@@ -18,7 +20,8 @@ export class Menu extends Scene {
         this.load.image('background_menu', 'background_menu.png')
     }
     create() {
-        this.add.image(0, 0, 'background_menu').setOrigin(0)
+        this.Alpha = 1;
+        this.Background = this.add.image(0, 0, 'background_menu').setOrigin(0)
 
         this.HTMLsubscribe = this.add.dom(60, 30).createFromCache('subscribe').setOrigin(0);
         this.HTMLsubscribe.addListener('click');
@@ -46,12 +49,11 @@ export class Menu extends Scene {
             host: "https://localhost:8081",
             onEnd: res => {
                 const { status, statusMessage, headers, message, trailers } = res;
-                if (status === grpc.Code.OK && message) {
-                    console.log("subscribe.onEnd.message", message.toObject());
+                if (status !== grpc.Code.OK || !message) {
+                    console.log("grpc error: ", status, statusMessage, headers, message, trailers)
+                    return
                 }
-                console.log("subscribe.onEnd.status", status, statusMessage);
-                console.log("subscribe.onEnd.headers", headers);
-                console.log("subscribe.onEnd.trailers", trailers);
+                // Send a validate thing back
             }
         });
     }
@@ -70,16 +72,18 @@ export class Menu extends Scene {
             host: "https://localhost:8081",
             onEnd: res => {
                 const { status, statusMessage, headers, message, trailers } = res;
-                if (status === grpc.Code.OK && message) {
-                    console.log("subscribe.onEnd.message", message.toObject());
-                    const account = message as Auth
-                    window.sessionStorage.setItem("account_id", account.getId_asB64())
-                    window.sessionStorage.setItem("token", account.getToken_asB64())
-                    this.scene.start('lobby')
+                if (status !== grpc.Code.OK || !message) {
+                    console.log('failed to signin')
+                    return
                 }
-                console.log("subscribe.onEnd.status", status, statusMessage);
-                console.log("subscribe.onEnd.headers", headers);
-                console.log("subscribe.onEnd.trailers", trailers);
+
+                this.HTMLsignin.destroy()
+                this.HTMLsubscribe.destroy()
+
+                const account = message as Auth
+                window.sessionStorage.setItem("account_id", account.getId_asB64())
+                window.sessionStorage.setItem("token", account.getToken_asB64())
+                this.scene.switch('lobby')
             }
         });
     }

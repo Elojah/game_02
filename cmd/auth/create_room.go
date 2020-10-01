@@ -5,6 +5,7 @@ import (
 	"errors"
 
 	gerrors "github.com/elojah/game_02/pkg/errors"
+	"github.com/elojah/game_02/pkg/lobby"
 	"github.com/elojah/game_02/pkg/room"
 	"github.com/elojah/game_02/pkg/room/dto"
 	"github.com/elojah/game_02/pkg/space"
@@ -40,6 +41,13 @@ func (h handler) CreateRoom(ctx context.Context, request *dto.CreateRoom) (*room
 		return &room.R{}, status.New(codes.Internal, err.Error()).Err()
 	}
 
+	// #Check request
+	if err := request.Check(); err != nil {
+		logger.Error().Err(err).Msg("invalid payload")
+
+		return &room.R{}, status.New(codes.InvalidArgument, err.Error()).Err()
+	}
+
 	// #Encrypt password if necessary
 	var password []byte
 
@@ -64,6 +72,7 @@ func (h handler) CreateRoom(ctx context.Context, request *dto.CreateRoom) (*room
 
 	// Create one big tilemap
 	reqm := request.Map
+	reqm.Dimensions = request.SectorDimensions
 	tm := space.NewTileMap(reqm.Dimensions)
 	platforms := tm.GeneratePlatforms(reqm.NPlatforms, reqm.PlatformSize, reqm.PlatformVariance)
 	tm.GeneratePaths(platforms, reqm.NPaths, reqm.PathVariance, reqm.PathWidth, reqm.PathWidthVariance)
@@ -89,6 +98,27 @@ func (h handler) CreateRoom(ctx context.Context, request *dto.CreateRoom) (*room
 
 	// Create room
 	if err := h.room.Upsert(ctx, ro); err != nil {
+		logger.Error().Err(err).Msg("failed to create room")
+
+		return &room.R{}, status.New(codes.Internal, err.Error()).Err()
+	}
+
+	// Add to lobby
+	l, err := h.lobby.Fetch(ctx, lobby.Filter{ID: request.LobbyID})
+	if err != nil {
+		if errors.As(err, &gerrors.ErrNotFound{}) {
+			logger.Error().Err(err).Msg("lobby not found")
+			return &room.R{}, status.New(codes.NotFound, err.Error()).Err()
+		}
+
+		logger.Error().Err(err).Msg("failed to fetch lobby")
+
+		return &room.R{}, status.New(codes.Internal, err.Error()).Err()
+	}
+
+	l.Rooms[l.ID.String()] = ro
+
+	if err := h.lobby.Upsert(ctx, l); err != nil {
 		logger.Error().Err(err).Msg("failed to create room")
 
 		return &room.R{}, status.New(codes.Internal, err.Error()).Err()

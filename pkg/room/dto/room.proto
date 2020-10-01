@@ -21,9 +21,11 @@ message ConnectRoom {
 message CreateRoom {
 	dto.Auth Auth                            = 1 [(gogoproto.nullable) = false];
 
-    string Name                              = 2;
-    string Password                          = 3;
+    bytes LobbyID                            = 2 [(gogoproto.customtype) = "github.com/elojah/game_02/pkg/ulid.ID", (gogoproto.nullable) = false];
 
-    dto.CreateMap Map                        = 4 [(gogoproto.nullable) = false];
-	geometry.Vec3 SectorDimensions           = 5 [(gogoproto.nullable) = false];
+    string Name                              = 3;
+    string Password                          = 4;
+
+    dto.CreateMap Map                        = 5 [(gogoproto.nullable) = false];
+	geometry.Vec3 SectorDimensions           = 6 [(gogoproto.nullable) = false];
 }

@@ -15,14 +15,6 @@ function main() {
     dom: {
       createContainer: true
     }
-    // physics: {
-    //   default: 'arcade',
-    //   arcade: {
-    //     debug: true,
-    //   },
-    // },
-    // parent: 'game',
-    // backgroundColor: '#000000',
   };
 
   const g = new Phaser.Game(config)

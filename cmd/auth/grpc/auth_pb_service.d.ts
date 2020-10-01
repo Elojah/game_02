@@ -47,6 +47,15 @@ type AuthSignout = {
   readonly responseType: typeof google_protobuf_empty_pb.Empty;
 };
 
+type AuthCreateLobby = {
+  readonly methodName: string;
+  readonly service: typeof Auth;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof github_com_elojah_game_02_pkg_account_dto_account_pb.Auth;
+  readonly responseType: typeof github_com_elojah_game_02_pkg_lobby_lobby_pb.L;
+};
+
 type AuthListLobbies = {
   readonly methodName: string;
   readonly service: typeof Auth;
@@ -89,6 +98,7 @@ export class Auth {
   static readonly Unsubscribe: AuthUnsubscribe;
   static readonly Signin: AuthSignin;
   static readonly Signout: AuthSignout;
+  static readonly CreateLobby: AuthCreateLobby;
   static readonly ListLobbies: AuthListLobbies;
   static readonly CreateRoom: AuthCreateRoom;
   static readonly ConnectRoom: AuthConnectRoom;
@@ -162,6 +172,15 @@ export class AuthClient {
   signout(
     requestMessage: github_com_elojah_game_02_pkg_account_dto_account_pb.Auth,
     callback: (error: ServiceError|null, responseMessage: google_protobuf_empty_pb.Empty|null) => void
+  ): UnaryResponse;
+  createLobby(
+    requestMessage: github_com_elojah_game_02_pkg_account_dto_account_pb.Auth,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: github_com_elojah_game_02_pkg_lobby_lobby_pb.L|null) => void
+  ): UnaryResponse;
+  createLobby(
+    requestMessage: github_com_elojah_game_02_pkg_account_dto_account_pb.Auth,
+    callback: (error: ServiceError|null, responseMessage: github_com_elojah_game_02_pkg_lobby_lobby_pb.L|null) => void
   ): UnaryResponse;
   listLobbies(requestMessage: github_com_elojah_game_02_pkg_account_dto_account_pb.Auth, metadata?: grpc.Metadata): ResponseStream<github_com_elojah_game_02_pkg_lobby_lobby_pb.L>;
   createRoom(

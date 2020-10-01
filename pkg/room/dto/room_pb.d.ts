@@ -45,6 +45,11 @@ export class CreateRoom extends jspb.Message {
   getAuth(): github_com_elojah_game_02_pkg_account_dto_account_pb.Auth | undefined;
   setAuth(value?: github_com_elojah_game_02_pkg_account_dto_account_pb.Auth): void;
 
+  getLobbyid(): Uint8Array | string;
+  getLobbyid_asU8(): Uint8Array;
+  getLobbyid_asB64(): string;
+  setLobbyid(value: Uint8Array | string): void;
+
   getName(): string;
   setName(value: string): void;
 
@@ -74,6 +79,7 @@ export class CreateRoom extends jspb.Message {
 export namespace CreateRoom {
   export type AsObject = {
     auth?: github_com_elojah_game_02_pkg_account_dto_account_pb.Auth.AsObject,
+    lobbyid: Uint8Array | string,
     name: string,
     password: string,
     map?: github_com_elojah_game_02_pkg_space_dto_tile_pb.CreateMap.AsObject,

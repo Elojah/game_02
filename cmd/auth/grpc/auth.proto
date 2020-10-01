@@ -24,6 +24,7 @@ service Auth {
     rpc Signin(dto.Signin) returns (dto.Auth);
     rpc Signout(dto.Auth) returns (google.protobuf.Empty);
 
+    rpc CreateLobby(dto.Auth) returns (lobby.L);
     rpc ListLobbies(dto.Auth) returns (stream lobby.L);
 
     rpc CreateRoom(dto.CreateRoom) returns (room.R);
