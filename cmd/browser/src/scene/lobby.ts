@@ -39,6 +39,10 @@ export class Lobby extends Scene {
         auth.setToken(window.sessionStorage.getItem('token')!)
 
         const htmlLobbies = window.document.getElementById('lobbies')
+        while (htmlLobbies?.firstElementChild) {
+            htmlLobbies?.firstElementChild.remove()
+        }
+
         grpc.invoke(AuthService.Auth.ListLobbies, {
             request: auth,
             host: "https://localhost:8081",
@@ -111,6 +115,7 @@ export class Lobby extends Scene {
         map.setPathvariance(2)
         map.setPathwidth(7)
         map.setPathwidthvariance(8)
+        map.setDimensions(dim)
         createRoom.setMap(map)
 
         grpc.unary(AuthService.Auth.CreateRoom, {

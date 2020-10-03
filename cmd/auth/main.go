@@ -25,6 +25,9 @@ import (
 	playerredis "github.com/elojah/game_02/pkg/player/redis"
 	roomapp "github.com/elojah/game_02/pkg/room/app"
 	roomredis "github.com/elojah/game_02/pkg/room/redis"
+	spaceapp "github.com/elojah/game_02/pkg/space/app"
+	spacebuntdb "github.com/elojah/game_02/pkg/space/buntdb"
+	spaceredis "github.com/elojah/game_02/pkg/space/redis"
 )
 
 var (
@@ -70,6 +73,14 @@ func run(prog string, filename string) {
 	playerApp := playerapp.A{Store: &playerStore, StoreSpawn: &playerStore}
 	roomStore := roomredis.Store{Service: rd}
 	roomApp := roomapp.A{Store: &roomStore}
+	coordinateStore := spacebuntdb.Store{Service: buntlru}
+	spaceStore := spaceredis.Store{Service: rd}
+	spaceApp := spaceapp.A{
+		StoreCoordinate: &coordinateStore,
+		StoreSector:     &spaceStore,
+		StoreTileSet:    &spaceStore,
+		StoreWorld:      &spaceStore,
+	}
 
 	gw := grpcweb.Service{}
 	gwl := gw.NewLauncher(grpcweb.Namespaces{
@@ -84,6 +95,7 @@ func run(prog string, filename string) {
 		lobby:   &lobbyApp,
 		player:  &playerApp,
 		room:    &roomApp,
+		space:   &spaceApp,
 	}
 
 	hl := h.NewLauncher(Namespaces{

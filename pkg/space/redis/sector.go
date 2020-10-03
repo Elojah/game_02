@@ -31,7 +31,7 @@ func (s *Store) UpsertSector(ctx context.Context, sec space.Sector) error {
 
 // UpsertManySector implementation for sector in redis.
 func (s *Store) UpsertManySector(ctx context.Context, secs []space.Sector) error {
-	params := make(map[string][]byte, len(secs))
+	params := make([]interface{}, 0, len(secs))
 
 	for _, sec := range secs {
 		raw, err := sec.Marshal()
@@ -39,10 +39,10 @@ func (s *Store) UpsertManySector(ctx context.Context, secs []space.Sector) error
 			return err
 		}
 
-		params[sec.ID.String()] = raw
+		params = append(params, sec.ID.String(), raw)
 	}
 
-	if err := s.MSet(ctx, params).Err(); err != nil {
+	if err := s.MSet(ctx, params...).Err(); err != nil {
 		return fmt.Errorf("upsert %d sectors: %w", len(secs), err)
 	}
 

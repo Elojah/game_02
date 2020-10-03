@@ -116,6 +116,10 @@ func (h handler) CreateRoom(ctx context.Context, request *dto.CreateRoom) (*room
 		return &room.R{}, status.New(codes.Internal, err.Error()).Err()
 	}
 
+	if len(l.Rooms) == 0 {
+		l.Rooms = make(map[string]room.R, 1)
+	}
+
 	l.Rooms[l.ID.String()] = ro
 
 	if err := h.lobby.Upsert(ctx, l); err != nil {

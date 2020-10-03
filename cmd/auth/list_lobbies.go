@@ -41,6 +41,7 @@ func (h handler) ListLobbies(request *dto.Auth, stream grpc.Auth_ListLobbiesServ
 
 	// #Fetch lobbies
 	c := make(chan lobby.L, h.c.BufferLobbies)
+	done := make(chan struct{})
 
 	var result error
 
@@ -52,6 +53,7 @@ func (h handler) ListLobbies(request *dto.Auth, stream grpc.Auth_ListLobbiesServ
 				result = multierror.Append(result, err)
 			}
 		}
+		done <- struct{}{}
 	}()
 
 	if err := h.lobby.FetchAll(ctx, c); err != nil {
@@ -62,6 +64,8 @@ func (h handler) ListLobbies(request *dto.Auth, stream grpc.Auth_ListLobbiesServ
 	}
 
 	close(c)
+
+	_ = <-done
 
 	if result != nil {
 		return status.New(codes.Internal, result.Error()).Err()

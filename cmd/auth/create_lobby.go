@@ -38,7 +38,7 @@ func (h handler) CreateLobby(ctx context.Context, request *dto.Auth) (*lobby.L, 
 		return &lobby.L{}, status.New(codes.Internal, err.Error()).Err()
 	}
 
-	// #Pre-assign room
+	// #Pre-assign lobby
 	lo := lobby.L{
 		ID:   gulid.NewID(),
 		Name: "default",
