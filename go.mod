@@ -16,7 +16,7 @@ require (
 	github.com/oklog/ulid v1.3.1
 	github.com/rs/zerolog v1.20.0
 	github.com/tidwall/buntdb v1.1.2
-	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
+	golang.org/x/crypto v0.1.0
 	google.golang.org/genproto v0.0.0-20200915202801-9f80d0600517 // indirect
 	google.golang.org/grpc v1.32.0
 	google.golang.org/protobuf v1.25.0 // indirect
